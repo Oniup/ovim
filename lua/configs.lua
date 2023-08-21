@@ -1,40 +1,40 @@
 local keyset = vim.keymap.set
 
-function get_buffer_filetype()
-	local buffer_name = vim.api.nvim_buf_get_name(0)
-	local offset = (buffer_name:reverse()):find("%.") - 1
-	return buffer_name:sub(#buffer_name - offset)
-end
-
-function get_buffer_filename()
-	local buffer_name = vim.api.nvim_buf_get_name(0)
-	local offset = (buffer_name:reverse()):find("%/")
-	if offset == nil then
-		offset = (buffer_name:reverse()):find("%\\")
-		if offset == nil then
-			return buffer_name
-		end
-	end
-	return buffer_name:sub(#buffer_name - offset + 2)
-end
-
-function run_if_buf_is(allowed, fn)
-	local buffer_filetype = get_buffer_filetype()
-	for i = 1, #allowed.filetypes do 
-		if allowed.filetypes[i] == buffer_filetype then
-			fn()
-			return
-		end
-	end
-
-	local buffer_filename = get_buffer_filename()
-	for i = 1, #allowed.filenames do
-		if allowed.filenames[i] == buffer_filename then
-			fn()
-			return 
-		end
-	end
-end
+-- function get_buffer_filetype()
+-- 	local buffer_name = vim.api.nvim_buf_get_name(0)
+-- 	local offset = (buffer_name:reverse()):find("%.") - 1
+-- 	return buffer_name:sub(#buffer_name - offset)
+-- end
+-- 
+-- function get_buffer_filename()
+-- 	local buffer_name = vim.api.nvim_buf_get_name(0)
+-- 	local offset = (buffer_name:reverse()):find("%/")
+-- 	if offset == nil then
+-- 		offset = (buffer_name:reverse()):find("%\\")
+-- 		if offset == nil then
+-- 			return buffer_name
+-- 		end
+-- 	end
+-- 	return buffer_name:sub(#buffer_name - offset + 2)
+-- end
+-- 
+-- function run_if_buf_is(allowed, fn)
+-- 	local buffer_filetype = get_buffer_filetype()
+-- 	for i = 1, #allowed.filetypes do 
+-- 		if allowed.filetypes[i] == buffer_filetype then
+-- 			fn()
+-- 			return
+-- 		end
+-- 	end
+-- 
+-- 	local buffer_filename = get_buffer_filename()
+-- 	for i = 1, #allowed.filenames do
+-- 		if allowed.filenames[i] == buffer_filename then
+-- 			fn()
+-- 			return 
+-- 		end
+-- 	end
+-- end
 
 -- local allow_in_files_of = function(ft_allowed, func)
 -- 	-- Check filetypes
@@ -123,7 +123,7 @@ telescope.setup({
     sorting_strategy = "ascending",
 	}
 })
-telescope.load_extension("fzf")
+-- telescope.load_extension("fzf")
 telescope.load_extension("cmake4vim")
 
 local tel_opts = { noremap = true }
