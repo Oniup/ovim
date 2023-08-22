@@ -14,15 +14,17 @@ Install the following dependencies whatever package manager.
 choco install [PACKAGE_NAME] --force -y
 ```
 
-* [fzf](https://github.com/junegunn/fzf)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
-* [python]()
-* [cmake]()
-* [mingw]()
+* [python](https://community.chocolatey.org/packages/python/3.11.4)
+* [cmake](https://cmake.org/)
+* [mingw](https://www.mingw-w64.org/)
+* [omnisharp](http://www.omnisharp.net/)
 * [llvm]() *NOTE: This isn't required, however it is for C/C++ development*
 * [node](https://nodejs.org/en) *NOTE: this cannot be installed through chocolatey. 
   Also this installed npm with the package*
 * [npm](https://www.npmjs.com/)
+* [rust](https://www.rust-lang.org/) *NOTE: this will install cargo and rustc 
+  if through chocolatey*
 
 Once all those pacakges are installed, COC needs one more package to work, you'll 
 also need to install pynvim through pip (which installed with python)
@@ -51,18 +53,5 @@ git clone https://github.com/Oniup/neovim-config.git ~/.config/nvim --depth 1
 
 ```
 git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
-```
-
-## Example COC settings
-
-```json
-{
-	"suggest.noselect": true,
-	"inlayHint.enable": false,
-
-	"clangd.path": "C:\\Program Files\\LLVM\\bin\\clangd.exe",
-	"clangd.compilationDatabasePath": ".\\bin",
-	"semanticTokens.enable": true
-}
 ```
 
