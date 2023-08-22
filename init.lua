@@ -1,8 +1,7 @@
 require("options")
-require("keymaps")
 require("plugins")
-require("configs")
+require("custom")
 
 if vim.g.neovide then
-	require("neovide-config")
+  require("neovide-config")
 end

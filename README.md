@@ -1,4 +1,4 @@
-# Simple Neovim Config
+# Oniup's Neovim Config
 
 ## Installation
 
