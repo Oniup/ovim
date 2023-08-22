@@ -138,7 +138,17 @@ local terminal = require("buffer-term")
 terminal.setup()
 
 keyset("t", "jk", "<C-\\><C-n>", { noremap = true })
-keyset({ "n", "t" }, "<A-i>", function() terminal.toggle("a") end, { noremap = true, silent = true })
+
+keyset("n", "<A-i>", function() terminal.toggle("a") end,
+  { noremap = true, silent = true })
+keyset("t", "<A-i>", function() terminal.toggle("a") end, { noremap = true, silent = true })
+
+local disable_spellcheck_in_terminal = vim.api.nvim_create_augroup("disable_spellcheck_in_terminal", { clear = true })
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*", -- disable spellchecking in the embedded terminal
+  command = "setlocal nospell",
+  group = disable_spellcheck_in_terminal,
+})
 
 
 -------------------------- LSP ----------------------------
