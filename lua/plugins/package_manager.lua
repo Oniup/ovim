@@ -1,55 +1,60 @@
 vim.cmd([[packadd packer.nvim]])
 
-return require("packer").startup(function(use)
+local plugins = {
   -- Packer can manage itself
-  use "wbthomason/packer.nvim"
+  "wbthomason/packer.nvim",
 
   -- Libraries that a lot of plugins use
-  use "nvim-lua/plenary.nvim"
-  use "nvim-tree/nvim-web-devicons"
-  use "rktjmp/lush.nvim"
+  "nvim-lua/plenary.nvim",
+  "nvim-tree/nvim-web-devicons",
+  "rktjmp/lush.nvim",
 
   -- Syntax highlighting
-  use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
-  use "rebelot/kanagawa.nvim"
-  use "Oniup/flame.nvim"
-  use "m-demare/hlargs.nvim"
+  {
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate"
+  },
+  "Oniup/flame.nvim",
+  "m-demare/hlargs.nvim",
 
   -- Status lines
-  use "nvim-lualine/lualine.nvim"
-  use { "akinsho/bufferline.nvim", tag = "*" }
+  "nvim-lualine/lualine.nvim",
+  {
+    "akinsho/bufferline.nvim",
+    tag = "*"
+  },
 
   -- Auto pair
-  use { "jiangmiao/auto-pairs" }
+  "jiangmiao/auto-pairs",
 
   -- Fuzzy finder
-  use "BurntSushi/ripgrep"
-  use { "nvim-telescope/telescope.nvim", branch = "0.1.2" }
+  "BurntSushi/ripgrep",
+  { "nvim-telescope/telescope.nvim", branch = "0.1.2" },
 
   -- File explorer
-  use "nvim-tree/nvim-tree.lua"
+  "nvim-tree/nvim-tree.lua",
 
   -- Project Manager
-  use "ahmedkhalf/project.nvim"
+  "ahmedkhalf/project.nvim",
 
   -- Comments
-  use "folke/todo-comments.nvim"
-  use "numToStr/Comment.nvim"
+  "folke/todo-comments.nvim",
+  "numToStr/Comment.nvim",
 
   -- Toggle terminal
-  use "caenrique/buffer-term.nvim"
+  "caenrique/buffer-term.nvim",
 
   -- LSP
-  use "williamboman/mason.nvim"
-  use "williamboman/mason-lspconfig.nvim"
-  use "neovim/nvim-lspconfig"
-  use "simrat39/rust-tools.nvim"
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+  "neovim/nvim-lspconfig",
+  "simrat39/rust-tools.nvim",
 
   -- Debugger
-  use "puremourning/vimspector"
+  "puremourning/vimspector",
 
   -- Auto completion
-  use {
+  {
     "hrsh7th/nvim-cmp",
     requires = {
       "hrsh7th/cmp-nvim-lsp",
@@ -65,4 +70,16 @@ return require("packer").startup(function(use)
       "saadparwaiz1/cmp_luasnip",
     },
   }
+}
+
+-- plugins or configurations that are not pushed to repo
+local custom_status, custom_plugins = pcall(require, "custom.plugins")
+if custom_status then
+  table.insert(plugins, custom_plugins)
+end
+
+return require("packer").startup(function(use)
+  for _, plugin in pairs(plugins) do
+    use(plugin)
+  end
 end)
