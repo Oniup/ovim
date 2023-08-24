@@ -29,7 +29,10 @@ local plugins = {
 
   -- Fuzzy finder
   "BurntSushi/ripgrep",
-  { "nvim-telescope/telescope.nvim", branch = "0.1.2" },
+  {
+    "nvim-telescope/telescope.nvim",
+    branch = "0.1.2"
+  },
 
   -- File explorer
   "nvim-tree/nvim-tree.lua",
@@ -44,6 +47,9 @@ local plugins = {
   -- Toggle terminal
   "caenrique/buffer-term.nvim",
 
+  -- Cheatsheet
+  "sudormrfbin/cheatsheet.nvim",
+
   -- LSP
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
@@ -55,21 +61,29 @@ local plugins = {
 
   -- Auto completion
   {
-    "hrsh7th/nvim-cmp",
+    "ms-jpq/coq_nvim",
+    branch = "coq",
     requires = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
-
-      "hrsh7th/cmp-vsnip",
-      "hrsh7th/vim-vsnip",
-
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-    },
+      { "ms-jpq/coq.artifacts", branch = "artifacts" },
+      { "ms-jpq/coq.thirdparty", branch = "3p" },
+    }
   }
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   requires = {
+  --     "hrsh7th/cmp-nvim-lsp",
+  --     "hrsh7th/cmp-buffer",
+  --     "hrsh7th/cmp-path",
+  --     "hrsh7th/cmp-cmdline",
+  --     "hrsh7th/cmp-nvim-lsp-signature-help",
+
+  --     "hrsh7th/cmp-vsnip",
+  --     "hrsh7th/vim-vsnip",
+
+  --     "L3MON4D3/LuaSnip",
+  --     "saadparwaiz1/cmp_luasnip",
+  --   },
+  -- }
 }
 
 -- plugins or configurations that are not pushed to repo

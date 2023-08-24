@@ -1,3 +1,32 @@
+-------------------------- COQ ----------------------------
+local coq_settings = {
+  auto_start = true,
+  display = {
+    statusline = {
+      helo = false
+    },
+    pum = {
+      source_context = { "", "" },
+      kind_context = { " ", "" }
+    },
+    icons = {
+      mode = "short",
+    },
+    preview = {
+      border = "rounded"
+    }
+  },
+  keymap = {
+    jump_to_mark = ""
+  }
+}
+vim.api.nvim_set_var("coq_settings", coq_settings)
+
+require("coq_3p")({
+  { src = "nvimlua", short_name = "nLUA", conf_only = false },
+})
+
+
 -------------------------- LSP ----------------------------
 local signs = {
   { name = "DiagnosticSignError", text = "󰅚 " },
@@ -50,7 +79,8 @@ end
 
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 lsp_capabilities.textDocument.completion.completionItem.snippetSupport = true
-lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(lsp_capabilities)
+lsp_capabilities = require("coq").lsp_ensure_capabilities(lsp_capabilities)
+-- lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(lsp_capabilities)
 
 require("hlargs").setup({
   color = "#C19C6C",
@@ -74,7 +104,6 @@ require("mason-lspconfig").setup({
     "pyright", "marksman"
   }
 })
-
 
 require("mason-lspconfig").setup_handlers({
   -- Automatically setting the LSP up
@@ -124,105 +153,105 @@ require('rust-tools').runnables.runnables()
 
 
 -------------------------- CMP ----------------------------
-local cmp = require "cmp"
-cmp.setup({
-  -- Enable LSP snippets
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-n>"] = cmp.mapping.select_next_item(),
-    -- Add tab support
-    ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-    ["<Tab>"] = cmp.mapping.select_next_item(),
-    ["<C-S-f>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    })
-  },
-  -- Installed sources:
-  sources = {
-    { name = "path" },
-    { name = "nvim_lsp" },
-    { name = "nvim_lsp_signature_help" },
-    { name = "nvim_lua" },
-    { name = "luasnip" },
-  },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-
-  formatting = {
-    fields = { "kind", "abbr", "menu" },
-    format = function(_, item)
-      local kind = {
-        Array = "",
-        Boolean = "",
-        Class = "",
-        Color = "",
-        Constant = "",
-        Constructor = "",
-        Enum = "",
-        EnumMember = "",
-        Event = "",
-        Field = "",
-        File = "",
-        Folder = "",
-        Function = "",
-        Interface = "",
-        Key = "",
-        Keyword = "",
-        Method = "",
-        Module = "",
-        Namespace = "",
-        Null = "󰟢",
-        Number = "",
-        Object = "",
-        Operator = "",
-        Package = "",
-        Property = "",
-        Reference = "",
-        Snippet = "",
-        String = "",
-        Struct = "",
-        Text = "",
-        TypeParameter = "",
-        Unit = "",
-        Value = "",
-        Variable = "",
-      }
-
-      local kind_name = item.kind
-      item.kind = string.format("%s", kind[kind_name]) or "?"
-      item.menu = " (" .. kind_name .. ") "
-      return item
-    end,
-  },
-})
-
-cmp.setup.cmdline({ "/", "?" }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = "buffer" },
-  },
-})
-
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "path" },
-  }, {
-    { name = "cmdline" },
-  }),
-})
+-- local cmp = require "cmp"
+-- cmp.setup({
+--   -- Enable LSP snippets
+--   snippet = {
+--     expand = function(args)
+--       require("luasnip").lsp_expand(args.body)
+--     end,
+--   },
+--   mapping = {
+--     ["<C-p>"] = cmp.mapping.select_prev_item(),
+--     ["<C-n>"] = cmp.mapping.select_next_item(),
+--     -- Add tab support
+--     ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+--     ["<Tab>"] = cmp.mapping.select_next_item(),
+--     ["<C-S-f>"] = cmp.mapping.scroll_docs(-4),
+--     ["<C-f>"] = cmp.mapping.scroll_docs(4),
+--     ["<C-Space>"] = cmp.mapping.complete(),
+--     ["<C-e>"] = cmp.mapping.close(),
+--     ["<CR>"] = cmp.mapping.confirm({
+--       behavior = cmp.ConfirmBehavior.Insert,
+--       select = true,
+--     })
+--   },
+--   -- Installed sources:
+--   sources = {
+--     { name = "path" },
+--     { name = "nvim_lsp" },
+--     { name = "nvim_lsp_signature_help" },
+--     { name = "nvim_lua" },
+--     { name = "luasnip" },
+--   },
+--   window = {
+--     completion = cmp.config.window.bordered(),
+--     documentation = cmp.config.window.bordered(),
+--   },
+--
+--   formatting = {
+--     fields = { "kind", "abbr", "menu" },
+--     format = function(_, item)
+--       local kind = {
+--         Array = "",
+--         Boolean = "",
+--         Class = "",
+--         Color = "",
+--         Constant = "",
+--         Constructor = "",
+--         Enum = "",
+--         EnumMember = "",
+--         Event = "",
+--         Field = "",
+--         File = "",
+--         Folder = "",
+--         Function = "",
+--         Interface = "",
+--         Key = "",
+--         Keyword = "",
+--         Method = "",
+--         Module = "",
+--         Namespace = "",
+--         Null = "󰟢",
+--         Number = "",
+--         Object = "",
+--         Operator = "",
+--         Package = "",
+--         Property = "",
+--         Reference = "",
+--         Snippet = "",
+--         String = "",
+--         Struct = "",
+--         Text = "",
+--         TypeParameter = "",
+--         Unit = "",
+--         Value = "",
+--         Variable = "",
+--       }
+--
+--       local kind_name = item.kind
+--       item.kind = string.format("%s", kind[kind_name]) or "?"
+--       item.menu = " (" .. kind_name .. ") "
+--       return item
+--     end,
+--   },
+-- })
+--
+-- cmp.setup.cmdline({ "/", "?" }, {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = "buffer" },
+--   },
+-- })
+--
+-- cmp.setup.cmdline(":", {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources({
+--     { name = "path" },
+--   }, {
+--     { name = "cmdline" },
+--   }),
+-- })
 
 
 ---------------------- Vim Spector ------------------------

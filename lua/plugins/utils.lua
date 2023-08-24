@@ -21,8 +21,16 @@ telescope.setup({
   defaults = {
     border = true,
     mappings = {
-      i = { ["qq"] = telescope_actions.close },
-      n = { ["qq"] = telescope_actions.close },
+      i = {
+        ["qq"] = telescope_actions.close,
+        ["<C-l>"] = telescope_actions.select_vertical,
+        ["<C-j>"] = telescope_actions.select_horizontal
+      },
+      n = {
+        ["qq"] = telescope_actions.close,
+        ["<C-l>"] = telescope_actions.select_vertical,
+        ["<C-j>"] = telescope_actions.select_horizontal
+      },
     },
     layout_strategy = "horizontal",
     layout_config = {
@@ -47,9 +55,10 @@ vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, tel_opts)
 ------------------------ Nvim Tree ------------------------
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
 require("nvim-tree").setup({
-  sync_root_with_cwd = false,
-  respect_buf_cwd = false,
+  sync_root_with_cwd = true,
+  respect_buf_cwd = true,
   update_focused_file = {
     enable = true,
     update_root = false
@@ -82,11 +91,21 @@ vim.keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true })
 
 vim.keymap.set("n", "<A-i>", function() terminal.toggle("a") end,
   { noremap = true, silent = true })
-vim.keymap.set("t", "<A-i>", function() terminal.toggle("a") end, { noremap = true, silent = true })
+vim.keymap.set("t", "<A-i>",
+  function() terminal.toggle("a") end, { noremap = true, silent = true })
 
-local disable_spellcheck_in_terminal = vim.api.nvim_create_augroup("disable_spellcheck_in_terminal", { clear = true })
+local disable_spellcheck_in_terminal = vim.api.nvim_create_augroup(
+  "disable_spellcheck_in_terminal", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
   pattern = "*", -- disable spellchecking in the embedded terminal
   command = "setlocal nospell",
   group = disable_spellcheck_in_terminal,
+})
+
+
+---------------------- Cheat Sheet ------------------------
+require("cheatsheet").setup({
+  bundled_cheatsheets = {
+    enabled = { "default" }
+  },
 })
