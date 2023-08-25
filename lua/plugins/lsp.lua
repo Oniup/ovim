@@ -5,6 +5,9 @@ local coq_settings = {
     statusline = {
       helo = false
     },
+    ghost_text = {
+      enabled = false
+    },
     pum = {
       source_context = { "", "" },
       kind_context = { " ", "" }
@@ -13,19 +16,20 @@ local coq_settings = {
       mode = "short",
     },
     preview = {
-      border = "rounded"
-    }
+      border = "solid"
+    },
+    mark_highlight_group = "NormalFloat"
   },
   keymap = {
     jump_to_mark = ""
   }
 }
+
 vim.api.nvim_set_var("coq_settings", coq_settings)
 
 require("coq_3p")({
   { src = "nvimlua", short_name = "nLUA", conf_only = false },
 })
-
 
 -------------------------- LSP ----------------------------
 local signs = {
@@ -125,31 +129,6 @@ require("mason-lspconfig").setup_handlers({
     lspconfig[server].setup(config)
   end
 })
-
-
------------------------ Rust Tools ------------------------
-local rust_tools = require("rust-tools")
-rust_tools.setup({
-  tools = {
-    inlay_hints = {
-      auto = false,
-      show_parameter_hints = false,
-    }
-  },
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set(
-        "n", "<leader>cg",
-        rust_tools.code_action_group.code_action_group, { buffer = bufnr })
-    end
-  }
-})
-
--- Enables :RustRunnables
-require('rust-tools').runnables.runnables()
 
 
 -------------------------- CMP ----------------------------

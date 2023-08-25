@@ -50,6 +50,9 @@ local plugins = {
   -- Cheatsheet
   "sudormrfbin/cheatsheet.nvim",
 
+  -- CMake
+  "Civitasv/cmake-tools.nvim",
+
   -- LSP
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
