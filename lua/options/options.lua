@@ -78,6 +78,7 @@ local options = {
 
 if vim.fn.has("win32") then
   vim.opt.shell = "pwsh"
+  vim.opt.shellcmdflag = ""
 end
 
 vim.cmd([[

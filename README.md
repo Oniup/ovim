@@ -46,12 +46,3 @@ git clone https://github.com/Oniup/neovim-config.git $HOME\AppData\Local\nvim --
 ```
 git clone https://github.com/Oniup/neovim-config.git ~/.config/nvim --depth 1
 ```
-
-### Instal Packer
-
-***Windows:***
-
-```
-git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
-```
-
