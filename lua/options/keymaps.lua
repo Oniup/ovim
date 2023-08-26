@@ -1,5 +1,5 @@
 -- NOTE: Spellings key sets => zg = spell check is wrong, z= list of spellings to select
-local opts = { noremap = true }
+local opts = { noremap = true, silent = true }
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "

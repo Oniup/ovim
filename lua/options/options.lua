@@ -1,3 +1,9 @@
+local apply_options = function(opts)
+  for name, option in pairs(opts) do
+    vim.opt[name] = option
+  end
+end
+
 local options = {
   number = true,
   relativenumber = true,
@@ -75,16 +81,22 @@ local options = {
       + "precedes:«" -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
       + "trail:•", -- BULLET (U+2022, UTF-8: E2 80 A2)
 }
+apply_options(options)
+
+-- vim.cmd([[
+--   autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+-- ]])
 
 if vim.fn.has("win32") then
-  vim.opt.shell = "pwsh"
-  vim.opt.shellcmdflag = ""
-end
-
-vim.cmd([[
-  autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
-
-for k, v in pairs(options) do
-  vim.opt[k] = v
+  local powershell_opts = {
+    shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
+    shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command " ..
+        "[Console]::InputEncoding=[Console]::OutputEncoding=" ..
+        "[System.Text.Encoding]::UTF8;",
+    shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+    shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+    shellquote = "",
+    shellxquote = "",
+  }
+  apply_options(powershell_opts)
 end

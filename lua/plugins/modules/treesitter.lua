@@ -1,6 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  run = ":TSUpdate",
+  buld = ":TSUpdate",
   lazy = false,
   config = function()
     require("nvim-treesitter.configs").setup({
@@ -8,7 +8,7 @@ return {
         "c", "cpp", "c_sharp", "python", "lua", "vimdoc", "vim", "json", "yaml",
         "rust", "toml"
       },
-      auto_install = true,
+      auto_install = false,
       highlight = {
         enable = true,
         use_languagetree = true,

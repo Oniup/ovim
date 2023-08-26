@@ -14,7 +14,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins.modules", {
   defaults = {
     lazy = true,
-    version = nil, -- don't use version="*"
   },
   install = {
     missing = true,
@@ -26,6 +25,9 @@ require("lazy").setup("plugins.modules", {
   change_detection = {
     enabled = true,
     notify = false,
+  },
+  dev = {
+    path = "~/Dev/plugins"
   },
   performance = {
     rtp = {
@@ -39,3 +41,5 @@ require("lazy").setup("plugins.modules", {
     },
   },
 })
+
+vim.keymap.set("n", "<leader>lz", ":Lazy<CR>", { silent = true })

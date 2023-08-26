@@ -4,15 +4,14 @@ return {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
 
-    "ms-jpq/coq_nvim",
+    -- "hrsh7th/nvim-cmp",
     "m-demare/hlargs.nvim",
+    "folke/neodev.nvim",
   },
   lazy = false,
   priority = 999,
 
   config = function()
-    vim.cmd("COQnow")
-
     local signs = {
       { name = "DiagnosticSignError", text = "󰅚 " },
       { name = "DiagnosticSignWarn", text = "󰀪 " },
@@ -66,9 +65,7 @@ return {
         local config = {
           on_attach = function(_, bufnr)
             local opts = { buffer = bufnr, noremap = true, silent = true }
-
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
             vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
             vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
             vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
@@ -82,6 +79,7 @@ return {
             vim.keymap.set("n", "<leader>lj", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
             vim.keymap.set("n", "<leader>lk", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", opts)
           end,
+          capabilities = require("cmp_nvim_lsp").default_capabilities()
         }
 
         local settings_exist, server_settings = pcall(
@@ -92,112 +90,8 @@ return {
           config.settings = server_settings
         end
 
-        lspconfig[server].setup(require("coq").lsp_ensure_capabilities(config))
+        lspconfig[server].setup(config)
       end
     })
   end,
 }
-
-
------------------------ Mason Setup -----------------------
-
--------------------------- CMP ----------------------------
--- local cmp = require "cmp"
--- cmp.setup({
---   -- Enable LSP snippets
---   snippet = {
---     expand = function(args)
---       require("luasnip").lsp_expand(args.body)
---     end,
---   },
---   mapping = {
---     ["<C-p>"] = cmp.mapping.select_prev_item(),
---     ["<C-n>"] = cmp.mapping.select_next_item(),
---     -- Add tab support
---     ["<S-Tab>"] = cmp.mapping.select_prev_item(),
---     ["<Tab>"] = cmp.mapping.select_next_item(),
---     ["<C-S-f>"] = cmp.mapping.scroll_docs(-4),
---     ["<C-f>"] = cmp.mapping.scroll_docs(4),
---     ["<C-Space>"] = cmp.mapping.complete(),
---     ["<C-e>"] = cmp.mapping.close(),
---     ["<CR>"] = cmp.mapping.confirm({
---       behavior = cmp.ConfirmBehavior.Insert,
---       select = true,
---     })
---   },
---   -- Installed sources:
---   sources = {
---     { name = "path" },
---     { name = "nvim_lsp" },
---     { name = "nvim_lsp_signature_help" },
---     { name = "nvim_lua" },
---     { name = "luasnip" },
---   },
---   window = {
---     completion = cmp.config.window.bordered(),
---     documentation = cmp.config.window.bordered(),
---   },
---
---   formatting = {
---     fields = { "kind", "abbr", "menu" },
---     format = function(_, item)
---       local kind = {
---         Array = "",
---         Boolean = "",
---         Class = "",
---         Color = "",
---         Constant = "",
---         Constructor = "",
---         Enum = "",
---         EnumMember = "",
---         Event = "",
---         Field = "",
---         File = "",
---         Folder = "",
---         Function = "",
---         Interface = "",
---         Key = "",
---         Keyword = "",
---         Method = "",
---         Module = "",
---         Namespace = "",
---         Null = "󰟢",
---         Number = "",
---         Object = "",
---         Operator = "",
---         Package = "",
---         Property = "",
---         Reference = "",
---         Snippet = "",
---         String = "",
---         Struct = "",
---         Text = "",
---         TypeParameter = "",
---         Unit = "",
---         Value = "",
---         Variable = "",
---       }
---
---       local kind_name = item.kind
---       item.kind = string.format("%s", kind[kind_name]) or "?"
---       item.menu = " (" .. kind_name .. ") "
---       return item
---     end,
---   },
--- })
---
--- cmp.setup.cmdline({ "/", "?" }, {
---   mapping = cmp.mapping.preset.cmdline(),
---   sources = {
---     { name = "buffer" },
---   },
--- })
---
--- cmp.setup.cmdline(":", {
---   mapping = cmp.mapping.preset.cmdline(),
---   sources = cmp.config.sources({
---     { name = "path" },
---   }, {
---     { name = "cmdline" },
---   }),
--- })

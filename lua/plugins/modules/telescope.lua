@@ -16,6 +16,7 @@ return {
     require("telescope").setup({
       defaults = {
         border = true,
+        borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         mappings = {
           i = {
             ["qq"] = telescope_actions.close,
@@ -39,11 +40,11 @@ return {
       }
     })
 
-    local tel_opts = { noremap = true }
+    local opts = { noremap = true, silent = true }
     local telescope_builtin = require("telescope.builtin")
-    vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, tel_opts)
-    vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep, tel_opts)
-    vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, tel_opts)
-    vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, tel_opts)
+    vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, opts)
+    vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep, opts)
+    vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, opts)
+    vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, opts)
   end
 }

@@ -6,7 +6,7 @@
 
 Install the following dependencies whatever package manager. 
 
-> If on windows you'll need to install [Chololatey](https://chocolatey.org/) which 
+> If on windows you'll need to install [Chocolatey](https://chocolatey.org/) which 
 > is a windows based package manager. To install the following you'll need to type
 > into the terminal with administration privileges 
 
@@ -45,4 +45,24 @@ git clone https://github.com/Oniup/neovim-config.git $HOME\AppData\Local\nvim --
 
 ```
 git clone https://github.com/Oniup/neovim-config.git ~/.config/nvim --depth 1
+```
+
+## Uninstall
+
+Delete the following directories to reset Neovim to default
+
+#### Unix
+
+```
+rm -rf ~/.config/nvim
+rm -rf ~/.local/share/nvim
+```
+
+#### Windows
+
+*NOTE: using powershell or pwsh*
+
+```
+Remove-Item ~\AppData\Local\nvim -Recurse -Force
+Remove-Item ~\AppData\Local\nvim-data -Recurse -Force
 ```
