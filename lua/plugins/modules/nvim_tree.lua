@@ -12,10 +12,11 @@ return {
       respect_buf_cwd = true,
       update_focused_file = {
         enable = true,
-        update_root = false
+        update_root = false,
       },
     })
 
-    vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+    vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>",
+      { noremap = true, silent = true })
   end
 }

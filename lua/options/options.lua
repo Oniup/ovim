@@ -7,7 +7,8 @@ end
 local options = {
   number = true,
   relativenumber = true,
-  signcolumn = "number",
+  signcolumn = "yes", -- number: for thinner lines
+  cmdheight = 1,
   cursorline = true,
   tabstop = 2,
   shiftwidth = 2,

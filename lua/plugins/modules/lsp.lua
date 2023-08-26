@@ -4,7 +4,6 @@ return {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
 
-    -- "hrsh7th/nvim-cmp",
     "m-demare/hlargs.nvim",
     "folke/neodev.nvim",
   },
