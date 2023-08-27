@@ -40,7 +40,7 @@ local options = {
 
   list = true,                   --Show white spaces
 
-  laststatus = 3,                -- Use global status line
+  -- laststatus = 4,                -- Use global status line
 
   spelllang = { "en", "cjk" },   -- Enable spelling for English
   spellsuggest = { "best", 10 }, -- Show x the best matching results
@@ -84,10 +84,6 @@ local options = {
 }
 apply_options(options)
 
--- vim.cmd([[
---   autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
--- ]])
-
 if vim.fn.has("win32") then
   local powershell_opts = {
     shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
@@ -101,3 +97,5 @@ if vim.fn.has("win32") then
   }
   apply_options(powershell_opts)
 end
+
+vim.loader.enable()

@@ -41,6 +41,16 @@ return {
       }
     })
 
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      border = "single",
+      focusable = false,
+    })
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+      border = "single",
+      focusable = false,
+      relative = "cursor",
+    })
+
     require("mason").setup({
       ui = {
         icons = {
@@ -48,6 +58,7 @@ return {
           package_pending = "",
           package_uninstalled = "",
         },
+        border = "single",
       }
     })
 
@@ -55,7 +66,7 @@ return {
       ensure_installed = {
         "clangd", "cmake", "lua_ls", "rust_analyzer", "omnisharp",
         "pyright", "marksman"
-      }
+      },
     })
 
     require("mason-lspconfig").setup_handlers({
@@ -65,18 +76,18 @@ return {
           on_attach = function(_, bufnr)
             local opts = { buffer = bufnr, noremap = true, silent = true }
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-            vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-            vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-            vim.keymap.set("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-            vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-            vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-            vim.keymap.set("n", "<leader>fo", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
-            vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
-            vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-            vim.keymap.set("n", "<leader>re", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-            vim.keymap.set("n", "<leader>lj", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
-            vim.keymap.set("n", "<leader>lk", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", opts)
+
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+            vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+            vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+            vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
+
+            vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, opts)
+            vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+            vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)
+            vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
           end,
           capabilities = require("cmp_nvim_lsp").default_capabilities()
         }

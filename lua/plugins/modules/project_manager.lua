@@ -16,6 +16,6 @@ return {
 
     vim.api.nvim_create_user_command(
       "OpenProject",
-      ":Telescope projects<CR>", {})
+      ":Telescope projects", {})
   end,
 }

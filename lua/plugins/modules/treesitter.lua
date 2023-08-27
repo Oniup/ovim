@@ -1,7 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   buld = ":TSUpdate",
-  lazy = false,
+  event = "BufEnter",
   config = function()
     require("nvim-treesitter.configs").setup({
       ensure_installed = {

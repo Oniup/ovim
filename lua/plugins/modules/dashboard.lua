@@ -24,14 +24,20 @@ return {
 
     local center = {
       {
-        desc = "Projects",
-        icon = "    ",
-        key = "p",
+        desc = "   Project",
+        icon = "[]   ",
+        key = "o",
         action = "Telescope projects",
       },
       {
-        desc = " Config",
-        icon = "    ",
+        desc = "LSP Installed",
+        icon = "[]   ",
+        key = "l",
+        action = "Mason"
+      },
+      {
+        desc = "Configuration",
+        icon = "[]   ",
         key = "c",
         action = function()
           local config_dir = "~/.config/nvim"
@@ -41,6 +47,12 @@ return {
           require("telescope.builtin").find_files({ cwd = config_dir })
           vim.api.nvim_set_current_dir(config_dir)
         end,
+      },
+      {
+        desc = "   Plugins",
+        icon = "[]   ",
+        key = "p",
+        action = "Lazy"
       },
     }
 
