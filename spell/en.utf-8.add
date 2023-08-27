@@ -43,3 +43,8 @@ pwsh
 cmake
 Installationsd
 Vimspector
+dotnet
+sln
+csproj
+nunit
+NUnit
