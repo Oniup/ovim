@@ -34,11 +34,11 @@ local options = {
   grepformat = "%f:%l:%c:%m",
   grepprg = "rg --vimgrep",
 
-  inccommand = "split",          -- Line preview of :s results
-  incsearch = true,              -- Do incremental search
-  ignorecase = true,             -- Ignore case in search
+  inccommand = "split", -- Line preview of :s results
+  incsearch = true,     -- Do incremental search
+  ignorecase = true,    -- Ignore case in search
 
-  list = true,                   --Show white spaces
+  list = true,          --Show white spaces
 
   -- laststatus = 4,                -- Use global status line
 

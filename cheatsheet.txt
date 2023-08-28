@@ -1,0 +1,42 @@
+## lsp
+
+Go to definition                                                      | gd
+Go to implementation                                                  | gi
+Go to type definition                                                 | gt
+Find and show references                                              | gr
+Open diagnostics floating window at cursor                            | gl
+Open documentation floating window at cursor                          | K
+Format current buffer                                                 | <leader>fo
+See code actions                                                      | <leader>ca
+Rename                                                                | <leader>re
+
+## file_explorer
+
+Create file/folder (append '/' -> directory)                          | <A-c>
+Create and open file/folder from prompt (append '/' -> directory)     | <S-CR>
+
+## file_tree
+
+Toggle left split file tree                                           | <leader>e
+
+## telescope
+
+Find files in current root directory                                  | <leader>ff
+Live grep -> find keyword throughout entire project                   | <leader>fg
+Neovim and plugin help search                                         | <leader>fh
+File explorer                                                         | <leader>fb
+
+## terminal
+
+Toggle horizontal terminal split                                      | <A-i>
+
+## vimspector
+
+Launch debugging                                                      | <F5>
+Reset debugging session                                               | <F8>
+Step over                                                             | <F11>
+Step into                                                             | <F10>
+Step out                                                              | <F12>
+Toggle breakpoint                                                     | <leader>bb
+Add watch for debugging session                                       | <leader>bw
+Evaluate                                                              | <leader>be

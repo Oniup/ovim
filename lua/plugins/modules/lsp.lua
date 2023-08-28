@@ -80,14 +80,14 @@ return {
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
             vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
             vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
             vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
             vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
-
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
             vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, opts)
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
             vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)
-            vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
+            vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
+            vim.keymap.set("n", "<leader>gp", vim.diagnostic.goto_prev, opts)
           end,
           capabilities = require("cmp_nvim_lsp").default_capabilities()
         }

@@ -51,23 +51,6 @@ return {
         fileexplorer = {
           theme = "ivy",
           hijack_netrw = true,
-          mappings = {
-            n = {
-              ["a"] = fb_actions.create,
-              ["r"] = fb_actions.rename,
-              ["m"] = fb_actions.move,
-              ["y"] = fb_actions.copy,
-              ["d"] = fb_actions.remove,
-              ["o"] = fb_actions.open,
-              ["g"] = fb_actions.goto_parent_dir,
-              ["e"] = fb_actions.goto_home_dir,
-              ["w"] = fb_actions.goto_cwd,
-              ["t"] = fb_actions.change_cwd,
-              ["f"] = fb_actions.toggle_browser,
-              ["h"] = fb_actions.toggle_hidden,
-              ["s"] = fb_actions.toggle_all,
-            },
-          },
         },
         fzf = {
           fuzzy = true,
@@ -89,7 +72,7 @@ return {
 
     -- vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>", opts)
     vim.keymap.set("n", "<leader>fb", function()
-      require "telescope".extensions.file_browser.file_browser{}
+      require "telescope".extensions.file_browser.file_browser {}
     end, opts)
   end,
 }
