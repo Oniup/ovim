@@ -1,5 +1,2 @@
-plugin
-custom
+dev_plugins
 lazy-lock.json
-
-custom-simple-cmake.lua

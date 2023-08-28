@@ -98,4 +98,13 @@ if vim.fn.has("win32") then
   apply_options(powershell_opts)
 end
 
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = ".cs",
+  callback = function()
+    vim.opt.shiftround = 4
+    vim.opt.shiftwidth = 4
+    vim.opt.tabstop = 4
+  end
+})
+
 vim.loader.enable()
