@@ -6,7 +6,7 @@ return {
     require("nvim-treesitter.configs").setup({
       ensure_installed = {
         "c", "cpp", "c_sharp", "python", "lua", "vimdoc", "vim", "json", "yaml",
-        "rust", "toml"
+        "rust", "toml", "make", "glsl", "html", "xml"
       },
       auto_install = false,
       highlight = {
@@ -18,3 +18,4 @@ return {
     })
   end
 }
+
