@@ -7,7 +7,7 @@ return {
   config = function()
     require("lualine").setup({
       options = {
-        theme = require("flame_theme.lualine_theme"),
+        theme = require("ignite.lualine"),
         component_separators = { right = "", left = "" },
         section_separators = { right = "", left = "" },
       },

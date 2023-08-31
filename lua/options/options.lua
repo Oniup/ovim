@@ -7,6 +7,7 @@ end
 local options = {
   number = true,
   relativenumber = true,
+  showmode = false,
   signcolumn = "yes", -- number: for thinner lines
   cmdheight = 1,
   cursorline = true,
@@ -99,12 +100,15 @@ if vim.fn.has("win32") then
 end
 
 vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = ".cs",
+  pattern = "cs",
   callback = function()
     vim.opt.shiftround = 4
     vim.opt.shiftwidth = 4
     vim.opt.tabstop = 4
   end
 })
+
+vim.g.load_doxygen_syntax = 1
+vim.g.doxygen_enhanced_colour = 1
 
 vim.loader.enable()

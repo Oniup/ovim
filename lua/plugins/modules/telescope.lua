@@ -21,7 +21,6 @@ return {
   config = function()
     local telescope = require("telescope")
     local telescope_actions = require("telescope.actions")
-    local fb_actions = require("telescope._extensions.file_browser.actions")
     telescope.setup({
       defaults = {
         border = true,
@@ -70,7 +69,6 @@ return {
     vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep, opts)
     vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, opts)
 
-    -- vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>", opts)
     vim.keymap.set("n", "<leader>fb", function()
       require "telescope".extensions.file_browser.file_browser {}
     end, opts)

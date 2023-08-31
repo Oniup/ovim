@@ -3,8 +3,6 @@ return {
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
-
-    "m-demare/hlargs.nvim",
     "folke/neodev.nvim",
   },
   lazy = false,
@@ -34,7 +32,7 @@ return {
       severity_sort = true,
       float = {
         focusable = true,
-        border = "rounded",
+        border = "single",
         source = "always",
         header = "",
         prefix = ""
@@ -103,5 +101,9 @@ return {
         lspconfig[server].setup(config)
       end
     })
+
+    require("lspconfig.ui.windows").default_options = {
+      border = "single",
+    }
   end,
 }
