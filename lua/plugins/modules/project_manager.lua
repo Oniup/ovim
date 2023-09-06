@@ -17,9 +17,9 @@ return {
     telescope.load_extension("projects")
 
     vim.api.nvim_create_user_command("SetProject", function()
-      local file = io.open(vim.fn.stdpath("data") .. "/project_nvim/project_history", "a")
+    local file = io.open(vim.fn.stdpath("data") .. "/project_nvim/project_history", "a")
       if file ~= nil then
-        file:write(vim.fn.getcwd())
+        file:write("\n" .. vim.fn.getcwd())
         file:close()
       end
     end, {})

@@ -20,36 +20,66 @@ return {
   },
   config = function()
     local telescope = require("telescope")
-    local telescope_actions = require("telescope.actions")
+    local actions = require("telescope.actions")
     telescope.setup({
       defaults = {
-        border = true,
-        borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         mappings = {
           i = {
-            ["qq"] = telescope_actions.close,
-            ["<C-l>"] = telescope_actions.select_vertical,
-            ["<C-j>"] = telescope_actions.select_horizontal
+            ["qq"] = actions.close,
+            ["<C-l>"] = actions.select_vertical,
+            ["<C-j>"] = actions.select_horizontal
           },
           n = {
-            ["qq"] = telescope_actions.close,
-            ["<C-l>"] = telescope_actions.select_vertical,
-            ["<C-j>"] = telescope_actions.select_horizontal
+            ["qq"] = actions.close,
+            ["<C-l>"] = actions.select_vertical,
+            ["<C-j>"] = actions.select_horizontal
           },
         },
-        layout_strategy = "horizontal",
+
+        -- Theme
+        border = true,
+        borderchars = {
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        },
+        layout_strategy = "vertical",
         layout_config = {
-          height = 40,
-          width = 160,
-          preview_width = 100,
+          width = 0.5,
+          height = 0.5,
           prompt_position = "top"
         },
         sorting_strategy = "ascending",
       },
+
+      pickers = {
+        help_tags = {
+          layout_strategy = "horizontal",
+          layout_config = {
+            width = 0.7,
+            height = 0.6,
+            preview_width = 0.65,
+          }
+        },
+        find_files = {
+          previewer = false,
+        },
+        live_grep = {
+          layout_strategy = "horizontal",
+          layout_config = {
+            width = 0.7,
+            height = 0.6,
+            preview_width = 0.65,
+          },
+        },
+      },
+
       extensions = {
-        fileexplorer = {
-          theme = "ivy",
-          hijack_netrw = true,
+        file_browser = {
+          previewer = false,
+        },
+        project = {
+          layout_strategy = "bottom",
         },
         fzf = {
           fuzzy = true,
@@ -64,10 +94,11 @@ return {
     telescope.load_extension("file_browser")
 
     local opts = { noremap = true, silent = true }
-    local telescope_builtin = require("telescope.builtin")
-    vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, opts)
-    vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep, opts)
-    vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, opts)
+    local builtin = require("telescope.builtin")
+
+    vim.keymap.set("n", "<leader>ff", builtin.find_files, opts)
+    vim.keymap.set("n", "<leader>fg", builtin.live_grep, opts)
+    vim.keymap.set("n", "<leader>fh", builtin.help_tags, opts)
 
     vim.keymap.set("n", "<leader>fb", function()
       require "telescope".extensions.file_browser.file_browser {}

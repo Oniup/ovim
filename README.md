@@ -11,19 +11,20 @@ Install the following dependencies whatever package manager.
 > into the terminal with administration privileges 
 
 ```
-choco install [PACKAGE_NAME] --force -y
+choco install [PACKAGE_NAME] -y
 ```
 
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [python](https://community.chocolatey.org/packages/python/3.11.4)
 * [cmake](https://cmake.org/)
 * [mingw](https://www.mingw-w64.org/)
-* [omnisharp](http://www.omnisharp.net/)
+* [omnisharp](http://www.omnisharp.net/) *NOTE: This is only required for C# development*
 * [llvm]() *NOTE: This isn't required, however it is for C/C++ development*
-* [node](https://nodejs.org/en) *NOTE: this cannot be installed through chocolatey. 
+* [vscode-cpptools]() *NOTE: This is only required for C/C++ DAP*
+* [node](https://nodejs.org/en) *NOTE: this cannot be installed through chocolatey.
   Also this installed npm with the package*
 * [npm](https://www.npmjs.com/)
-* [rust](https://www.rust-lang.org/) *NOTE: this will install cargo and rustc 
+* [rust](https://www.rust-lang.org/) *NOTE: this will install cargo and rustc
   if through chocolatey*
 
 Once all those pacakges are installed, COC needs one more package to work, you'll 

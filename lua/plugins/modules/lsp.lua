@@ -6,7 +6,7 @@ return {
     "folke/neodev.nvim",
   },
   lazy = false,
-  priority = 999,
+  priority = 999, -- initialized after color theme
 
   config = function()
     local signs = {
