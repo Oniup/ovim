@@ -1,5 +1,8 @@
 return {
   "Oniup/cmake.nvim",
+  dependencies = {
+    "mfussenegger/nvim-dap",
+  },
   ft = { "cpp", "c", "h", "hpp" },
   config = function()
     require("cmake").setup({

@@ -73,14 +73,16 @@ return {
         local config = {
           on_attach = function(_, bufnr)
             local opts = { buffer = bufnr, noremap = true, silent = true }
+            local telescope = require("telescope.builtin")
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-            vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-            vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+            vim.keymap.set("n", "gd", telescope.lsp_definitions, opts)
+            vim.keymap.set("n", "gi", telescope.lsp_implementations, opts)
+            vim.keymap.set("n", "gt", telescope.lsp_type_definitions, opts)
+            vim.keymap.set("n", "gr", telescope.lsp_references, opts)
             vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+            vim.keymap.set("n", "<leader>di", telescope.diagnostics, opts)
             vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, opts)
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
             vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)

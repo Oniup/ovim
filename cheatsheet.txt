@@ -6,9 +6,12 @@ Go to type definition                                                 | gt
 Find and show references                                              | gr
 Open diagnostics floating window at cursor                            | gl
 Open documentation floating window at cursor                          | K
+Rename                                                                | <leader>re
+Diagnostics                                                           | <leader>di
 Format current buffer                                                 | <leader>fo
 See code actions                                                      | <leader>ca
-Rename                                                                | <leader>re
+Go to next diagnostic                                                 | <leader>gn
+Go to previous diagnostic                                             | <leader>gp
 
 ## file_explorer
 
@@ -24,19 +27,37 @@ Toggle left split file tree                                           | <leader>
 Find files in current root directory                                  | <leader>ff
 Live grep -> find keyword throughout entire project                   | <leader>fg
 Neovim and plugin help search                                         | <leader>fh
-File explorer                                                         | <leader>fb
+File browser/explorer                                                 | <leader>fb
+Lists all vim options which can be modified                           | <leader>vo
+Lists all vim and plugin commands                                     | <leader>vc
+Lists all lua modules which can be reloaded                           | <leader>vm
 
 ## terminal
 
-Toggle horizontal terminal split                                      | <A-i>
+Toggle terminal split                                                 | <A-i>
+Enter normal mode                                                     | <C-\><C-n>
 
-## vimspector
+## dap
 
 Launch debugging                                                      | <F5>
-Reset debugging session                                               | <F8>
-Step over                                                             | <F11>
-Step into                                                             | <F10>
+Step over                                                             | <F10>
+Step into                                                             | <F11>
 Step out                                                              | <F12>
 Toggle breakpoint                                                     | <leader>bb
-Add watch for debugging session                                       | <leader>bw
-Evaluate                                                              | <leader>be
+Clear breakpoints                                                     | <leader>bc
+
+
+## spelling
+
+Ignore spelling of word under cursor                                  | zg
+Open spell suggestions                                                | z=
+
+## cmp
+
+Select next item                                                      | <Tab>
+Select previous item                                                  | <S-Tab>
+Scroll docs up                                                        | <C-o>
+Scroll docs down                                                      | <C-p>
+Open completion float window                                          | <C-Space>
+Close completion float window                                         | <C-e>
+Confirm completion                                                    | <CR>

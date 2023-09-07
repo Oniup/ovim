@@ -1,7 +1,18 @@
+local horizontal_layout = {
+  preview = true,
+  layout_strategy = "horizontal",
+  layout_config = {
+    width = 0.7,
+    height = 0.6,
+    preview_width = 0.65,
+  },
+}
+
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
+    "nvim-lua/popup.nvim",
     -- Extensions
     "BurntSushi/ripgrep",
     {
@@ -10,6 +21,7 @@ return {
           "build --config Release && cmake --install build --prefix build"
     },
     "nvim-telescope/telescope-file-browser.nvim",
+    "nvim-telescope/telescope-ui-select.nvim",
   },
   branch = "0.1.2",
   keys = {
@@ -23,6 +35,7 @@ return {
     local actions = require("telescope.actions")
     telescope.setup({
       defaults = {
+        preview = false,
         mappings = {
           i = {
             ["qq"] = actions.close,
@@ -53,34 +66,12 @@ return {
       },
 
       pickers = {
-        help_tags = {
-          layout_strategy = "horizontal",
-          layout_config = {
-            width = 0.7,
-            height = 0.6,
-            preview_width = 0.65,
-          }
-        },
-        find_files = {
-          previewer = false,
-        },
-        live_grep = {
-          layout_strategy = "horizontal",
-          layout_config = {
-            width = 0.7,
-            height = 0.6,
-            preview_width = 0.65,
-          },
-        },
+        help_tags = horizontal_layout,
+        live_grep = horizontal_layout,
+        media_files = horizontal_layout,
       },
 
       extensions = {
-        file_browser = {
-          previewer = false,
-        },
-        project = {
-          layout_strategy = "bottom",
-        },
         fzf = {
           fuzzy = true,
           override_generic_sorter = true,
@@ -92,6 +83,7 @@ return {
 
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
+    telescope.load_extension("ui-select")
 
     local opts = { noremap = true, silent = true }
     local builtin = require("telescope.builtin")
@@ -100,8 +92,15 @@ return {
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, opts)
     vim.keymap.set("n", "<leader>fh", builtin.help_tags, opts)
 
+    -- Configuration/Modules/Vim
+    vim.keymap.set("n", "<leader>vo", builtin.vim_options, opts)
+    vim.keymap.set("n", "<leader>vc", builtin.commands, opts)
+    vim.keymap.set("n", "<leader>vm", builtin.reloader, opts)
+
+    vim.keymap.set("n", "z=", builtin.spell_suggest, opts)
+
     vim.keymap.set("n", "<leader>fb", function()
-      require "telescope".extensions.file_browser.file_browser {}
+      telescope.extensions.file_browser.file_browser({})
     end, opts)
   end,
 }

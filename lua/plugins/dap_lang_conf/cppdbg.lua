@@ -9,7 +9,6 @@ M.adapters = {
   cppdbg = {
     id = "cppdbg",
     type = "executable",
-    -- command = "C:\\cpptools\\extension\\debugAdapters\\bin\\OpenDebugAD7.exe",
     command = path,
     options = {
       detached = false
@@ -20,7 +19,7 @@ M.adapters = {
 M.configurations = {
   cpp = {
     {
-      name = "Launch file",
+      name = "launch (C++) - cpptools, OpenDebugAD7",
       type = "cppdbg",
       request = "launch",
       program = function()
@@ -33,5 +32,6 @@ M.configurations = {
 }
 
 M.configurations.c = M.configurations.cpp
+M.configurations.c[1].name = "launch (C) - cpptools, OpenDebugAD7"
 
 return M

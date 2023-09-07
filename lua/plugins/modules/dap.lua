@@ -2,36 +2,34 @@ return {
   "mfussenegger/nvim-dap",
   dependencies = {
     "rcarriga/nvim-dap-ui",
+    "nvim-telescope/telescope-dap.nvim",
   },
-  prioroty = 998,
-  lazy = false,
+  keys = {
+    { "<F5>",       mode = "n" },
+    { "<leader>dc", mode = "n" },
+    { "<leader>bb", mode = "n" },
+  },
   config = function()
     local dap = require("dap")
     local dapui = require("dapui")
+
     dapui.setup()
 
-    vim.keymap.set("n", "<F5>", function() dap.continue() end)
-    vim.keymap.set("n", "<F10>", function() dap.step_over() end)
-    vim.keymap.set("n", "<F11>", function() dap.step_into() end)
-    vim.keymap.set("n", "<F12>", function() dap.step_out() end)
-    vim.keymap.set("n", "<Leader>bb", function() dap.toggle_breakpoint() end)
-    vim.keymap.set("n", "<Leader>bc", function() dap.clear_breakpoints() end)
-    vim.keymap.set("n", "<Leader>dr", function() dap.repl.open() end)
-    vim.keymap.set("n", "<Leader>dl", function() dap.run_last() end)
+    local telescope = require("telescope")
+    telescope.load_extension("dap")
 
-    local widgets = require("dap.ui.widgets")
-    vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
-      widgets.hover()
-    end)
-    vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
-      widgets.preview()
-    end)
-    vim.keymap.set("n", "<Leader>df", function()
-      widgets.centered_float(widgets.frames)
-    end)
-    vim.keymap.set("n", "<Leader>ds", function()
-      widgets.centered_float(widgets.scopes)
-    end)
+    local opts = { silent = true }
+    vim.keymap.set("n", "<F5>", dap.continue, opts)
+    vim.keymap.set("n", "<F10>", dap.step_over, opts)
+    vim.keymap.set("n", "<F11>", dap.step_into, opts)
+    vim.keymap.set("n", "<F12>", dap.step_out, opts)
+    vim.keymap.set("n", "<leader>bb", dap.toggle_breakpoint, opts)
+    vim.keymap.set("n", "<leader>bc", dap.clear_breakpoints, opts)
+    vim.keymap.set("n", "<leader>bt", dapui.close, opts)
+
+    vim.keymap.set("n", "<leader>bl", telescope.extensions.dap.list_breakpoints, opts)
+    vim.keymap.set("n", "<leader>dc", telescope.extensions.dap.configurations, opts)
+    vim.keymap.set("n", "<leader>dm", telescope.extensions.dap.commands, opts)
 
     dap.listeners.after.event_initialized["dapui_config"] = dapui.open
     dap.listeners.before.event_terminated["dapui_config"] = dapui.close
