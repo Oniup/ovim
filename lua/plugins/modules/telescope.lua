@@ -33,7 +33,7 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
-    telescope.setup({
+    local opts = {
       defaults = {
         preview = false,
         mappings = {
@@ -51,12 +51,18 @@ return {
 
         -- Theme
         border = true,
+        -- borderchars = {
+        --   prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+        --   results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+        --   preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        -- },
         borderchars = {
-          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+          prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+          preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         },
-        layout_strategy = "vertical",
+        results_title = false,
+        layout_strategy = "center",
         layout_config = {
           width = 0.5,
           height = 0.5,
@@ -79,7 +85,9 @@ return {
           case_mode = "smart_case",
         },
       },
-    })
+
+    }
+    telescope.setup(opts)
 
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
@@ -87,6 +95,7 @@ return {
 
     local opts = { noremap = true, silent = true }
     local builtin = require("telescope.builtin")
+    require("telescope.themes").get_dropdown()
 
     vim.keymap.set("n", "<leader>ff", builtin.find_files, opts)
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, opts)
