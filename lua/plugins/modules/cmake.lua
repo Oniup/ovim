@@ -23,5 +23,7 @@ return {
         }
       }
     })
+
+    vim.keymap.set("n", "<leader>o", ":ClangdSwitchSourceHeader<CR>", { silent = true })
   end,
 }

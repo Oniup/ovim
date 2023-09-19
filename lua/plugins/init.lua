@@ -27,7 +27,7 @@ require("lazy").setup("plugins.modules", {
     notify = false,
   },
   ui = {
-    border = "single",
+    border = "rounded",
   },
   dev = {
     path = "~/Dev/plugins"

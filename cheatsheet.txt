@@ -12,6 +12,7 @@ Format current buffer                                                 | <leader>
 See code actions                                                      | <leader>ca
 Go to next diagnostic                                                 | <leader>gn
 Go to previous diagnostic                                             | <leader>gp
+Generate internal documentation                                       | <leader>nf
 
 ## file_explorer
 
@@ -61,3 +62,4 @@ Scroll docs down                                                      | <C-p>
 Open completion float window                                          | <C-Space>
 Close completion float window                                         | <C-e>
 Confirm completion                                                    | <CR>
+

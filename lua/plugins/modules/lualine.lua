@@ -36,7 +36,7 @@ return {
         lualine_c = { "diff" },
         lualine_x = { "diagnostics" },
         lualine_y = { filename },
-        lualine_z = { filetype, "progress" },
+        lualine_z = { filetype, "location" },
       },
       inactive_sections = {
         lualine_a = {},

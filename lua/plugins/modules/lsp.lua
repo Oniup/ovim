@@ -1,9 +1,12 @@
 return {
   "williamboman/mason.nvim",
   dependencies = {
+    "nvim-lua/plenary.nvim",
+
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
     "folke/neodev.nvim",
+    "filipdutescu/renamer.nvim",
   },
   lazy = false,
   priority = 999, -- initialized after color theme
@@ -32,7 +35,7 @@ return {
       severity_sort = true,
       float = {
         focusable = true,
-        border = "single",
+        border = "rounded",
         source = "always",
         header = "",
         prefix = ""
@@ -40,11 +43,11 @@ return {
     })
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = "single",
+      border = "rounded",
       focusable = false,
     })
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-      border = "single",
+      border = "rounded",
       focusable = false,
       relative = "cursor",
     })
@@ -56,7 +59,7 @@ return {
           package_pending = "",
           package_uninstalled = "",
         },
-        border = "single",
+        border = "rounded",
       }
     })
 
@@ -66,6 +69,9 @@ return {
         "pyright", "marksman"
       },
     })
+
+    local renamer = require("renamer")
+    renamer.setup()
 
     require("mason-lspconfig").setup_handlers({
       function(server)
@@ -85,7 +91,8 @@ return {
             vim.keymap.set("n", "<leader>di", telescope.diagnostics, opts)
             vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, opts)
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-            vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)
+            -- vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)
+            vim.keymap.set("n", "<leader>re", renamer.rename, opts)
             vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
             vim.keymap.set("n", "<leader>gp", vim.diagnostic.goto_prev, opts)
           end,
@@ -105,7 +112,7 @@ return {
     })
 
     require("lspconfig.ui.windows").default_options = {
-      border = "single",
+      border = "rounded",
     }
   end,
 }
