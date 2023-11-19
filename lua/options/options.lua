@@ -54,7 +54,6 @@ local options = {
   termguicolors = true,          -- Use 24bit colors
   synmaxcol = 200,               -- Don't bother syntax highlighting long lines
   completeopt = "menuone,noselect,noinsert",
-  switchbuf = "usetab",          -- Try to reuse windows/tabs when switching buffers
 
   shortmess = vim.opt.shortmess
       + "A"  -- Ignore annoying swapfile messages

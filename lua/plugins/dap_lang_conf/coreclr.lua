@@ -5,8 +5,6 @@ if vim.fn.has("win32") then
   path = path .. ".exe"
 end
 
--- vim.notify(path, vim.log.levels.WARN)
-
 local M = {}
 
 M.adapters = {
