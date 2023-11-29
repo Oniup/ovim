@@ -3,22 +3,39 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
 
+    --- LSP Plugins
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
-    "folke/neodev.nvim",
-    "filipdutescu/renamer.nvim",
+    "stevearc/dressing.nvim",
   },
   lazy = false,
   priority = 999, -- initialized after color theme
-
   config = function()
+    require("mason").setup({
+      ui = {
+        icons = {
+          package_installed = "",
+          package_pending = "",
+          package_uninstalled = "",
+        },
+        border = "single",
+      }
+    })
+
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "clangd", "cmake", "lua_ls", "pyright",
+      },
+    })
+
+    --- LSP Diagnostics
+    ---------------------------------------------------------------------------
     local signs = {
       { name = "DiagnosticSignError", text = "󰅚 " },
       { name = "DiagnosticSignWarn", text = "󰀪 " },
       { name = "DiagnosticSignHint", text = "󰌶" },
       { name = "DiagnosticSignInfo", text = " " },
     }
-
     for i = 1, #signs do
       vim.fn.sign_define(signs[i].name, {
         texthl = signs[i].name,
@@ -35,44 +52,28 @@ return {
       severity_sort = true,
       float = {
         focusable = true,
-        border = "rounded",
+        border = "single",
         source = "always",
         header = "",
         prefix = ""
       }
     })
 
+    --- LSP Handlers
+    ---------------------------------------------------------------------------
+
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = "rounded",
+      border = "single",
       focusable = false,
     })
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-      border = "rounded",
+      border = "single",
       focusable = false,
       relative = "cursor",
     })
 
-    require("mason").setup({
-      ui = {
-        icons = {
-          package_installed = "",
-          package_pending = "",
-          package_uninstalled = "",
-        },
-        border = "rounded",
-      }
-    })
-
-    require("mason-lspconfig").setup({
-      ensure_installed = {
-        "clangd", "cmake", "lua_ls", "rust_analyzer", "omnisharp",
-        "pyright", "marksman"
-      },
-    })
-
-    local renamer = require("renamer")
-    renamer.setup()
-
+    --- LSP and Keybindings
+    ---------------------------------------------------------------------------
     require("mason-lspconfig").setup_handlers({
       function(server)
         local lspconfig = require("lspconfig")
@@ -91,8 +92,7 @@ return {
             vim.keymap.set("n", "<leader>di", telescope.diagnostics, opts)
             vim.keymap.set("n", "<leader>fo", vim.lsp.buf.format, opts)
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-            -- vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)
-            vim.keymap.set("n", "<leader>re", renamer.rename, opts)
+            vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, opts)
             vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
             vim.keymap.set("n", "<leader>gp", vim.diagnostic.goto_prev, opts)
           end,
@@ -111,8 +111,21 @@ return {
       end
     })
 
+    --- Other Lsp Plugins
+    ---------------------------------------------------------------------------
     require("lspconfig.ui.windows").default_options = {
-      border = "rounded",
+      border = "single",
     }
-  end,
+
+    require("dressing").setup({
+      mappings = {
+        n = {
+          ["qq"] = "Close",
+        },
+        i = {
+          ["qq"] = "Close",
+        },
+      }
+    })
+  end
 }

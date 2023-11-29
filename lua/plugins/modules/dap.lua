@@ -10,53 +10,100 @@ return {
     { "<leader>bb", mode = "n" },
   },
   config = function()
-    local dap = require("dap")
     local dapui = require("dapui")
+    local dap = require("dap")
 
     dapui.setup()
 
+    --- UI events
+    ---------------------------------------------------------------------------
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+
+    --- Telescope extension
+    ---------------------------------------------------------------------------
     local telescope = require("telescope")
     telescope.load_extension("dap")
 
-    local opts = { silent = true }
+    --- Keybindings
+    ---------------------------------------------------------------------------
+    local opts = { noremap = true, silent = true }
+
+    -- Runtime
     vim.keymap.set("n", "<F5>", dap.continue, opts)
     vim.keymap.set("n", "<F10>", dap.step_over, opts)
     vim.keymap.set("n", "<F11>", dap.step_into, opts)
     vim.keymap.set("n", "<F12>", dap.step_out, opts)
+    vim.keymap.set("n", "<leader>dl", telescope.extensions.dap.variables, opts)
+
+    vim.keymap.set("n", "<leader>dt", function()
+      dap.terminate()
+      dapui.close()
+    end, opts)
+
+    -- Breakpoints
     vim.keymap.set("n", "<leader>bb", dap.toggle_breakpoint, opts)
     vim.keymap.set("n", "<leader>bc", dap.clear_breakpoints, opts)
-    vim.keymap.set("n", "<leader>bt", dapui.close, opts)
-
     vim.keymap.set("n", "<leader>bl", telescope.extensions.dap.list_breakpoints, opts)
+
+    -- Meniscus
     vim.keymap.set("n", "<leader>dc", telescope.extensions.dap.configurations, opts)
     vim.keymap.set("n", "<leader>dm", telescope.extensions.dap.commands, opts)
 
-    dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-    dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-    dap.listeners.before.event_exited["dapui_config"] = dapui.close()
-
-    -- Loading DAP configurations
-    local path = vim.fn.stdpath("config") .. "/lua/plugins/dap_lang_conf"
-    local program
-    if vim.fn.has("win32") then
-      path = path:gsub("/", "\\")
-      program = "dir \"" .. path .. "\" /b"
-    else
-      program = "ls -pa " .. path .. " | grep -v"
-    end
-    for mod in io.popen(program):lines() do
-      local modname = string.sub(mod, 1, string.len(mod) - 4) -- 4 -> .lua
-      local status, module = pcall(require, "plugins.dap_lang_conf." .. modname)
-      if status then
-        for k, v in pairs(module.adapters) do
-          dap.adapters[k] = v
-        end
-        for k, v in pairs(module.configurations) do
-          dap.configurations[k] = v
-        end
+    --- Configurations
+    ---------------------------------------------------------------------------
+    local os_correct_path = function(unix_begin, windows_begin, library)
+      local final_path = ""
+      if vim.fn.has("win32") then
+        final_path = windows_begin .. library .. ".exe"
+        final_path = string.gsub(final_path, "/", "\\")
       else
-        vim.notify("Failed to load " .. mod .. " dap module", vim.log.levels.ERROR)
+        final_path = unix_begin .. library
       end
+      return final_path
     end
-  end,
+
+    local cppdbg_configurations = function(language)
+      local config = {
+        name = "Launch (" .. language .. ")",
+        type = "cppdbg",
+        request = "launch",
+        program = function()
+          return vim.fn.input("Path to executable: ", vim.fn.getcwd(), "file")
+        end,
+        cwd = "${workspaceFolder}",
+        stopAtEntry = false,
+      }
+      return config
+    end
+
+    dap.adapters = {
+      cppdbg = {
+        id = "cppdbg",
+        type = "executable",
+        command = os_correct_path("home/cpptools/", "C:/cpptools/", "extension/debugAdapters/bin/OpenDebugAD7"),
+        options = {
+          detached = false
+        }
+      }
+    }
+    dap.configurations = {
+      cpp = {
+        cppdbg_configurations("C++")
+      },
+      c = {
+        cppdbg_configurations("C")
+      },
+      rust = {
+        cppdbg_configurations("Rust")
+      },
+    }
+  end
 }

@@ -23,7 +23,6 @@ return {
     "nvim-telescope/telescope-file-browser.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
   },
-  branch = "0.1.2",
   keys = {
     { "<leader>ff", function() require("telescope.builtin").find_files() end, mode = "n" },
     { "<leader>fg", function() require("telescope.builtin").live_grep() end,  mode = "n" },
@@ -51,16 +50,16 @@ return {
 
         -- Theme
         border = true,
-        -- borderchars = {
-        --   prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-        --   results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-        --   preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-        -- },
         borderchars = {
-          prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-          results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-          preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+          prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+          preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         },
+        -- borderchars = {
+        --   prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+        --   results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+        --   preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+        -- },
         results_title = false,
         layout_strategy = "center",
         layout_config = {

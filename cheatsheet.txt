@@ -14,11 +14,6 @@ Go to next diagnostic                                                 | <leader>
 Go to previous diagnostic                                             | <leader>gp
 Generate internal documentation                                       | <leader>nf
 
-## file_explorer
-
-Create file/folder (append '/' -> directory)                          | <A-c>
-Create and open file/folder from prompt (append '/' -> directory)     | <S-CR>
-
 ## file_tree
 
 Toggle left split file tree                                           | <leader>e
@@ -38,14 +33,18 @@ Lists all lua modules which can be reloaded                           | <leader>
 Toggle terminal split                                                 | <A-i>
 Enter normal mode                                                     | <C-\><C-n>
 
-## dap
+## vimspector
 
-Launch debugging                                                      | <F5>
+Restart                                                               | <F4>
+Continue                                                              | <F5>
+Pause                                                                 | <F6>
+Stop                                                                  | <S-<F5>>
 Step over                                                             | <F10>
 Step into                                                             | <F11>
 Step out                                                              | <F12>
 Toggle breakpoint                                                     | <leader>bb
 Clear breakpoints                                                     | <leader>bc
+List of breakpoints                                                   | <leader>bc
 
 
 ## spelling
