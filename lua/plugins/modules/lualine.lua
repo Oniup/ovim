@@ -21,6 +21,7 @@ return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
+    "Exafunction/codeium.vim",
   },
   lazy = false,
   config = function()
@@ -34,7 +35,7 @@ return {
         lualine_a = { "mode" },
         lualine_b = { "branch" },
         lualine_c = { "diff" },
-        lualine_x = { "diagnostics" },
+        lualine_x = { "codeium#GetStatusString", "diagnostics" },
         lualine_y = { filename },
         lualine_z = { filetype, "location" },
       },
