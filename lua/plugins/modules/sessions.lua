@@ -25,7 +25,7 @@ return {
       plugins = {
         dap = true,
         dapui = false,
-        delete_buffers = false,
+        delete_buffers = true,
         nvim_tree = true,
         symbols_outline = true,
       },

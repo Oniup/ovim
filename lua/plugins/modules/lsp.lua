@@ -99,14 +99,13 @@ return {
           capabilities = require("cmp_nvim_lsp").default_capabilities()
         }
 
-        local settings_exist, server_settings = pcall(
-          require,
-          "plugins.lsp_lang_conf." .. server
-        )
-        if settings_exist then
-          config.settings = server_settings
+        local lsp_custom_config_exists, lsp_custom_config = pcall(require, "plugins.lsp_lang_conf." .. server)
+        if lsp_custom_config_exists then
+          lsp_custom_config.enable_keybindings()
+          if lsp_custom_config.settings ~= nil then
+            config.settings = lsp_custom_config.settings
+          end
         end
-
         lspconfig[server].setup(config)
       end
     })
