@@ -110,4 +110,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.g.load_doxygen_syntax = 1
 vim.g.doxygen_enhanced_colour = 1
 
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:hor10,r-cr-o:hor10"
+
 vim.loader.enable()

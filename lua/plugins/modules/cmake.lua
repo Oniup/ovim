@@ -30,9 +30,10 @@ return {
 
         for i = 1, #dap.configurations.cpp do
           dap.configurations.cpp[i].program = executable_path
+          dap.configurations.c[i].program = executable_path
         end
         for i = 1, #dap.configurations.c do
-          dap.configurations.cpp[i].program = executable_path
+          dap.configurations.c[i].program = executable_path
         end
       end
       dap.continue()

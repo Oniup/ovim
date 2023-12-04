@@ -10,17 +10,13 @@ return {
       load_silent = true,
       logfile = true,
       commands = {
-        save = "SessionSave",
-        load = "SessionLoad",
-        rename = "SessionRename",
-        close = "SessionClose",
-        delete = "SessionDelete",
-        show = "SessionShow",
-        list = "SessionList",
-      },
-      autosave = {
-        on_start = true,
-        on_quit = true,
+        save = "SeSave",
+        load = "SeLoad",
+        rename = "SeRename",
+        close = "SeClose",
+        delete = "SeDelete",
+        show = "SeShow",
+        list = "SeList",
       },
       plugins = {
         dap = true,
@@ -47,6 +43,6 @@ return {
 
     local telescope = require("telescope")
     telescope.load_extension("possession")
-    vim.keymap.set("n", "<leader>sd", telescope.extensions.possession.list, { noremap = true, silent = true })
+    vim.keymap.set("n", "<leader>se", telescope.extensions.possession.list, { noremap = true, silent = true })
   end
 }

@@ -139,7 +139,11 @@ return {
         })
       },
       c = {
-        dap_language_config("C", "cppdbg")
+        dap_language_config("C", "cppdbg"),
+        dap_language_config("C", "codelldb", {
+          stopAtEntry = true,
+          terminal = "integrated",
+        })
       },
       cs = {},
       rust = {},
