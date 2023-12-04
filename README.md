@@ -94,6 +94,7 @@ rm -rf ~/.local/share/nvim
 ```bash
 Remove-Item ~\AppData\Local\nvim -Recurse -Force
 Remove-Item ~\AppData\Local\nvim-data -Recurse -Force
+Remove-item ~\AppData\Local\Temp\nvim -Recurse -Force
 ```
 
 # License

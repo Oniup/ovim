@@ -19,14 +19,26 @@ return {
     vim.keymap.set("n", "<F5>", function()
       -- Setting the debugger directory while still allowing selecting adapter
       if not dap_overrided_program_path then
+        -- Check if codelldb DAP adapter is installed
+        if not require("utils").mason_package_exists("codelldb") then
+          vim.notify(
+            "codelldb is not installed. Install by running :Mason and" ..
+            "install codelldb. Once installed restart",
+            vim.log.levels.ERROR)
+          return
+        end
+
         local current_session = require("cmake-tools.session").load()
         dap_overrided_program_path = true
+        local executable_path = current_session.cwd .. "/" ..
+            current_session.build_directory .. "/" .. current_session.build_target
 
-        local executable_path = current_session.cwd ..
-            "/" .. current_session.build_directory .. "/" .. current_session.build_target
         if vim.fn.has("win32") then
           executable_path = string.gsub(executable_path, "/", "\\")
         end
+
+        vim.notify("CMake overrided dap program path: " ..
+          executable_path, vim.log.levels.INFO)
 
         for i = 1, #dap.configurations.cpp do
           dap.configurations.cpp[i].program = executable_path
