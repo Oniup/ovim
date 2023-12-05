@@ -12,41 +12,38 @@ return {
       cmake_kits_path = cmake_kits_path
     })
 
-    --- Override DAP key mappings
+    -- Override DAP key mappings
     local dap = require("dap")
     local opts = { noremap = true, silent = true }
-    local dap_overrided_program_path = false
     vim.keymap.set("n", "<F5>", function()
       -- Setting the debugger directory while still allowing selecting adapter
-      if not dap_overrided_program_path then
-        -- Check if codelldb DAP adapter is installed
-        if not require("utils").mason_package_exists("codelldb") then
-          vim.notify(
-            "codelldb is not installed. Install by running :Mason and" ..
-            "install codelldb. Once installed restart",
-            vim.log.levels.ERROR)
-          return
-        end
+      if not require("utils").mason_package_exists("codelldb") then
+        vim.notify(
+          "codelldb is not installed. Install by running :Mason and" ..
+          "install codelldb. Once installed restart",
+          vim.log.levels.ERROR)
+        return
+      end
 
-        local current_session = require("cmake-tools.session").load()
-        dap_overrided_program_path = true
-        local executable_path = current_session.cwd .. "/" ..
-            current_session.build_directory .. "/" .. current_session.build_target
+      local current_session = require("cmake-tools.session").load()
+      vim.notify("Current session table: " .. vim.inspect(current_session), vim.log.levels.INFO)
 
-        if vim.fn.has("win32") then
-          executable_path = string.gsub(executable_path, "/", "\\")
-        end
+      local executable_path = current_session.cwd .. "/" ..
+          current_session.build_directory .. "/" .. current_session.build_target
 
-        vim.notify("CMake overrided dap program path: " ..
-          executable_path, vim.log.levels.INFO)
+      if vim.fn.has("win32") then
+        executable_path = string.gsub(executable_path, "/", "\\")
+      end
 
-        for i = 1, #dap.configurations.cpp do
-          dap.configurations.cpp[i].program = executable_path
-          dap.configurations.c[i].program = executable_path
-        end
-        for i = 1, #dap.configurations.c do
-          dap.configurations.c[i].program = executable_path
-        end
+      vim.notify("CMake overrided dap program path: " ..
+        executable_path, vim.log.levels.INFO)
+
+      for i = 1, #dap.configurations.cpp do
+        dap.configurations.cpp[i].program = executable_path
+        dap.configurations.c[i].program = executable_path
+      end
+      for i = 1, #dap.configurations.c do
+        dap.configurations.c[i].program = executable_path
       end
       dap.continue()
     end, opts)

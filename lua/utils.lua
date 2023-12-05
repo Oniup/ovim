@@ -33,7 +33,7 @@ end
 --- @param package_name string Name of the mason package
 --- @return boolean
 M.mason_package_exists = function(package_name)
-  local path = M.path.os_correct_nvim_data_path("/mason/packages/" .. package_name)
+  local path = M.os_correct_nvim_data_path("/mason/packages/" .. package_name)
   return vim.fn.isdirectory(path)
 end
 
