@@ -1,12 +1,6 @@
-local apply_options = function(opts)
-  for name, option in pairs(opts) do
-    vim.opt[name] = option
-  end
-end
-
-local options = {
+return {
   number = true,
-  relativenumber = true,
+  relativenumber = false,
   showmode = false,
   signcolumn = "yes", -- number: for thinner lines
   cmdheight = 1,
@@ -20,36 +14,12 @@ local options = {
   splitright = true, -- Open vertical splits right of the current one
   autoindent = true,
   fileencoding = "utf-8",
-  expandtab = true, -- Always use spaces instead of tabs
   smarttab = true,
   smartindent = true,
-  smartcase = true,   -- Use case sensitive search if capital letter is present
-  wrap = false,       -- Word wrapping when reaches the edge of the viewport
-  mouse = "a",        -- Enables mouse functionality
-  clipboard = "unnamedplus",
   hidden = true,      -- allows you to hide buffers with unsaved changes without being prompted
 
-  belloff = "all",    -- Turn the annoying bell sounds off, LEAVE ME ALONE
-  visualbell = false, -- Stop beeping for non-error errors, FFS
-
-  grepformat = "%f:%l:%c:%m",
-  grepprg = "rg --vimgrep",
-
-  inccommand = "split", -- Line preview of :s results
   incsearch = true,     -- Do incremental search
   ignorecase = true,    -- Ignore case in search
-
-  list = true,          --Show white spaces
-
-  -- laststatus = 4,                -- Use global status line
-
-  spelllang = { "en", "cjk" },   -- Enable spelling for English
-  spellsuggest = { "best", 10 }, -- Show x the best matching results
-  spell = true,                  -- Enable spell checker
-  spellcapcheck = "",            -- Don't check for capital letters
-  backup = false,                -- Don't use generated backup files
-  swapfile = false,              -- Don't create swapfiles
-  writebackup = false,           -- Don't write a backup file
 
   termguicolors = true,          -- Use 24bit colors
   synmaxcol = 200,               -- Don't bother syntax highlighting long lines
@@ -82,34 +52,3 @@ local options = {
       + "precedes:«" -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
       + "trail:•", -- BULLET (U+2022, UTF-8: E2 80 A2)
 }
-apply_options(options)
-
-if vim.fn.has("win32") then
-  local powershell_opts = {
-    shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
-    shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command " ..
-        "[Console]::InputEncoding=[Console]::OutputEncoding=" ..
-        "[System.Text.Encoding]::UTF8;",
-    shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-    shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-    shellquote = "",
-    shellxquote = "",
-  }
-  apply_options(powershell_opts)
-end
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "cs",
-  callback = function()
-    vim.opt.shiftround = 4
-    vim.opt.shiftwidth = 4
-    vim.opt.tabstop = 4
-  end
-})
-
-vim.g.load_doxygen_syntax = 1
-vim.g.doxygen_enhanced_colour = 1
-
-vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:hor10,r-cr-o:hor10"
-
-vim.loader.enable()

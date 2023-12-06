@@ -1,3 +1,5 @@
-require("options")
-require("plugins")
-require("neovide")
+-- require("options")
+-- require("plugins")
+-- require("neovide")
+
+require("core")
