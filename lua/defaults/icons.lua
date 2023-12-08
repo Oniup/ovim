@@ -23,6 +23,14 @@ return {
     warn  = " ",
     info  = " ",
     hint  = " ",
+    other  = {
+      todo = " ",
+      warn = "󰀪 ",
+      hack = " ",
+      note = "󱪘 ",
+      perf = " ",
+      test = " "
+    },
   },
   gitsigns = {
     add          = { text = '│' },
