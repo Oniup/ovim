@@ -82,27 +82,25 @@ M.plugin_keymaps_autocmd_setup = function()
 end
 
 M.load_keymaps = function()
-  local keymaps = require("defaults.keymaps")
-
-  local usr_keymaps_ok, usr_keymaps = pcall(require, "config.keymaps")
-  if usr_keymaps_ok then
-    -- vim.notify(vim.inspect(usr_keymaps), vim.log.levels.INFO)
-    keymaps = vim.tbl_deep_extend("force", keymaps, usr_keymaps)
+  local keymaps = {}
+  local default = require("defaults.keymaps")
+  local usr_ok, usr_keymaps = pcall(require, "config.keymaps")
+  if usr_ok then
+    keymaps = vim.tbl_deep_extend("force", default, usr_keymaps)
+  else
+    keymaps = default
   end
 
-  -- vim.notify(vim.inspect(keymaps), vim.log.levels.INFO)
-
-  local keymap_modes = { "n", "v", "i", "t", "c", "x" }
-  for mode, maps in pairs(keymaps) do
-    if vim.tbl_contains(keymap_modes, mode) then
-      M.load_mode_keymaps(mode, maps)
-    elseif mode == "leader" then
-      -- vim.notify("set the leader to: `" .. maps .. "`", vim.log.levels.INFO)
-      vim.g.mapleader = maps
-      vim.g.maplocalleader = maps
+  local modes = { "n", "i", "x", "t" }
+  for mode, mode_keymaps in pairs(keymaps) do
+    if mode == "leader" then
+      vim.g.mapleader = mode_keymaps
+      vim.g.maplocalleader = mode_keymaps
+    elseif vim.tbl_contains(modes, mode) then
+      M.load_mode_keymaps(mode, mode_keymaps)
     else
       -- vim.notify("plugin `" .. mode .. "` keymaps:\n" .. vim.inspect(maps), vim.log.levels.INFO)
-      M.plugin_keymaps[mode] = maps
+      M.plugin_keymaps[mode] = mode_keymaps
     end
   end
 end
