@@ -1,22 +1,3 @@
-local filename = {
-  "filename",
-  file_status = false,
-  newfile_status = false,
-  path = 0,
-  symbols = {
-    modified = "",
-    readonly = "READ ONLY",
-    unnamed = "",
-    newfile = "",
-  },
-}
-
-local filetype = {
-  "filetype",
-  colored = false,
-  icon_only = true,
-}
-
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
@@ -27,6 +8,48 @@ return {
   },
   event = "BufEnter",
   config = function()
+    local sections = {
+      mode = "mode",
+      diff = "diff",
+      branch = "branch",
+      location = "location",
+      lsp_progress = { require("lsp-progress").progress },
+      progress = "progress",
+      filename = {
+        "filename",
+        file_status = false,
+        newfile_status = false,
+        path = 0,
+        symbols = {
+          modified = "",
+          readonly = "READ ONLY",
+          unnamed = "",
+          newfile = "",
+        },
+      },
+      filetype = {
+        "filetype",
+        colored = false,
+        icon_only = true,
+      },
+      diagnostics = {
+        "diagnostics",
+        sections = { "error", "warn", "info", "hint" },
+        diagnostics_color = {
+          diagnostics_color = {
+            error = 'DiagnosticError',
+            warn  = 'DiagnosticWarn',
+            info  = 'DiagnosticInfo',
+            hint  = 'DiagnosticHint',
+          },
+          symbols = require("core.utils").icons.diagnostics,
+          colored = true,
+          update_in_insert = true,
+          always_visable = true,
+        }
+      }
+    }
+
     require("lualine").setup({
       options = {
         theme = require("ignite.lualine"),
@@ -34,27 +57,27 @@ return {
         section_separators = { right = "", left = "" },
       },
       sections = {
-        lualine_a = { "mode" },
-        lualine_b = { "branch" },
-        lualine_c = { require("lsp-progress").progress, "diff", },
-        -- lualine_x = { "diagnostics", "codeium#GetStatusString" },
-        lualine_x = { "diagnostics", },
-        lualine_y = { filename },
-        lualine_z = { filetype, "location" },
+        lualine_a = { sections.mode },
+        lualine_b = { sections.branch, sections.diff },
+        lualine_c = { sections.diagnostics },
+        -- lualine_x = { "codeium#GetStatusString" },
+        lualine_x = {},
+        lualine_y = { sections.lsp_progress, },
+        lualine_z = { sections.filetype, sections.progress, sections.location },
       },
       inactive_sections = {
         lualine_a = {},
-        lualine_b = {},
-        lualine_c = { "diff" },
-        lualine_x = { "diagnostics" },
-        lualine_y = { filename },
+        lualine_b = { sections.diff },
+        lualine_c = { sections.diagnostics },
+        lualine_x = {},
+        lualine_y = { sections.filename, sections.location },
         lualine_z = {},
       },
       extensions = {
         "nvim-tree",
         "lazy",
         "nvim-dap-ui",
-      },
+      }
     })
 
     vim.api.nvim_create_augroup("lualine_group", { clear = true })

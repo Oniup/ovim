@@ -1,55 +1,66 @@
 return {
-  n = {
-    --- Buffer Navigation
-    ---------------------------------------------------------------------------
-    ["<S-l>"]     = { ":bnext<CR>" },
-    ["<S-h>"]     = { ":bprevious<CR>" },
+  leader = ",",
+  general = {
+    n = {
+      --- Buffer Navigation
+      ---------------------------------------------------------------------------
+      ["<S-l>"]     = { ":bnext<CR>", "Next Buf" },
+      ["<S-h>"]     = { ":bprevious<CR>", "Previous Buf" },
 
-    --- Window Navigation
-    ---------------------------------------------------------------------------
-    ["<C-h>"]     = { "<C-w>h", "Navigate cursor to the left side window" },
-    ["<C-j>"]     = { "<C-w>j", "Navigate cursor to the lower window" },
-    ["<C-k>"]     = { "<C-w>k", "Navigate cursor to the upper window" },
-    ["<C-l>"]     = { "<C-w>l", "Navigate cursor to the right side window" },
+      --- Window Navigation
+      ---------------------------------------------------------------------------
+      ["<C-h>"]     = { "<C-w>h", "Cursor -> Left Side Window" },
+      ["<C-j>"]     = { "<C-w>j", "Cursor -> Lower Window" },
+      ["<C-k>"]     = { "<C-w>k", "Cursor -> Upper Window" },
+      ["<C-l>"]     = { "<C-w>l", "Cursor -> Right Side Window" },
 
-    --- Resize with arrows
-    ---------------------------------------------------------------------------
-    ["<C-Up>"]    = { ":resize -2<CR>", "Resize window" },
-    ["<C-Down>"]  = { ":resize +2<CR>", "Resize window" },
-    ["<C-Left>"]  = { ":vertical resize -2<CR>", "Resize window" },
-    ["<C-Right>"] = { ":vertical resize +2<CR>", "Resize window" },
-  },
-  --- Load when initializing plugin
-  -----------------------------------------------------------------------------
-  ["nvim-tree.lua"] = {
-    n = {
-      ["<leader>e"] = { ":NvimTreeToggle<CR>", "Toggle file explorer" }
+      --- Resize with arrows
+      ---------------------------------------------------------------------------
+      ["<C-Up>"]    = { ":resize -2<CR>", "Resize Window" },
+      ["<C-Down>"]  = { ":resize +2<CR>", "Resize Window" },
+      ["<C-Left>"]  = { ":vertical resize -2<CR>", "Resize Window" },
+      ["<C-Right>"] = { ":vertical resize +2<CR>", "Resize Window" },
     },
   },
-  ["telescope.nvim"] = {
-    n = {
-      ["<leader>ff"] = {
-        function() require("telescope.builtin").find_files() end,
-        "Find file"
-      },
-      ["<leader>fg"] = {
-        function() require("telescope.builtin").live_grep() end,
-        "Live Grep: Find matching string of text throughout project"
-      },
-      ["<leader>fh"] = {
-        function() require("telescope.builtin").help_tags() end,
-        "Find help vim or plugin .txt"
+  plugins = {
+    ["nvim-tree.lua"] = {
+      n = {
+        ["<leader>e"] = { ":NvimTreeToggle<CR>", "Toggle File Explorer" }
       },
     },
-  },
-  ["nvterm"] = {
-    n = {
-      ["<A-i>"] = {
-        function() require("nvterm.terminal").toggle("horizontal") end }
+    ["telescope.nvim"] = {
+      n = {
+        ["<leader>fc"] = {
+          function() require("telescope.builtin").current_buffer_fuzzy_find() end,
+          "Find in Current Buf"
+        },
+        ["<leader>ff"] = {
+          function() require("telescope.builtin").find_files() end,
+          "Find File"
+        },
+        ["<leader>fg"] = {
+          function() require("telescope.builtin").live_grep() end,
+          "Live Grep"
+        },
+        ["<leader>fh"] = {
+          function() require("telescope.builtin").help_tags() end,
+          "Find Vim Doc"
+        },
+      },
     },
-    t = {
-      ["<A-i>"] = {
-        function() require("nvterm.terminal").toggle("horizontal") end }
+    ["nvterm"] = {
+      n = {
+        ["<A-i>"] = {
+          function() require("nvterm.terminal").toggle("horizontal") end,
+          "Toggle Term"
+        }
+      },
+      t = {
+        ["<A-i>"] = {
+          function() require("nvterm.terminal").toggle("horizontal") end,
+          "Toggle Term"
+        }
+      },
     },
-  },
+  }
 }

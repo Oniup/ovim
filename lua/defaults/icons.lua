@@ -1,5 +1,5 @@
 return {
-  border = "single",
+  border = "single", -- Options: :h nvim_open_win
   border_chars = {
     single = {
       prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
@@ -23,7 +23,7 @@ return {
     warn  = " ",
     info  = " ",
     hint  = " ",
-    other  = {
+    other = {
       todo = " ",
       warn = "󰀪 ",
       hack = " ",
@@ -40,4 +40,32 @@ return {
     changedelete = { text = '│' },
     untracked    = { text = '│' },
   },
+  kind = {
+    Text = "󰉿",
+    Method = "󰆧",
+    Function = "󰘧",
+    Constructor = "",
+    Field = "󰜢",
+    Variable = "󰀫",
+    Class = "󰠱",
+    Interface = "",
+    Module = "",
+    Property = "󰜢",
+    Unit = "󰑭",
+    Value = "󰎠",
+    Enum = "",
+    Keyword = "󰌋",
+    Snippet = "",
+    Color = "󰏘",
+    File = "󰈙",
+    Reference = "",
+    Folder = "󰉋",
+    EnumMember = "",
+    Constant = "󰏿",
+    Struct = "",
+    Event = "",
+    Operator = "󰆕",
+    TypeParameter = " ",
+    Unknown = " ",
+  }
 }

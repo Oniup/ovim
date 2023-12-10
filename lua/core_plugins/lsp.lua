@@ -4,10 +4,15 @@ return {
     "williamboman/mason-lspconfig.nvim",
     "nvim-lua/plenary.nvim",
 
-    --- Other LSP modules
+    -- Other LSP modules
     "neovim/nvim-lspconfig",
     "stevearc/dressing.nvim",
     "linrongbin16/lsp-progress.nvim",
+    "folke/neodev.nvim",
+
+    -- Other
+    "telescope/telescope.nvim",
+    "ms-jpq/coq_nvim"
   },
   lazy = false,
   priority = 999, -- initialized after color theme
@@ -31,9 +36,9 @@ return {
     ---------------------------------------------------------------------------
     local signs = {
       { name = "DiagnosticSignError", text = ovim_icons.diagnostics.error },
-      { name = "DiagnosticSignWarn", text = ovim_icons.diagnostics.warn },
-      { name = "DiagnosticSignHint", text = ovim_icons.diagnostics.hint },
-      { name = "DiagnosticSignInfo", text = ovim_icons.diagnostics.info },
+      { name = "DiagnosticSignWarn",  text = ovim_icons.diagnostics.warn },
+      { name = "DiagnosticSignHint",  text = ovim_icons.diagnostics.hint },
+      { name = "DiagnosticSignInfo",  text = ovim_icons.diagnostics.info },
     }
 
     for i = 1, #signs do
@@ -96,13 +101,33 @@ return {
             vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
             vim.keymap.set("n", "<leader>gp", vim.diagnostic.goto_prev, opts)
           end,
+
           -- capabilities = require("cmp_nvim_lsp").default_capabilities()
+          capabilities = require("coq").lsp_ensure_capabilities()
         }
 
-        local lsp_custom_config_exists, lsp_custom_config = pcall(require, "plugins.lsp_lang_conf." .. server)
-        local lang_configs_ok, lang_configs = pcall(require, "config.lsp_configs." .. server)
-        if lang_configs_ok then
-          config.settings = lang_configs
+        --- Load Language Settings
+        local usr_lsp_config_ok, usr_lang_config = pcall(require, "config.lsp_configs." .. server)
+        local lang_config_ok, lang_config = pcall(require, "defaults.lsp_configs." .. server)
+
+        if usr_lsp_config_ok and lang_config_ok then
+          config.settings = vim.tbl_deep_extend("force", lang_config.lang_settings, usr_lang_config.lang_settings)
+        elseif lang_config_ok then
+          config.settings = lang_config.lang_settings
+        elseif usr_lsp_config_ok then
+          config.settings = usr_lang_config.lang_settings
+        end
+
+        --- Load keybindings
+        -- TODO: ...
+
+
+        --- Enable Neovim Dev environment through usr_lua_settings
+        if server == "lua_ls" then
+          -- if usr_lang_config and usr_lang_config.enable_neodev then
+          --   require("neodev").setup()
+          -- end
+          require("neodev").setup() -- Make sure to comment and uncomment above when committing to repo
         end
 
         lspconfig[server].setup(config)

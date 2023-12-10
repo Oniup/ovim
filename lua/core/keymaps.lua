@@ -1,108 +1,99 @@
 local M = {}
 
-M.plugin_keymaps = {}
+M.keymaps = {}
 
-M.expand_cmd = function(cmd)
-  local result = {}
-  local first = true
+M.create_keymap = function(mode, binding, bound)
+  local error_message = function(msg)
+    vim.notify(msg .. ". " .. vim.inspect(mode) .. " => " .. vim.inspect(binding) .. " = " .. vim.inspect(bound))
+  end
+  local opts = { silent = false }
+  local exec = nil
+  local desc = nil
 
-  for i = 1, #cmd do
-    if first then
-      first = false
+  if not type(bound) == "table" then
+    error_message("Binding must be a table")
+    return
+  end
 
-      if type(cmd[i]) == "string" or type(cmd[i]) == "function" then
-        result.exec = cmd[i]
+  -- Extracting bound
+  for i = 1, #bound do
+    if i == 1 then
+      if type(bound[i]) == "string" or type(bound[i]) == "function" then
+        exec = bound[i]
       else
-        result.error_msg = "Invalid keymap, first argument in cmd must be either a string or function"
-        return result
-      end
-    else
-      if type(cmd[i]) == "string" then
-        result.desc = cmd[i]
-      elseif type(cmd[i]) == "table" then
-        result.opts = cmd[i]
-      end
-    end
-  end
-
-  if result.exec == nil then
-    result.error_msg =
-    "Invalid keymap, first argument in cmd must be either a string of function to define the keymaps purpose"
-  end
-
-  if not result.opts then
-    result.opts = { silent = false }
-  else
-    result.opts = vim.tbl_deep_extend("force", result.opts, { silent = false })
-  end
-
-  return result
-end
-
-M.load_mode_keymaps = function(mode, keymaps)
-  if keymaps ~= nil then
-    for input, cmd in pairs(keymaps) do
-      if type(cmd) == "table" and #cmd > 0 then
-        local expanded = M.expand_cmd(cmd)
-
-        if expanded.error_msg == nil then
-          vim.keymap.set(mode, input, expanded.exec, expanded.opts)
-        else
-          vim.notify("Invalid keymap for input " .. vim.inspect(input) ..
-            ", expanded cmd:\n" .. vim.inspect(expanded), vim.log.levels.ERROR)
-        end
-      else
-        vim.notify(
-          "Invalid keymap for input " .. vim.inspect(input) ..
-          ". Cmd provided should be a table:\n" .. vim.inspect(cmd),
-          vim.log.levels.ERROR
-        )
-      end
-    end
-  end
-end
-
-M.plugin_keymaps_autocmd_setup = function()
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "LazyLoad",
-    callback = function(evt)
-      local plug_name = evt.data
-      local keymaps = M.plugin_keymaps[plug_name]
-      if not keymaps then
+        error_message("First element in binding must be either a string or function")
         return
       end
-
-      --vim.notify(vim.inspect(evt), vim.log.levels.INFO)
-
-      for m, mkeymaps in pairs(keymaps) do
-        M.load_mode_keymaps(m, mkeymaps)
+    else
+      if type(bound[i]) == "string" then
+        desc = bound[i]
+      elseif type(bound[i]) == "table" then
+        opts = vim.tbl_extend("force", opts, bound[i])
       end
-    end,
-  })
+    end
+  end
+
+  if not exec then
+    error_message("Keybinding executable is nil")
+    return
+  end
+
+  vim.notify(mode .. " => " .. vim.inspect(binding) .. " = " .. vim.inspect(exec) .. " " .. vim.inspect(opts))
+  vim.api.nvim_set_keymap(mode, binding, exec, opts)
+end
+
+M.init_keymaps = function(target)
+  local mappings = M.keymaps[target]
+  if not mappings then
+    vim.notify("Target keymaps " .. target .. " doesn't exist or has not been loaded", vim.log.levels.ERROR)
+  end
+
+  if target == "leader" then
+    vim.g.mapleader = mappings
+    vim.g.maplocalleader = mappings
+
+    return
+  elseif type(mappings) == "table" then
+    local modes = { "i", "n", "x", "v", "t", "c" }
+
+    for mode, map in pairs(mappings) do
+      if vim.tbl_contains(modes, mode) then
+        for binding, bound in pairs(map) do
+          M.create_keymap(mode, binding, bound)
+        end
+      else
+        vim.notify("Given mode \"" .. mode .. "\" is not a valid vim mode", vim.log.levels.ERROR)
+      end
+    end
+
+    return
+  else
+    vim.notify("Mappings is the wrong type (" .. type(mappings) .. ")", vim.log.levels.ERROR)
+  end
+end
+
+M.init_plugin_keymaps = function(plugin_name)
+  local mappings = M.keymaps.plugins[plugin_name]
+  if not mappings then
+    return
+  end
+
+  M.init_keymaps(mappings)
+end
+
+M.create_plugin_keymap_init_autocmd = function()
 end
 
 M.load_keymaps = function()
-  local keymaps = {}
-  local default = require("defaults.keymaps")
+  M.keymaps = require("defaults.keymaps")
   local usr_ok, usr_keymaps = pcall(require, "config.keymaps")
+
   if usr_ok then
-    keymaps = vim.tbl_deep_extend("force", default, usr_keymaps)
-  else
-    keymaps = default
+    M.keymaps = vim.tbl_extend("force", M.keymaps, usr_keymaps)
   end
 
-  local modes = { "n", "i", "x", "t" }
-  for mode, mode_keymaps in pairs(keymaps) do
-    if mode == "leader" then
-      vim.g.mapleader = mode_keymaps
-      vim.g.maplocalleader = mode_keymaps
-    elseif vim.tbl_contains(modes, mode) then
-      M.load_mode_keymaps(mode, mode_keymaps)
-    else
-      -- vim.notify("plugin `" .. mode .. "` keymaps:\n" .. vim.inspect(maps), vim.log.levels.INFO)
-      M.plugin_keymaps[mode] = mode_keymaps
-    end
-  end
+  M.init_keymaps("general")
+  M.init_keymaps("leader")
 end
 
 return M

@@ -16,13 +16,13 @@ return {
   fileencoding = "utf-8",
   smarttab = true,
   smartindent = true,
-  hidden = true,      -- allows you to hide buffers with unsaved changes without being prompted
+  hidden = true,        -- allows you to hide buffers with unsaved changes without being prompted
 
   incsearch = true,     -- Do incremental search
   ignorecase = true,    -- Ignore case in search
 
-  termguicolors = true,          -- Use 24bit colors
-  synmaxcol = 200,               -- Don't bother syntax highlighting long lines
+  termguicolors = true, -- Use 24bit colors
+  synmaxcol = 200,      -- Don't bother syntax highlighting long lines
   completeopt = "menuone,noselect,noinsert",
 
   shortmess = vim.opt.shortmess

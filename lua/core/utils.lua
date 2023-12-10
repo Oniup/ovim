@@ -22,6 +22,22 @@
 -- * LazyVimStarted**triggered after `UIEnter` when
 --   `require("lazy").stats().startuptime` has been calculated.
 --   Useful to update the startuptime on your dashboard.
+--
+--- Vim Event timeline
+-------------------------------------------------------------------------------
+--  BufWinEnter (create a default window)
+--  BufEnter (create a default buffer)
+--  VimEnter (start the Vim session):edit demo.txt
+--  BufNew (create a new buffer to contain demo.txt)
+--  BufAdd (add that new buffer to the session’s buffer list)
+--  BufLeave (exit the default buffer)
+--  BufWinLeave (exit the default window)
+--  BufUnload (remove the default buffer from the buffer list)
+--  BufDelete (deallocate the default buffer)
+--  BufReadCmd (read the contexts of demo.txt into the new buffer)
+--  BufEnter (activate the new buffer)
+--  BufWinEnter (activate the new buffer's window)i
+--  InsertEnter (swap into Insert mode)
 
 local M = {}
 
