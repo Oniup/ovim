@@ -1,5 +1,10 @@
-return {
+local M = {}
+
+M.name = "Comment"
+
+M.info = {
   "numToStr/Comment.nvim",
-  event = "BufEnter",
-  opts = {},
+  event = "InsertEnter",
 }
+
+return M

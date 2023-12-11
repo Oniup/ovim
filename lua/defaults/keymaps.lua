@@ -30,6 +30,7 @@ return {
         ["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find file" },
         ["<leader>fg"] = { function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
         ["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find vim help tag" },
+        ["<leader>fb"] = { function() require("telescope").extensions.file_browser.file_browser() end, desc = "Open file browser" },
       },
     },
     ["nvterm"] = {
@@ -41,5 +42,10 @@ return {
         },
       },
     },
+    ["neogen"] = {
+      n = {
+        ["<leader>nf"] = { function() require("neogen").generate({}) end, desc = "Gen comment template" }
+      }
+    }
   },
 }

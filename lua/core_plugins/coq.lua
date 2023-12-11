@@ -1,4 +1,8 @@
-vim.g.coq_settings = {
+local M = {}
+
+M.name = "coq"
+
+M.opts = {
   auto_start = "shut-up",
   clients = {
     buffers = {
@@ -20,9 +24,9 @@ vim.g.coq_settings = {
     },
   },
   keymap = {
-    bigger_preview = "<c-Q>",
+    bigger_preview = "<c-q>",
     eval_snips = nil,
-    jump_to_mark = "<c-W>",
+    jump_to_mark = "<c-w>",
     manual_complete = "<c-space>",
     manual_complete_insertion_only = false,
     pre_select = false,
@@ -53,13 +57,20 @@ vim.g.coq_settings = {
   },
 }
 
-return {
+M.info = {
   "ms-jpq/coq_nvim",
+  branch = "coq",
   dependencies = {
     { "ms-jpq/coq.artifacts",  branch = "artifacts" },
     { "ms-jpq/coq.thirdparty", branch = "3p" }
   },
   config = function()
-    require("coq")
+    require(M.name)
   end
 }
+
+M.before_load = function()
+  vim.g.coq_settings = M.opts
+end
+
+return M

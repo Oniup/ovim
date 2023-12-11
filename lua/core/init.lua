@@ -1,17 +1,17 @@
-local ovim_keymaps = require("core.keymaps")
-local ovim_opts = require("core.options")
-local ovim_utils = require("core.utils")
+local keymaps = require("core.keymaps")
+local opts = require("core.options")
+local utils = require("core.utils")
 
-ovim_opts.load_opts()
-ovim_keymaps.load_keymaps()
-ovim_utils.load_icons()
+opts.load_opts()
+utils.load_icons()
 
-local usr_ok, usr_init = pcall(require, "config")
-if usr_ok then
+local usr_init = utils.prequire("config")
+if usr_init then
   usr_init.on_startup()
 end
 
 local plugins = require("core.plugins")
 plugins.load_plugins()
 
-ovim_keymaps.plugin_keymaps_autocmd_setup()
+keymaps.load_keymaps()
+keymaps.plugin_keymaps_autocmd_setup()

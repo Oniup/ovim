@@ -8,7 +8,12 @@ local horizontal_layout = {
   },
 }
 
-local determin_border_chars = function(icons)
+local M = {}
+
+M.name = "telescope"
+
+M.determin_border_chars = function()
+  local icons = require("core.utils").icons
   if icons.border == "single" then
     return icons.border_chars.single
   elseif icons.border == "rounded" then
@@ -17,7 +22,7 @@ local determin_border_chars = function(icons)
   return {}
 end
 
-return {
+M.info = {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -33,53 +38,54 @@ return {
     "nvim-telescope/telescope-ui-select.nvim",
   },
   event = "BufEnter",
-  config = function()
-    local telescope = require("telescope")
-    local actions = require("telescope.actions")
-    local icons = require("core.utils").icons
-
-    telescope.setup({
-      defaults = {
-        preview = false,
-        mappings = {
-          i = {
-            ["qq"] = actions.close,
-            ["<C-l>"] = actions.select_vertical,
-            ["<C-j>"] = actions.select_horizontal
-          },
-          n = {
-            ["qq"] = actions.close,
-            ["<C-l>"] = actions.select_vertical,
-            ["<C-j>"] = actions.select_horizontal
-          },
-        },
-        border = true,
-        borderchars = determin_border_chars(icons),
-        results_title = false,
-        layout_strategy = "center",
-        layout_config = {
-          width = 0.5,
-          height = 0.5,
-          prompt_position = "top"
-        },
-        sorting_strategy = "ascending",
-      },
-      pickers = {
-        help_tags = horizontal_layout,
-        live_grep = horizontal_layout,
-        media_files = horizontal_layout,
-      },
-      extensions = {
-        fzf = {
-          fuzzy = true,
-          override_generic_sorter = true,
-          override_file_sorter = true,
-          case_mode = "smart_case",
-        },
-      }
-    })
-    telescope.load_extension("fzf")
-    telescope.load_extension("file_browser")
-    telescope.load_extension("ui-select")
-  end
 }
+
+M.opts = {
+  defaults = {
+    preview = false,
+    mappings = {
+      i = {
+        ["qq"] = function(buf) require("telescope.actions").close(buf) end,
+        ["<c-l>"] = function() require("telescope.actions").select_vertical() end,
+        ["<c-j>"] = function() require("telescope.actions").select_horizontal() end
+      },
+      n = {
+        ["qq"] = function(buf) require("telescope.actions").close(buf) end,
+        ["<c-l>"] = function() require("telescope.actions").select_vertical() end,
+        ["<c-j>"] = function() require("telescope.actions").select_horizontal() end
+      },
+    },
+    border = true,
+    borderchars = M.determin_border_chars(),
+    results_title = false,
+    layout_strategy = "center",
+    layout_config = {
+      width = 0.5,
+      height = 0.5,
+      prompt_position = "top"
+    },
+    sorting_strategy = "ascending",
+  },
+  pickers = {
+    help_tags = horizontal_layout,
+    live_grep = horizontal_layout,
+    media_files = horizontal_layout,
+  },
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+  }
+}
+
+M.after_setup = function()
+  local telescope = require("telescope")
+  telescope.load_extension("fzf")
+  telescope.load_extension("file_browser")
+  telescope.load_extension("ui-select")
+end
+
+return M

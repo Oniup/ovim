@@ -19,4 +19,28 @@ M.load_opts = function()
   vim.g.maplocalleader = opts.leader_key
 end
 
+M.get_plug_opts = function(plugin_name)
+  local default_result = require("core.utils").prequire("defaults.plugin_options." .. plugin_name)
+  local usr_result = require("core.utils").prequire("config.plugin_options." .. plugin_name)
+  local opts = nil
+
+  if default_result then
+    opts = default_result
+  end
+
+  if usr_result then
+    if not opts then
+      opts = usr_result
+    else
+      opts = vim.tbl_deep_extend("force", opts, usr_result)
+    end
+  end
+
+  if not opts then
+    opts = {}
+  end
+
+  return opts
+end
+
 return M

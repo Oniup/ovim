@@ -1,45 +1,19 @@
---- Useful lazy loading events
--------------------------------------------------------------------------------
---
--- * LazyDone**when lazy has finished starting up and loaded your config
--- * LazySync**after running sync
--- * LazyInstall**after an install
--- * LazyUpdate**after an update
--- * LazyClean**after a clean
--- * LazyCheck**after checking for updates
--- * LazyLog**after running log
--- * LazyLoad**after loading a plugin. The `data` attribute will contain the
---   plugin name.
--- * LazySyncPre**before running sync
--- * LazyInstallPre**before an install
--- * LazyUpdatePre**before an update
--- * LazyCleanPre**before a clean
--- * LazyCheckPre**before checking for updates
--- * LazyLogPre**before running log
--- * LazyReload**triggered by change detection after reloading plugin specs
--- * VeryLazy**triggered after `LazyDone` and processing `VimEnter` auto
---   commands
--- * LazyVimStarted**triggered after `UIEnter` when
---   `require("lazy").stats().startuptime` has been calculated.
---   Useful to update the startuptime on your dashboard.
---
---- Vim Event timeline
--------------------------------------------------------------------------------
---  BufWinEnter (create a default window)
---  BufEnter (create a default buffer)
---  VimEnter (start the Vim session):edit demo.txt
---  BufNew (create a new buffer to contain demo.txt)
---  BufAdd (add that new buffer to the session’s buffer list)
---  BufLeave (exit the default buffer)
---  BufWinLeave (exit the default window)
---  BufUnload (remove the default buffer from the buffer list)
---  BufDelete (deallocate the default buffer)
---  BufReadCmd (read the contexts of demo.txt into the new buffer)
---  BufEnter (activate the new buffer)
---  BufWinEnter (activate the new buffer's window)i
---  InsertEnter (swap into Insert mode)
-
 local M = {}
+
+---@param module_name
+---@return
+M.prequire = function(module_name)
+  local ok, result = pcall(require, module_name)
+  if not ok and result then
+    if not string.match(result, "module '" .. module_name .. "' not found:\n") then
+      vim.notify("Failed to prequire:\n" .. result, vim.log.levels.ERROR)
+    end
+  else
+    return result
+  end
+
+  return nil
+end
 
 M.autocmd_id_name = "OvimAutoCmdGroup"
 
@@ -50,6 +24,10 @@ M.autocmd_id = vim.api.nvim_create_augroup(
 
 M.icons = require("defaults.icons")
 
+--- @brief Combines users defined icons and the OVims default icons together
+--- and stores it. To access the final icons table
+--- `require("core.utils").icons`. All plugins that requires an icon should
+--- refer to this table.
 M.load_icons = function()
   local usr_icons_ok, usr_icons = pcall(require, "config.icons")
   if usr_icons_ok then
@@ -90,5 +68,24 @@ M.set_term_shell = function(opts, other_shell)
   return vim.tbl_deep_extend("force", opts, shell_opts)
 end
 
+M.get_all_modules_within = function(modules_path)
+  local os_path = vim.fn.stdpath("config") .. "/lua/"
+      .. string.gsub(modules_path, "%.", "/")
+
+  local cmd = ""
+  if vim.fn.has("win32") then
+    cmd = "dir /b/a-d \"" .. string.gsub(os_path, "/", "\\") .. "\""
+  else
+    cmd = "ls -pUqAL \"" .. os_path .. "\""
+  end
+
+  local result = {}
+  for filename in io.popen(cmd):lines() do
+    filename = string.match(filename, "^(.*)%.lua$")
+    table.insert(result, modules_path .. "." .. filename)
+  end
+
+  return result
+end
 
 return M
