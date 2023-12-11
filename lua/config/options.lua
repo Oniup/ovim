@@ -1,4 +1,10 @@
-local opts = {
+local M = {}
+
+vim.g.load_doxygen_syntax = 1
+vim.g.doxygen_enhanced_colour = 1
+vim.loader.enable()
+
+local vim_opts = {
   number = true,
   relativenumber = true,
   showmode = false,
@@ -29,11 +35,11 @@ local opts = {
   grepformat = "%f:%l:%c:%m",
   grepprg = "rg --vimgrep",
 
-  inccommand = "split", -- Line preview of :s results
-  incsearch = true,     -- Do incremental search
-  ignorecase = true,    -- Ignore case in search
+  inccommand = "split",          -- Line preview of :s results
+  incsearch = true,              -- Do incremental search
+  ignorecase = true,             -- Ignore case in search
 
-  list = true,          --Show white spaces
+  list = true,                   --Show white spaces
 
   spelllang = { "en", "cjk" },   -- Enable spelling for English
   spellsuggest = { "best", 10 }, -- Show x the best matching results
@@ -44,6 +50,7 @@ local opts = {
   writebackup = false,           -- Don't write a backup file
 
   termguicolors = true,          -- Use 24bit colors
+  guicursor = "n-v-c-sm:block,i-ci-ve:hor10,r-cr-o:hor10",
   synmaxcol = 200,               -- Don't bother syntax highlighting long lines
   completeopt = "menuone,noselect,noinsert",
 }
@@ -57,11 +64,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end
 })
 
-vim.g.load_doxygen_syntax = 1
-vim.g.doxygen_enhanced_colour = 1
+M.vim_opts = require("core.utils").set_term_shell(vim_opts)
 
-vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:hor10,r-cr-o:hor10"
-
-vim.loader.enable()
-
-return require("core.utils").set_term_shell(opts)
+return M

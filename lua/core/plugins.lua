@@ -35,7 +35,7 @@ M.load_plugins = function()
     performance = {
       rtp = {
         disabled_plugins = {
-          "netrwPlugin",
+          -- "netrwPlugin",
           "tarPlugin",
           "tohtml",
           "zipPlugin",

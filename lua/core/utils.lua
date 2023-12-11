@@ -90,4 +90,5 @@ M.set_term_shell = function(opts, other_shell)
   return vim.tbl_deep_extend("force", opts, shell_opts)
 end
 
+
 return M

@@ -1,4 +1,8 @@
-return {
+local M = {}
+
+M.leader_key = " "
+
+M.vim_opts = {
   number = true,
   relativenumber = false,
   showmode = false,
@@ -52,3 +56,5 @@ return {
       + "precedes:«" -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
       + "trail:•", -- BULLET (U+2022, UTF-8: E2 80 A2)
 }
+
+return M

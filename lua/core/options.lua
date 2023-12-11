@@ -11,9 +11,12 @@ end
 
 M.load_opts = function()
   local opts = M.get_all_set_options()
-  for k, v in pairs(opts) do
+  for k, v in pairs(opts.vim_opts) do
     vim.opt[k] = v
   end
+
+  vim.g.mapleader = opts.leader_key
+  vim.g.maplocalleader = opts.leader_key
 end
 
 return M

@@ -1,66 +1,45 @@
 return {
-  leader = ",",
+  mapping_modes = { "n", "i", "t", "x", "c" },
+  default_opts = { silent = true },
   general = {
     n = {
-      --- Buffer Navigation
-      ---------------------------------------------------------------------------
-      ["<S-l>"]     = { ":bnext<CR>", "Next Buf" },
-      ["<S-h>"]     = { ":bprevious<CR>", "Previous Buf" },
+      ["<s-l>"] = { ":bnext<cr>", desc = "Next buf" },
+      ["<s-h>"] = { ":bprevious<cr>", desc = "Previous buf" },
 
-      --- Window Navigation
-      ---------------------------------------------------------------------------
-      ["<C-h>"]     = { "<C-w>h", "Cursor -> Left Side Window" },
-      ["<C-j>"]     = { "<C-w>j", "Cursor -> Lower Window" },
-      ["<C-k>"]     = { "<C-w>k", "Cursor -> Upper Window" },
-      ["<C-l>"]     = { "<C-w>l", "Cursor -> Right Side Window" },
+      ["<c-h>"] = { "<c-w>h", desc = "Cursor -> left side window" },
+      ["<c-j>"] = { "<c-w>j", desc = "Cursor -> lower window" },
+      ["<c-k>"] = { "<c-w>k", desc = "Cursor -> upper window" },
+      ["<c-l>"] = { "<c-w>l", desc = "Cursor -> right side window" },
 
-      --- Resize with arrows
-      ---------------------------------------------------------------------------
-      ["<C-Up>"]    = { ":resize -2<CR>", "Resize Window" },
-      ["<C-Down>"]  = { ":resize +2<CR>", "Resize Window" },
-      ["<C-Left>"]  = { ":vertical resize -2<CR>", "Resize Window" },
-      ["<C-Right>"] = { ":vertical resize +2<CR>", "Resize Window" },
+      ["<leader>sj"] = { ":split<cr>", desc = "Split window below" },
+      ["<leader>sl"] = { ":vsplit<cr>", desc = "Split window to the right" },
+    },
+    i = {
+      ["jk"] = { "<esc>", desc = "Esc insert mode" },
     },
   },
   plugins = {
     ["nvim-tree.lua"] = {
       n = {
-        ["<leader>e"] = { ":NvimTreeToggle<CR>", "Toggle File Explorer" }
+        ["<leader>e"] = { ":NvimTreeToggle<cr>", desc = "Toggle dir explorer" },
       },
     },
     ["telescope.nvim"] = {
       n = {
-        ["<leader>fc"] = {
-          function() require("telescope.builtin").current_buffer_fuzzy_find() end,
-          "Find in Current Buf"
-        },
-        ["<leader>ff"] = {
-          function() require("telescope.builtin").find_files() end,
-          "Find File"
-        },
-        ["<leader>fg"] = {
-          function() require("telescope.builtin").live_grep() end,
-          "Live Grep"
-        },
-        ["<leader>fh"] = {
-          function() require("telescope.builtin").help_tags() end,
-          "Find Vim Doc"
-        },
+        ["<leader>fc"] = { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find in current buf" },
+        ["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find file" },
+        ["<leader>fg"] = { function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
+        ["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find vim help tag" },
       },
     },
     ["nvterm"] = {
       n = {
-        ["<A-i>"] = {
-          function() require("nvterm.terminal").toggle("horizontal") end,
-          "Toggle Term"
-        }
+        ["<A-i>"] = { function() require("nvterm.terminal").toggle("horizontal") end, desc = "Toggle Term" },
       },
       t = {
-        ["<A-i>"] = {
-          function() require("nvterm.terminal").toggle("horizontal") end,
-          "Toggle Term"
-        }
+        ["<A-i>"] = { function() require("nvterm.terminal").toggle("horizontal") end, desc = "Toggle Term",
+        },
       },
     },
-  }
+  },
 }

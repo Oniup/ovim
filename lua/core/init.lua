@@ -1,5 +1,5 @@
-local ovim_opts = require("core.options")
 local ovim_keymaps = require("core.keymaps")
+local ovim_opts = require("core.options")
 local ovim_utils = require("core.utils")
 
 ovim_opts.load_opts()
@@ -13,4 +13,5 @@ end
 
 local plugins = require("core.plugins")
 plugins.load_plugins()
--- ovim_keymaps.plugin_keymaps_autocmd_setup()
+
+ovim_keymaps.plugin_keymaps_autocmd_setup()
