@@ -9,25 +9,11 @@ M.get_plugin_configs = function()
     local config = utils.prequire(module)
 
     if config then
-      if not config.opts then
-        config.opts = {}
+      if config.before_loading then
+        config.before_loading()
       end
 
-      if config.name and not config.info.config then
-        config.info.config = function()
-          require(config.name).setup(config.opts)
-
-          if config.after_load then
-            config.after_setup()
-          end
-        end
-      end
-
-      if config.before_load then
-        config.before_load()
-      end
-
-      table.insert(configs, config.info)
+      table.insert(configs, config.opts)
     end
   end
 
@@ -69,7 +55,7 @@ M.load_plugins = function()
     performance = {
       rtp = {
         disabled_plugins = {
-          "netrwPlugin",
+--          "netrwPlugin",
           "tarPlugin",
           "tohtml",
           "zipPlugin",

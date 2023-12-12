@@ -44,8 +44,19 @@ return {
     },
     ["neogen"] = {
       n = {
-        ["<leader>nf"] = { function() require("neogen").generate({}) end, desc = "Gen comment template" }
-      }
-    }
+        ["<leader>nf"] = {
+          function() require("neogen").generate({}) end,
+          desc = "Gen comment template"
+        },
+      },
+    },
+    ["possession.nvim"] = {
+      n = {
+        ["<leader>se"] = {
+          function() require("telescope").extensions.possession.list() end,
+          desc = "Open Sessions"
+        },
+      },
+    },
   },
 }

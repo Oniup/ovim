@@ -1,90 +1,16 @@
-local ovim_icons = require("core.utils").icons
 local M = {}
-
-M.name = "lsp"
-
-M.info = {
-  "williamboman/mason.nvim",
-  dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-    "nvim-lua/plenary.nvim",
-
-    -- Other LSP modules
-    "neovim/nvim-lspconfig",
-    "stevearc/dressing.nvim",
-    "linrongbin16/lsp-progress.nvim",
-    "folke/neodev.nvim",
-
-    -- Other
-    "telescope/telescope.nvim",
-    "ms-jpq/coq_nvim"
-  },
-  lazy = false,
-  priority = 999, -- initialized after color theme
-  config = function()
-    local signs = {
-      { name = "DiagnosticSignError", text = ovim_icons.diagnostics.error },
-      { name = "DiagnosticSignWarn",  text = ovim_icons.diagnostics.warn },
-      { name = "DiagnosticSignHint",  text = ovim_icons.diagnostics.hint },
-      { name = "DiagnosticSignInfo",  text = ovim_icons.diagnostics.info },
-    }
-
-    for i = 1, #signs do
-      vim.fn.sign_define(signs[i].name, {
-        texthl = signs[i].name,
-        text = signs[i].text,
-        numhl = ""
-      })
-    end
-
-    vim.diagnostic.config({
-      virtual_text = false,
-      signs = true,
-      update_in_insert = true,
-      underline = true,
-      severity_sort = true,
-      float = {
-        focusable = true,
-        border = ovim_icons.border,
-        source = "always",
-        header = "",
-        prefix = ""
-      }
-    })
-
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = ovim_icons.border,
-      focusable = false,
-    })
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-      border = ovim_icons.border,
-      focusable = false,
-      relative = "cursor",
-    })
-
-    require("mason").setup(M.mason_opts)
-    require("mason-lspconfig").setup(M.mason_lsp_config_opts)
-    require("mason-lspconfig").setup_handlers(M.mason_lspconfig_setup_handlers)
-
-    require("lspconfig.ui.windows").default_options = {
-      border = ovim_icons.border,
-    }
-
-    require("dressing").setup(M.dressing_opts)
-    require("lsp-progress").setup(M.lsp_progress_opts)
-  end
-}
+local icons = require("core.utils").icons
 
 M.mason_opts = {
   ui = {
-    icons = ovim_icons.mason,
-    border = ovim_icons.border
+    icons = icons.mason,
+    border = icons.border
   }
 }
 
 M.mason_lspconfig_opts = {
   ensure_installed = {
-    "clangd", "cmake", "lua_ls", "pyright",
+    "lua_ls",
   },
 }
 
@@ -137,77 +63,80 @@ M.mason_lspconfig_setup_handlers = {
       -- if usr_lang_config and usr_lang_config.enable_neodev then
       --   require("neodev").setup()
       -- end
-      require("neodev").setup() -- Make sure to comment and uncomment above when committing to repo
+      -- require("neodev").setup() -- Make sure to comment and uncomment above when committing to repo
     end
 
     lspconfig[server].setup(config)
   end
 }
 
-M.dressing_opts = {
-  input = {
-    border = ovim_icons.border,
+M.opts = {
+  "williamboman/mason.nvim",
+  dependencies = {
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    "nvim-lua/plenary.nvim",
+
+    -- Other LSP modules
+    "linrongbin16/lsp-progress.nvim",
+    "stevearc/dressing.nvim",
+
+    -- Other
+    -- "folke/neodev.nvim",
+    "telescope/telescope.nvim",
+    "ms-jpq/coq_nvim"
   },
-  mappings = {
-    n = {
-      ["qq"] = "Close",
-    },
-    i = {
-      ["qq"] = "Close",
-    },
-  }
-}
+  lazy = false,
+  priority = 999, -- initialized after color theme
+  config = function()
+    require("mason").setup(M.mason_opts)
+    require("mason-lspconfig").setup(M.mason_lspconfig_opts)
+    require("mason-lspconfig").setup_handlers(M.mason_lspconfig_setup_handlers)
 
-M.lsp_progress_opts = {
-  client_format = function(client_name, spinner, series_messages)
-    if #series_messages == 0 then
-      return nil
-    end
-    return {
-      name = client_name,
-      body = spinner .. " " .. table.concat(series_messages, ", "),
+    require("lspconfig.ui.windows").default_options = {
+      border = icons.border,
     }
-  end,
-  format = function(client_messages)
-    --- @param name string
-    --- @param msg string?
-    --- @return string
-    local function stringify(name, msg)
-      return msg and string.format("%s %s", name, msg) or name
+
+    local signs = {
+      { name = "DiagnosticSignError", text = icons.diagnostics.error },
+      { name = "DiagnosticSignWarn",  text = icons.diagnostics.warn },
+      { name = "DiagnosticSignHint",  text = icons.diagnostics.hint },
+      { name = "DiagnosticSignInfo",  text = icons.diagnostics.info },
+    }
+
+    for i = 1, #signs do
+      vim.fn.sign_define(signs[i].name, {
+        texthl = signs[i].name,
+        text = signs[i].text,
+        numhl = ""
+      })
     end
 
-    local sign = "" -- nf-fa-gear \uf013
-    local lsp_clients = vim.lsp.get_active_clients()
-    local messages_map = {}
-    for _, climsg in ipairs(client_messages) do
-      messages_map[climsg.name] = climsg.body
-    end
+    vim.diagnostic.config({
+      virtual_text = false,
+      signs = true,
+      update_in_insert = true,
+      underline = true,
+      severity_sort = true,
+      float = {
+        focusable = true,
+        border = icons.border,
+        source = "always",
+        header = "",
+        prefix = ""
+      }
+    })
 
-    if #lsp_clients > 0 then
-      table.sort(lsp_clients, function(a, b)
-        return a.name < b.name
-      end)
-      local builder = {}
-      for _, cli in ipairs(lsp_clients) do
-        if
-            type(cli) == "table"
-            and type(cli.name) == "string"
-            and string.len(cli.name) > 0
-        then
-          if messages_map[cli.name] then
-            table.insert(builder, stringify(cli.name, messages_map[cli.name]))
-          else
-            table.insert(builder, stringify(cli.name))
-          end
-        end
-      end
-      if #builder > 0 then
-        return sign .. " " .. table.concat(builder, ", ")
-      end
-    end
-
-    return ""
-  end,
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      border = icons.border,
+      focusable = false,
+    })
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+      border = icons.border,
+      focusable = false,
+      relative = "cursor",
+    })
+  end
 }
 
 return M

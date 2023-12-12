@@ -1,13 +1,12 @@
 local M = {}
 
-M.name = "neogen"
-
-M.info = {
+M.opts = {
   "danymat/neogen",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
   },
-  event = "InsertEnter"
+  event = "InsertEnter",
+  config = true,
 }
 
 return M

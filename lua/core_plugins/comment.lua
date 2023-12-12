@@ -1,10 +1,9 @@
 local M = {}
 
-M.name = "Comment"
-
-M.info = {
+M.opts = {
   "numToStr/Comment.nvim",
   event = "InsertEnter",
+  config = true,
 }
 
 return M

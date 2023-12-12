@@ -10,7 +10,13 @@ local horizontal_layout = {
 
 local M = {}
 
-M.name = "telescope"
+M.telescope = function()
+  return require("telescope")
+end
+
+M.telescope_actions = function()
+  return require("telescope.actions")
+end
 
 M.determin_border_chars = function()
   local icons = require("core.utils").icons
@@ -22,7 +28,7 @@ M.determin_border_chars = function()
   return {}
 end
 
-M.info = {
+M.opts = {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -38,54 +44,51 @@ M.info = {
     "nvim-telescope/telescope-ui-select.nvim",
   },
   event = "BufEnter",
-}
-
-M.opts = {
-  defaults = {
-    preview = false,
-    mappings = {
-      i = {
-        ["qq"] = function(buf) require("telescope.actions").close(buf) end,
-        ["<c-l>"] = function() require("telescope.actions").select_vertical() end,
-        ["<c-j>"] = function() require("telescope.actions").select_horizontal() end
+  opts = {
+    defaults = {
+      preview = false,
+      mappings = {
+        i = {
+          ["qq"] = function(buf) M.telescope_actions().close(buf) end,
+          ["<c-l>"] = function(buf) M.telescope_actions().select_vertical(buf) end,
+          ["<c-j>"] = function(buf) M.telescope_actions().select_horizontal(buf) end
+        },
+        n = {
+          ["qq"] = function(buf) M.telescope_actions().close(buf) end,
+          ["<c-l>"] = function(buf) M.telescope_actions().select_vertical(buf) end,
+          ["<c-j>"] = function(buf) M.telescope_actions().select_horizontal(buf) end
+        },
       },
-      n = {
-        ["qq"] = function(buf) require("telescope.actions").close(buf) end,
-        ["<c-l>"] = function() require("telescope.actions").select_vertical() end,
-        ["<c-j>"] = function() require("telescope.actions").select_horizontal() end
+      border = true,
+      borderchars = M.determin_border_chars(),
+      results_title = false,
+      layout_strategy = "center",
+      layout_config = {
+        width = 0.5,
+        height = 0.5,
+        prompt_position = "top"
       },
+      sorting_strategy = "ascending",
     },
-    border = true,
-    borderchars = M.determin_border_chars(),
-    results_title = false,
-    layout_strategy = "center",
-    layout_config = {
-      width = 0.5,
-      height = 0.5,
-      prompt_position = "top"
+    pickers = {
+      help_tags = horizontal_layout,
+      live_grep = horizontal_layout,
+      media_files = horizontal_layout,
     },
-    sorting_strategy = "ascending",
+    extensions = {
+      fzf = {
+        fuzzy = true,
+        override_generic_sorter = true,
+        override_file_sorter = true,
+        case_mode = "smart_case",
+      },
+    }
   },
-  pickers = {
-    help_tags = horizontal_layout,
-    live_grep = horizontal_layout,
-    media_files = horizontal_layout,
-  },
-  extensions = {
-    fzf = {
-      fuzzy = true,
-      override_generic_sorter = true,
-      override_file_sorter = true,
-      case_mode = "smart_case",
-    },
-  }
+  init = function()
+    M.telescope().load_extension("fzf")
+    M.telescope().load_extension("file_browser")
+    M.telescope().load_extension("ui-select")
+  end
 }
-
-M.after_setup = function()
-  local telescope = require("telescope")
-  telescope.load_extension("fzf")
-  telescope.load_extension("file_browser")
-  telescope.load_extension("ui-select")
-end
 
 return M

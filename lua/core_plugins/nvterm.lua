@@ -1,17 +1,15 @@
 local M = {}
 
-M.name = "nvterm"
-
-M.info = {
+M.opts = {
   "NvChad/nvterm",
   event = "BufEnter",
+  config = true,
+  init = function()
+    vim.api.nvim_create_autocmd("TermOpen",
+      { pattern = "term://*", command = "setlocal nospell" })
+
+    vim.cmd [[:packadd termdebug]]
+  end
 }
-
-M.after_setup = function()
-  vim.api.nvim_create_autocmd("TermOpen",
-    { pattern = "term://*", command = "setlocal nospell" })
-
-  vim.cmd [[:packadd termdebug]]
-end
 
 return M
