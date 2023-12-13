@@ -7,7 +7,8 @@ M.on_startup = function()
     vim.g.neovide_cursor_animation_length = 0.03
     -- vim.o.guifont = "FiraCode Nerd Font Mono:h16"
     -- vim.o.guifont = "ProggyClean CE Nerd Font Mono:h24"
-    vim.o.guifont = "GohuFont uni14 Nerd Font:h16"
+    -- vim.o.guifont = "GohuFont uni14 Nerd Font:h17"
+    vim.o.guifont = "Hasklug Nerd Font:h16"
   end
 end
 

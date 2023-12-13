@@ -1,3 +1,11 @@
+local telescope = function()
+  return require("telescope")
+end
+
+local dap = function()
+  return require("dap")
+end
+
 return {
   mapping_modes = { "n", "i", "t", "x", "c" },
   default_opts = { silent = true },
@@ -30,7 +38,7 @@ return {
         ["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find file" },
         ["<leader>fg"] = { function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
         ["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find vim help tag" },
-        ["<leader>fb"] = { function() require("telescope").extensions.file_browser.file_browser() end, desc = "Open file browser" },
+        ["<leader>fb"] = { function() telescope().extensions.file_browser.file_browser() end, desc = "Open file browser" },
       },
     },
     ["nvterm"] = {
@@ -53,9 +61,33 @@ return {
     ["possession.nvim"] = {
       n = {
         ["<leader>se"] = {
-          function() require("telescope").extensions.possession.list() end,
+          function() telescope().extensions.possession.list() end,
           desc = "Open Sessions"
         },
+      },
+    },
+    ["nvim-dap"] = {
+      n = {
+        ["<F5>"] = { function() dap().continue() end, opts = { noremap = true } },
+        ["<F10>"] = { function() dap().step_over() end, opts = { noremap = true } },
+        ["<F11>"] = { function() dap().step_into() end, opts = { noremap = true } },
+        ["<F12>"] = { function() dap().set_out() end, opts = { noremap = true } },
+
+        ["<leader>dl"] = { function() require("telescope").extensions.dap.variables() end },
+        ["<leader>dt"] = {
+          function()
+            dap().terminate()
+            require("dapui").close()
+          end,
+          opts = { noremap = true }
+        },
+
+        ["<leader>bb"] = { function() dap().toggle_breakpoint() end, opts = { noremap = true } },
+        ["<leader>bc"] = { function() dap().clear_breakpoints() end, opts = { noremap = true } },
+        ["<leader>bl"] = { function() telescope().extensions.dap.list_breakpoints() end, opts = { noremap = true } },
+
+        ["<leader>dc"] = { function() telescope().extensions.dap.configurations() end, opts = { noremap = true } },
+        ["<leader>dm"] = { function() telescope().extensions.dap.commands() end, opts = { noremap = true } },
       },
     },
   },

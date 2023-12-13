@@ -4,6 +4,7 @@ local utils = require("core.utils")
 
 opts.load_opts()
 utils.load_icons()
+keymaps.load_keymaps()
 
 local usr_init = utils.prequire("config")
 if usr_init then
@@ -12,6 +13,4 @@ end
 
 local plugins = require("core.plugins")
 plugins.load_plugins()
-
-keymaps.load_keymaps()
 keymaps.plugin_keymaps_autocmd_setup()

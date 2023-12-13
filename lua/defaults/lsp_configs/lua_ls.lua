@@ -1,6 +1,6 @@
 local M = {}
 
-M.enable_neodev = true
+M.enable_neodev = false
 
 M.lang_settings = {
   Lua = {

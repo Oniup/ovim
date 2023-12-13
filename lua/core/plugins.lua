@@ -6,7 +6,7 @@ M.get_plugin_configs = function()
 
   local configs = {}
   for _, module in ipairs(module_paths) do
-    local config = utils.prequire(module)
+    local config = utils.prequire(module.mod)
 
     if config then
       if config.before_loading then
@@ -55,7 +55,7 @@ M.load_plugins = function()
     performance = {
       rtp = {
         disabled_plugins = {
---          "netrwPlugin",
+          "netrwPlugin",
           "tarPlugin",
           "tohtml",
           "zipPlugin",

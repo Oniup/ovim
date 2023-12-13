@@ -11,5 +11,14 @@ return {
       ["<leader>c"] = { "\"_c", desc = "Delete without yanking" },
       ["<leader>p"] = { "\"_dP", desc = "Paste without yanking replaced text" },
     }
-  }
+  },
+  plugins = {
+    ["nvim-dap"] = {
+      n = {
+        ["<leader>da"] = {
+          function() require("core_plugins.dap").print_dap_lang_configurations() end,
+        },
+      },
+    },
+  },
 }

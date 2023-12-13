@@ -1,5 +1,6 @@
 local M = {}
-local icons = require("core.utils").icons
+local utils = require("core.utils")
+local icons = utils.icons
 
 M.mason_opts = {
   ui = {
@@ -43,15 +44,18 @@ M.mason_lspconfig_setup_handlers = {
     }
 
     --- Load Language Settings
-    local usr_lsp_config_ok, usr_lang_config = pcall(require, "config.lsp_configs." .. server)
-    local lang_config_ok, lang_config = pcall(require, "defaults.lsp_configs." .. server)
+    local usr_lang_config = utils.prequire("config.lsp_configs." .. server)
+    local lang_config = utils.prequire("defaults.lsp_configs." .. server)
+    if usr_lang_config then
+      if lang_config and not usr_lang_config.no_extend_default then
+        lang_config = vim.tbl_deep_extend("force", lang_config, usr_lang_config)
+      else
+        lang_config = usr_lang_config
+      end
+    end
 
-    if usr_lsp_config_ok and lang_config_ok then
-      config.settings = vim.tbl_deep_extend("force", lang_config.lang_settings, usr_lang_config.lang_settings)
-    elseif lang_config_ok then
+    if lang_config then
       config.settings = lang_config.lang_settings
-    elseif usr_lsp_config_ok then
-      config.settings = usr_lang_config.lang_settings
     end
 
     --- Load keybindings
@@ -60,10 +64,9 @@ M.mason_lspconfig_setup_handlers = {
 
     --- Enable Neovim Dev environment through usr_lua_settings
     if server == "lua_ls" then
-      -- if usr_lang_config and usr_lang_config.enable_neodev then
-      --   require("neodev").setup()
-      -- end
-      -- require("neodev").setup() -- Make sure to comment and uncomment above when committing to repo
+      if lang_config and lang_config.enable_neodev then
+        require("neodev").setup()
+      end
     end
 
     lspconfig[server].setup(config)
@@ -82,7 +85,7 @@ M.opts = {
     "stevearc/dressing.nvim",
 
     -- Other
-    -- "folke/neodev.nvim",
+    "folke/neodev.nvim",
     "telescope/telescope.nvim",
     "ms-jpq/coq_nvim"
   },
