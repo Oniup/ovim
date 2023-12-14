@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "linrongbin16/lsp-progress.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",

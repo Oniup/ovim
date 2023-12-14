@@ -1,7 +1,7 @@
 local M = {}
 local icons = require("defaults.icons")
 
-M.opts = {
+M.plugin = {
   "folke/todo-comments.nvim",
   lazy = false,
   opts = {

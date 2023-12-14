@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "danymat/neogen",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",

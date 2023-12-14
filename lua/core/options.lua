@@ -20,8 +20,10 @@ M.load_opts = function()
 end
 
 M.get_plug_opts = function(plugin_name)
-  local default_result = require("core.utils").prequire("defaults.plugin_options." .. plugin_name)
-  local usr_result = require("core.utils").prequire("config.plugin_options." .. plugin_name)
+  local prequire = require("core.utils").prequire
+
+  local default_result = prequire("defaults.plugin_options." .. plugin_name)
+  local usr_result = prequire("config.plugin_options." .. plugin_name)
   local opts = nil
 
   if default_result then

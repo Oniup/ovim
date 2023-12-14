@@ -1,7 +1,7 @@
 local M = {}
 local icons = require("core.utils").icons
 
-M.opts = {
+M.plugin = {
   "lewis6991/gitsigns.nvim",
   event = "BufEnter",
   opts = {

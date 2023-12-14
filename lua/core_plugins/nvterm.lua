@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "NvChad/nvterm",
   event = "BufEnter",
   config = true,

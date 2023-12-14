@@ -1,7 +1,7 @@
 local M = {}
 local icons = require("core.utils").icons
 
-M.opts = {
+M.plugin = {
   "stevearc/dressing.nvim",
   event = "BufEnter",
   opts = {

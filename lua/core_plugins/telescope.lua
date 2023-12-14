@@ -1,3 +1,7 @@
+local M = {}
+
+local icons = require("core.utils").icons
+
 local horizontal_layout = {
   preview = true,
   layout_strategy = "horizontal",
@@ -8,8 +12,6 @@ local horizontal_layout = {
   },
 }
 
-local M = {}
-
 M.telescope = function()
   return require("telescope")
 end
@@ -18,17 +20,7 @@ M.telescope_actions = function()
   return require("telescope.actions")
 end
 
-M.determin_border_chars = function()
-  local icons = require("core.utils").icons
-  if icons.border == "single" then
-    return icons.border_chars.single
-  elseif icons.border == "rounded" then
-    return icons.border_chars.rounded
-  end
-  return {}
-end
-
-M.opts = {
+M.plugin = {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -60,7 +52,7 @@ M.opts = {
         },
       },
       border = true,
-      borderchars = M.determin_border_chars(),
+      borderchars = icons.border_chars[icons.border],
       results_title = false,
       layout_strategy = "center",
       layout_config = {

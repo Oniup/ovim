@@ -2,6 +2,10 @@ local telescope = function()
   return require("telescope")
 end
 
+local telescope_builtin = function()
+  return require("telescope.builtin")
+end
+
 local dap = function()
   return require("dap")
 end
@@ -11,16 +15,21 @@ return {
   default_opts = { silent = true },
   general = {
     n = {
-      ["<s-l>"] = { ":bnext<cr>", desc = "Next buf" },
-      ["<s-h>"] = { ":bprevious<cr>", desc = "Previous buf" },
+      ["<s-l>"]      = { ":bnext<cr>", desc = "Next buf" },
+      ["<s-h>"]      = { ":bprevious<cr>", desc = "Previous buf" },
 
-      ["<c-h>"] = { "<c-w>h", desc = "Cursor -> left side window" },
-      ["<c-j>"] = { "<c-w>j", desc = "Cursor -> lower window" },
-      ["<c-k>"] = { "<c-w>k", desc = "Cursor -> upper window" },
-      ["<c-l>"] = { "<c-w>l", desc = "Cursor -> right side window" },
+      ["<c-h>"]      = { "<c-w>h", desc = "Cursor -> left side window" },
+      ["<c-j>"]      = { "<c-w>j", desc = "Cursor -> lower window" },
+      ["<c-k>"]      = { "<c-w>k", desc = "Cursor -> upper window" },
+      ["<c-l>"]      = { "<c-w>l", desc = "Cursor -> right side window" },
 
       ["<leader>sj"] = { ":split<cr>", desc = "Split window below" },
       ["<leader>sl"] = { ":vsplit<cr>", desc = "Split window to the right" },
+
+      ["<c-Up>"]     = { ":resize -2<CR>", desc = "Resize win -y" },
+      ["<c-Down>"]   = { ":resize +2<CR>", desc = "Resize win +y" },
+      ["<c-Left>"]   = { ":vertical resize -2<CR>", desc = "Resize win -x" },
+      ["<c-Right>"]  = { ":vertical resize +2<CR>", desc = "Resize win +x" },
     },
     i = {
       ["jk"] = { "<esc>", desc = "Esc insert mode" },
@@ -34,11 +43,12 @@ return {
     },
     ["telescope.nvim"] = {
       n = {
-        ["<leader>fc"] = { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find in current buf" },
-        ["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find file" },
-        ["<leader>fg"] = { function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
-        ["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find vim help tag" },
+        ["<leader>fc"] = { function() telescope_builtin().current_buffer_fuzzy_find() end, desc = "Find in current buf" },
+        ["<leader>ff"] = { function() telescope_builtin().find_files() end, desc = "Find file" },
+        ["<leader>fg"] = { function() telescope_builtin().live_grep() end, desc = "Live grep" },
+        ["<leader>fh"] = { function() telescope_builtin().help_tags() end, desc = "Find vim help tag" },
         ["<leader>fb"] = { function() telescope().extensions.file_browser.file_browser() end, desc = "Open file browser" },
+        ["<leader>fa"] = { function() telescope_builtin().builtin() end, desc = "All builtin funcs" },
       },
     },
     ["nvterm"] = {
@@ -68,10 +78,10 @@ return {
     },
     ["nvim-dap"] = {
       n = {
-        ["<F5>"] = { function() dap().continue() end, opts = { noremap = true } },
-        ["<F10>"] = { function() dap().step_over() end, opts = { noremap = true } },
-        ["<F11>"] = { function() dap().step_into() end, opts = { noremap = true } },
-        ["<F12>"] = { function() dap().set_out() end, opts = { noremap = true } },
+        ["<F5>"] = { function() dap().continue() end },
+        ["<F10>"] = { function() dap().step_over() end },
+        ["<F11>"] = { function() dap().step_into() end },
+        ["<F12>"] = { function() dap().set_out() end },
 
         ["<leader>dl"] = { function() require("telescope").extensions.dap.variables() end },
         ["<leader>dt"] = {
@@ -82,12 +92,12 @@ return {
           opts = { noremap = true }
         },
 
-        ["<leader>bb"] = { function() dap().toggle_breakpoint() end, opts = { noremap = true } },
-        ["<leader>bc"] = { function() dap().clear_breakpoints() end, opts = { noremap = true } },
-        ["<leader>bl"] = { function() telescope().extensions.dap.list_breakpoints() end, opts = { noremap = true } },
+        ["<leader>bb"] = { function() dap().toggle_breakpoint() end },
+        ["<leader>bc"] = { function() dap().clear_breakpoints() end },
+        ["<leader>bl"] = { function() telescope().extensions.dap.list_breakpoints() end },
 
-        ["<leader>dc"] = { function() telescope().extensions.dap.configurations() end, opts = { noremap = true } },
-        ["<leader>dm"] = { function() telescope().extensions.dap.commands() end, opts = { noremap = true } },
+        ["<leader>dc"] = { function() telescope().extensions.dap.configurations() end },
+        ["<leader>dm"] = { function() telescope().extensions.dap.commands() end },
       },
     },
   },

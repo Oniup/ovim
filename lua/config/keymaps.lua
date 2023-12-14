@@ -16,7 +16,7 @@ return {
     ["nvim-dap"] = {
       n = {
         ["<leader>da"] = {
-          function() require("core_plugins.dap").print_dap_lang_configurations() end,
+          function() require("core_plugins.dap").print_dap_lang_configurations() end
         },
       },
     },

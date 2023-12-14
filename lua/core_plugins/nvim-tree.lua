@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "nvim-tree/nvim-tree.lua",
   dependencies = {
     "nvim-tree/nvim-web-devicons",

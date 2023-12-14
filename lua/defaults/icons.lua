@@ -1,5 +1,5 @@
 return {
-  border = "single", -- Options: :h nvim_open_win
+  border = "solid", -- Options: :h nvim_open_win
   border_chars = {
     single = {
       prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
@@ -10,6 +10,11 @@ return {
       prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
       results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
       preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    },
+    solid = {
+      prompt = { " ", " ", " ", " ", " ", " ", " ", " " },
+      results = { " ", " ", " ", " ", " ", " ", " ", " " },
+      preview = { " ", " ", " ", " ", " ", " ", " ", " " },
     },
     none = {}
   },
@@ -43,29 +48,34 @@ return {
   kind = {
     Text = "󰉿",
     Method = "󰆧",
-    Function = "󰘧",
+    Function = "󰆧",
     Constructor = "",
-    Field = "󰜢",
+    Field = "",
     Variable = "󰀫",
     Class = "󰠱",
     Interface = "",
-    Module = "",
-    Property = "󰜢",
+    Module = "󰕳",
+    Property = "",
     Unit = "󰑭",
-    Value = "󰎠",
-    Enum = "",
+    Value = "",
+    Enum = "",
+    EnumMember = "",
     Keyword = "󰌋",
-    Snippet = "",
+    Snippet = " ",
     Color = "󰏘",
     File = "󰈙",
     Reference = "",
     Folder = "󰉋",
-    EnumMember = "",
     Constant = "󰏿",
     Struct = "",
     Event = "",
     Operator = "󰆕",
     TypeParameter = " ",
+    Parameter = "󰘦",
     Unknown = " ",
+    Number = "",
+    Boolean = "",
+    Character = "󱌯",
+    String = "󰅳",
   }
 }

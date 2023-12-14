@@ -42,7 +42,7 @@ M.sections = {
   }
 }
 
-M.opts = {
+M.plugin = {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
@@ -53,7 +53,7 @@ M.opts = {
   event = "BufEnter",
   opts = {
     options = {
-      theme = function() return require("ignite.lualine") end,
+      theme = function() return require("ignite.lualine_theme") end,
       component_separators = { right = "", left = "" },
       section_separators = { right = "", left = "" },
     },

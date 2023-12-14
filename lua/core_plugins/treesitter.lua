@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "nvim-treesitter/nvim-treesitter",
   buld = ":TSUpdate",
   event = "BufEnter",
@@ -14,8 +14,8 @@ M.opts = {
     },
     indent = { enable = true },
   },
-  config = function()
-    require("nvim-treesitter.configs").setup(M.opts.opts)
+  config = function(_, opts)
+    require("nvim-treesitter.configs").setup(opts)
   end
 }
 

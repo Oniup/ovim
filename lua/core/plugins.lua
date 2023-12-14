@@ -13,7 +13,7 @@ M.get_plugin_configs = function()
         config.before_loading()
       end
 
-      table.insert(configs, config.opts)
+      table.insert(configs, config.plugin)
     end
   end
 

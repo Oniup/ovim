@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "numToStr/Comment.nvim",
   event = "InsertEnter",
   config = true,

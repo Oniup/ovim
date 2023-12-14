@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "jedrzejboczar/possession.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",

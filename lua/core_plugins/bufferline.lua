@@ -1,6 +1,6 @@
 local M = {}
 
-M.opts = {
+M.plugin = {
   "akinsho/bufferline.nvim",
   version = "*",
   dependencies = {

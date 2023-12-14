@@ -1,7 +1,5 @@
 local M = {}
 
-M.dapui_opts = {}
-
 function M.load_dap_config(module, dapconfig)
   local function passed(condition, err_msg)
     if condition then
@@ -36,22 +34,26 @@ end
 
 function M.print_dap_lang_configurations()
   local dap = require("dap")
-
-  vim.notify("DAP adapters = " .. vim.inspect(dap.adapters), vim.log.levels.ERROR)
-  vim.notify("DAP configurations = " .. vim.inspect(dap.configurations), vim.log.levels.ERROR)
+  vim.notify("DAP adapters = " .. vim.inspect(dap.adapters) ..
+    "\nDAP configurations = " .. vim.inspect(dap.configurations),
+    vim.log.levels.INFO)
 end
 
-M.opts = {
+M.plugin = {
   "mfussenegger/nvim-dap",
   dependencies = {
     "rcarriga/nvim-dap-ui",
     "nvim-telescope/telescope-dap.nvim",
   },
   event = "BufEnter",
-  config = function()
+  opts = {
+    dapui = {}
+  },
+  config = function(_, opts)
     local dap = require("dap")
 
-    local dapui = require("dapui").setup(M.dapui_opts)
+    require("dapui").setup(opts.dapui)
+
     dap.listeners.after.event_initialized["dapui_config"] = function()
       require("dapui").open()
     end

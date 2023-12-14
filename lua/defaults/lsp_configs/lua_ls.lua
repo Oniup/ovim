@@ -1,8 +1,6 @@
 local M = {}
 
-M.enable_neodev = false
-
-M.lang_settings = {
+M.settings = {
   Lua = {
     diagnostics = {
       globals = { "vim" }
