@@ -1,7 +1,7 @@
 local M = {}
+local utils = require("core.utils")
 
 M.get_plugin_configs = function()
-  local utils = require("core.utils")
   local module_paths = utils.get_all_modules_within("core_plugins")
 
   local configs = {}
@@ -37,6 +37,7 @@ M.load_plugins = function()
   require("lazy").setup(M.get_plugin_configs(), {
     defaults = {
       lazy = true,
+      version = "*",
     },
     install = {
       missing = true,
@@ -50,7 +51,9 @@ M.load_plugins = function()
       notify = false,
     },
     ui = {
-      border = "single",
+      border = utils.icons.border,
+      size = { width = 0.6, height = 0.6 },
+      icons = utils.icons.lazy,
     },
     performance = {
       rtp = {
