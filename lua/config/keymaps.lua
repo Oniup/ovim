@@ -20,5 +20,7 @@ return {
         },
       },
     },
+    ["cmake-tools.nvim"] = {
+    }
   },
 }

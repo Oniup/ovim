@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("core.utils")
 
 function M.load_dap_config(module, dapconfig)
   local function passed(condition, err_msg)
@@ -32,6 +33,18 @@ function M.load_dap_config(module, dapconfig)
   return true
 end
 
+function M.load_all_dapconfigs(modules_paths)
+  local module_names = utils.get_all_modules_within(modules_paths)
+
+  for _, modules in pairs(module_names) do
+    local dapconfig = utils.prequire_extend(modules)
+
+    if dapconfig and type(dapconfig) == "table" then
+      M.load_dap_config(modules, dapconfig)
+    end
+  end
+end
+
 function M.print_dap_lang_configurations()
   local dap = require("dap")
   vim.notify("DAP adapters = " .. vim.inspect(dap.adapters) ..
@@ -53,23 +66,16 @@ M.plugin = {
     local dap = require("dap")
 
     require("dapui").setup(opts.dapui)
-
     dap.listeners.after.event_initialized["dapui_config"] = function()
       require("dapui").open()
     end
 
     local telescope = require("telescope")
     telescope.load_extension("dap")
-
-    local modules = require("core.utils").get_all_modules_within("defaults.dapconfigs")
-    for _, module in ipairs(modules) do
-      local dapconfig = require(module.mod)
-
-      if dapconfig and type(dapconfig) == "table" then
-        M.load_dap_config(module, dapconfig)
-      end
-    end
   end,
+  init = function()
+    M.load_all_dapconfigs({ "defaults.dapconfigs", "config.dapconfigs" })
+  end
 }
 
 return M

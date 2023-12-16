@@ -2,11 +2,12 @@ local M = {}
 local utils = require("core.utils")
 
 M.get_plugin_configs = function()
-  local module_paths = utils.get_all_modules_within("core_plugins")
+  local modules_paths = utils.get_all_modules_within({ "core_plugins", "config.plugins" })
 
+  -- Load modules
   local configs = {}
-  for _, module in ipairs(module_paths) do
-    local config = utils.prequire(module.mod)
+  for _, modules in pairs(modules_paths) do
+    local config = utils.prequire_extend(modules)
 
     if config then
       if config.before_loading then
@@ -66,10 +67,6 @@ M.load_plugins = function()
       },
     },
   })
-end
-
-M.plugin_config = function(plugin_name)
-  local opts = require("core.options").get_plug_opts(plugin_name)
 end
 
 return M

@@ -1,8 +1,7 @@
 local M = {}
-
---- calls pcall for require to checks if the module exists. If module exists
+--- calls pcall for require to checks if the module exists
 --- @param module_name string
---- @return table|nil module
+--- @return table|nil module If exists with no errors, return the result, otherwise will print error if found with errors, otherwise nil
 function M.prequire(module_name)
   local ok, result = pcall(require, module_name)
   if not ok and result then
@@ -14,6 +13,24 @@ function M.prequire(module_name)
   end
 
   return nil
+end
+
+--- For each module, calls pcall for require to check if the module exists.
+--- @param module_names table
+--- @return table|nil extended_module Result of all listed and then tbl_deep_extend in order
+function M.prequire_extend(module_names)
+  local modules = nil
+  for _, module in ipairs(module_names) do
+    local tbl = M.prequire(module)
+    if tbl then
+      if not modules then
+        modules = tbl
+      else
+        modules = vim.tbl_deep_extend("force", modules, tbl)
+      end
+    end
+  end
+  return modules
 end
 
 --- Combines users defined icons and the Ovim's default icons together
@@ -59,26 +76,8 @@ function M.set_term_shell(opts, other_shell)
   return vim.tbl_deep_extend("force", opts, shell_opts)
 end
 
-function M.get_all_modules_within(modules_path)
-  local os_path = vim.fn.stdpath("config") .. "/lua/"
-      .. string.gsub(modules_path, "%.", "/")
-
-  local cmd = ""
-  if vim.fn.has("win32") then
-    cmd = "dir /b/a-d \"" .. string.gsub(os_path, "/", "\\") .. "\""
-  else
-    cmd = "ls -pUqAL \"" .. os_path .. "\""
-  end
-
-  local result = {}
-  for filename in io.popen(cmd):lines() do
-    filename = string.match(filename, "^(.*)%.lua$")
-    table.insert(result, { mod = modules_path .. "." .. filename, name = filename })
-  end
-
-  return result
-end
-
+--- @param path string
+--- @return string Path If executable, sets the correct file type at end
 function M.correct_exec(path)
   if vim.fn.has("win32") then
     return path .. ".exe"
@@ -86,6 +85,8 @@ function M.correct_exec(path)
   return path
 end
 
+--- @param path string
+--- @return string Path If on windows, converts all / to \
 function M.correct_path(path)
   if vim.fn.has("win32") then
     return string.gsub(path, "/", "\\")
@@ -93,6 +94,10 @@ function M.correct_path(path)
   return path
 end
 
+--- Chooses the correct path based on your platform
+--- @param unix string Unix specific path
+--- @param win32 string Windows specific path
+--- @return string Path Platform specific path
 function M.os_correct_path(unix, win32)
   if vim.fn.has("win32") then
     return win32
@@ -100,12 +105,18 @@ function M.os_correct_path(unix, win32)
   return unix
 end
 
-function M.nvim_correct_path(stdpath, unix, win)
-  stdpath = vim.fn.stdpath(stdpath) .. "/"
+--- Chooses the correct path based on your platform
+--- @param stdpath string Uses vim.fn.stdpath(...) to get first half of path
+--- @param unix string Unix specific second half of path
+--- @param win32 string Windows specific second half of path
+--- @return string Path Combined stdpath with the platform specific path
+function M.nvim_correct_path(stdpath, unix, win32)
+  local first = vim.fn.stdpath(stdpath) .. "/"
   if vim.fn.has("win32") then
-    return string.gsub(stdpath .. win, "/", "\\")
+    local full = first .. win32
+    return full:gsub("/", "\\")
   else
-    return stdpath .. unix
+    return first .. unix
   end
 end
 
@@ -143,6 +154,43 @@ function M.get_mason_package(path, is_exec)
     result = M.correct_exec(result)
   end
   return result
+end
+
+function M.get_all_modules_within(modules_paths)
+  if not type(modules_paths) == "table" then
+    return {}
+  end
+
+  local cmds = {}
+  local entries_tbl = {}
+
+  -- Deconstruct provided paths and create platform specific commands
+  for _, path in ipairs(modules_paths) do
+    local cmd = vim.fn.stdpath("config") .. "/lua/" .. string.gsub(path, "%.", "/")
+    if vim.fn.has("win32") then
+      cmd = "dir /b/a-d \"" .. string.gsub(cmd, "/", "\\") .. "\""
+    else
+      cmd = "ls -pUqAL \"" .. cmd .. "\""
+    end
+
+    table.insert(cmds, cmd)
+  end
+
+  -- Insert module entries
+  for i, cmd in ipairs(cmds) do
+    for filename in io.popen(cmd):lines() do
+      filename = string.match(filename, "^(.*)%.lua$")
+      if filename then
+        if not entries_tbl[filename] then
+          entries_tbl[filename] = { modules_paths[i] .. "." .. filename }
+        else
+          table.insert(entries_tbl[filename], modules_paths[i] .. "." .. filename)
+        end
+      end
+    end
+  end
+
+  return entries_tbl
 end
 
 M.autocmd_id_name = "OvimAutoCmdGroup"
