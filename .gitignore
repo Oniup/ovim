@@ -1,4 +1,4 @@
 dev_plugins
 lazy-lock.json
-config/
-config/*
+lua/config/
+spell/
