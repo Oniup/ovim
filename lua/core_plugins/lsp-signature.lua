@@ -14,7 +14,7 @@ M.plugin = {
     floating_window_above_cur_line = true,
     floating_window_off_x = 5,
     floating_window_off_y = 0,
-    fix_pos = false,
+    fix_pos = true,
 
     hint_enable = false, -- virtual hint enable
     hint_prefix = "",

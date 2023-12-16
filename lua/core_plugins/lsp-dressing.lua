@@ -3,7 +3,6 @@ local icons = require("core.utils").icons
 
 M.plugin = {
   "stevearc/dressing.nvim",
-  event = "BufEnter",
   opts = {
     input = {
       border = icons.border,

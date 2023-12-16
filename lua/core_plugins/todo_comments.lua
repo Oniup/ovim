@@ -3,7 +3,7 @@ local icons = require("defaults.icons")
 
 M.plugin = {
   "folke/todo-comments.nvim",
-  lazy = false,
+  event = "BufEnter",
   opts = {
     signs = true,
     keywords = {

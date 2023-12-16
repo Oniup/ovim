@@ -36,12 +36,26 @@ return {
     },
   },
   plugins = {
-    ["nvim-tree.lua"] = {
+    ["file_explorer"] = {
       n = {
         ["<leader>e"] = { ":NvimTreeToggle<cr>", desc = "Toggle dir explorer" },
       },
     },
-    ["telescope.nvim"] = {
+    ["terminal"] = {
+      n = {
+        ["<a-i>"] = {
+          "<cmd>ToggleTerm direction=horizontal<cr>",
+          desc = "Toggle terminal",
+        },
+      },
+      t = {
+        ["<a-i>"] = {
+          "<cmd>ToggleTerm direction=horizontal<cr>",
+          desc = "Toggle terminal",
+        },
+      },
+    },
+    ["telescope"] = {
       n = {
         ["<leader>fc"] = { function() telescope_builtin().current_buffer_fuzzy_find() end, desc = "Find in current buf" },
         ["<leader>ff"] = { function() telescope_builtin().find_files() end, desc = "Find file" },
@@ -49,15 +63,6 @@ return {
         ["<leader>fh"] = { function() telescope_builtin().help_tags() end, desc = "Find vim help tag" },
         ["<leader>fb"] = { function() telescope().extensions.file_browser.file_browser() end, desc = "Open file browser" },
         ["<leader>fa"] = { function() telescope_builtin().builtin() end, desc = "All builtin funcs" },
-      },
-    },
-    ["nvterm"] = {
-      n = {
-        ["<A-i>"] = { function() require("nvterm.terminal").toggle("horizontal") end, desc = "Toggle Term" },
-      },
-      t = {
-        ["<A-i>"] = { function() require("nvterm.terminal").toggle("horizontal") end, desc = "Toggle Term",
-        },
       },
     },
     ["neogen"] = {
@@ -68,7 +73,7 @@ return {
         },
       },
     },
-    ["possession.nvim"] = {
+    ["possession"] = {
       n = {
         ["<leader>se"] = {
           function() telescope().extensions.possession.list() end,
@@ -76,7 +81,7 @@ return {
         },
       },
     },
-    ["nvim-dap"] = {
+    ["dap"] = {
       n = {
         ["<F5>"] = { function() dap().continue() end },
         ["<F10>"] = { function() dap().step_over() end },

@@ -64,9 +64,8 @@ M.plugin = {
     "nvim-lua/plenary.nvim",
 
     -- LSP modules
-    "linrongbin16/lsp-progress.nvim", --- shows lsp progress when updating
-    "stevearc/dressing.nvim",         --- better ui
-    "ray-x/lsp_signature.nvim",       --- shows signature help popup
+    "stevearc/dressing.nvim",   --- better ui
+    "ray-x/lsp_signature.nvim", --- shows signature help popup
 
     -- Other
     "telescope/telescope.nvim", --- fuzzy finder

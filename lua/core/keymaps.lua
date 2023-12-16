@@ -14,27 +14,37 @@ M.set_keymap = function(mode, key, map)
   vim.keymap.set(mode, key, cmd, opts)
 end
 
-M.plugin_keymaps_autocmd_setup = function()
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "LazyLoad",
-    callback = function(evt)
-      local plugin_name = evt.data
-      local keymaps = M.plugin_keymaps[plugin_name]
-      if not keymaps then
-        return
-      end
+--- @param plugin_name string
+function M.set_plugin_keymap(plugin_name)
+  local keymaps = M.plugin_keymaps[plugin_name]
+  local plugin_keymaps = {}
 
-      for mode, mappings in pairs(keymaps) do
-        if vim.tbl_contains(M.mapping_modes, mode) then
-          for key, map in pairs(mappings) do
-            M.set_keymap(mode, key, map)
+  if keymaps then
+    for mode, mappings in pairs(keymaps) do
+      if type(mappings) == "table" then
+        for key, map in pairs(mappings) do
+          local cmd = map[1]
+          local opts = map.opts
+          local desc = map.desc
+
+          if not opts then
+            opts = M.default_opts
+          else
+            opts = vim.tbl_deep_extend("force", M.default_opts, opts)
           end
+
+          table.insert(plugin_keymaps, { key, cmd, opts, mode = mode })
         end
       end
+    end
 
-      M.plugin_keymaps[plugin_name] = nil
-    end,
-  })
+    plugin_keymaps[plugin_name] = nil
+  end
+
+  if #plugin_keymaps > 0 then
+    return plugin_keymaps
+  end
+  return nil
 end
 
 M.load_keymaps = function()

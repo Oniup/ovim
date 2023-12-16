@@ -1,20 +1,25 @@
 local M = {}
 local utils = require("core.utils")
+local keymaps = require("core.keymaps")
 
 M.get_plugin_configs = function()
   local modules_paths = utils.get_all_modules_within({ "core_plugins", "config.plugins" })
 
   -- Load modules
   local configs = {}
-  for _, modules in pairs(modules_paths) do
+  for name, modules in pairs(modules_paths) do
     local config = utils.prequire_extend(modules)
 
-    if config then
+    if config and config.plugin then
+      config.plugin.keys = keymaps.set_plugin_keymap(name)
+
       if config.before_loading then
         config.before_loading()
       end
 
       table.insert(configs, config.plugin)
+    else
+      vim.notify("plugin config for " .. vim.inspect(name) .. " requires a M.plugin table for lazy.nvim to interpret.")
     end
   end
 

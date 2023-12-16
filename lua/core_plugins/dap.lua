@@ -58,7 +58,7 @@ M.plugin = {
     "rcarriga/nvim-dap-ui",
     "nvim-telescope/telescope-dap.nvim",
   },
-  event = "BufEnter",
+  lazy = true,
   opts = {
     dapui = {}
   },
@@ -72,10 +72,9 @@ M.plugin = {
 
     local telescope = require("telescope")
     telescope.load_extension("dap")
-  end,
-  init = function()
+
     M.load_all_dapconfigs({ "defaults.dapconfigs", "config.dapconfigs" })
-  end
+  end,
 }
 
 return M

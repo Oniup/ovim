@@ -1,5 +1,9 @@
 local M = {}
 
+vim.g.load_doxygen_syntax = 1
+vim.g.doxygen_enhanced_colour = 1
+vim.loader.enable()
+
 M.leader_key = " "
 
 M.vim_opts = {
@@ -13,6 +17,7 @@ M.vim_opts = {
   shiftwidth = 2,
   softtabstop = 2,
   shiftround = true, -- always indent by multiple of shiftwidth
+  expandtab = true,  -- Always use spaces instead of tabs
   scrolloff = 5,     -- Start scrolling x lines before edge of view port
   splitbelow = true, -- Open horizontal splits below the current one
   splitright = true, -- Open vertical splits right of the current one
@@ -20,14 +25,40 @@ M.vim_opts = {
   fileencoding = "utf-8",
   smarttab = true,
   smartindent = true,
-  hidden = true,        -- allows you to hide buffers with unsaved changes without being prompted
+  hidden = true, -- allows you to hide buffers with unsaved changes without being prompted
+  wrap = false,
 
+  mouse = "a",          -- Enables mouse functionality
+  list = true,          -- Show white spaces
+
+  inccommand = "split", -- Line preview of :s results
   incsearch = true,     -- Do incremental search
   ignorecase = true,    -- Ignore case in search
 
   termguicolors = true, -- Use 24bit colors
   synmaxcol = 200,      -- Don't bother syntax highlighting long lines
   completeopt = "menuone,noselect,noinsert",
+
+  backup = false,      -- Don't use generated backup files
+  swapfile = false,    -- Don't create swapfiles
+  writebackup = false, -- Don't write a backup file
+
+  fillchars = {
+    foldopen = "",
+    foldclose = "",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    eob = " ",
+  },
+
+  listchars = {
+    nbsp = "⦸",
+    tab = "▷┅",
+    extends = "»",
+    precedes = "«",
+    trail = "•",
+  },
 
   shortmess = vim.opt.shortmess
       + "A"  -- Ignore annoying swapfile messages
@@ -39,7 +70,7 @@ M.vim_opts = {
       + "t"  -- Truncate file messages at start
       + "c", -- Don't show matching messages
 
-  -- Option  to influence how Vim formats text (:help fo-table)
+  -- Influence how Vim formats text (:help fo-table)
   formatoptions = vim.opt.formatoptions
       - "a"  -- Don't autoformat
       - "t"  -- Don't autoformat my code, have linters for that
@@ -48,13 +79,6 @@ M.vim_opts = {
       + "r"  -- Continue comment with enter
       - "o"  -- Don't continue comment with w/ o and o
       + "n", -- Smart auto indenting inside numbered lists
-
-  listchars = vim.opt.listchars
-      + "nbsp:⦸" -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
-      + "tab:▷┅" -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
-      + "extends:»" -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
-      + "precedes:«" -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-      + "trail:•", -- BULLET (U+2022, UTF-8: E2 80 A2)
 }
 
 return M

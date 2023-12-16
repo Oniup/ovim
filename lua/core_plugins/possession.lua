@@ -6,7 +6,6 @@ M.plugin = {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
   },
-  event = "BufEnter",
   opts = {
     silent = true,
     load_silent = true,
@@ -42,11 +41,12 @@ M.plugin = {
       },
     },
   },
-  init = function()
+  config = function(_, opts)
+    require("possession").setup(opts)
+
     local telescope = require("telescope")
     telescope.load_extension("possession")
-    vim.keymap.set("n", "<leader>se", telescope.extensions.possession.list, { noremap = true, silent = true })
-  end
+  end,
 }
 
 return M

@@ -12,10 +12,6 @@ local horizontal_layout = {
   },
 }
 
-M.telescope = function()
-  return require("telescope")
-end
-
 M.telescope_actions = function()
   return require("telescope.actions")
 end
@@ -32,10 +28,8 @@ M.plugin = {
       build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build " ..
           "build --config Release && cmake --install build --prefix build"
     },
-    "nvim-telescope/telescope-file-browser.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
   },
-  event = "BufEnter",
   opts = {
     defaults = {
       preview = false,
@@ -76,11 +70,13 @@ M.plugin = {
       },
     }
   },
-  init = function()
-    M.telescope().load_extension("fzf")
-    M.telescope().load_extension("file_browser")
-    M.telescope().load_extension("ui-select")
-  end
+  config = function(_, opts)
+    local telescope = require("telescope")
+    telescope.setup(opts)
+
+    telescope.load_extension("fzf")
+    telescope.load_extension("ui-select")
+  end,
 }
 
 return M

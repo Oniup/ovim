@@ -13,4 +13,8 @@ end
 
 local plugins = require("core.plugins")
 plugins.load_plugins()
-keymaps.plugin_keymaps_autocmd_setup()
+
+-- Remove required initializing tables
+keymaps.plugin_keymaps = nil
+keymaps.mapping_modes = nil
+keymaps.default_opts = nil

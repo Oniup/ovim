@@ -90,14 +90,16 @@ M.plugin = {
       "nvim-dap-ui",
     }
   },
-  init = function()
+  config = function(_, opts)
+    require("lualine").setup(opts)
+
     vim.api.nvim_create_augroup("lualine_group", { clear = true })
     vim.api.nvim_create_autocmd("User", {
       group = "lualine_group",
       pattern = "LspProgressStatusUpdated",
       callback = require("lualine").refresh,
     })
-  end
+  end,
 }
 
 return M

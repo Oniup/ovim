@@ -1,15 +1,4 @@
-# Oniup's Neovim Config
-
-<!--toc:start-->
-
-* [Oniup's Neovim Config](#oniups-neovim-config)
-  * [Installation](#installation)
-    * [Dependencies](#dependencies)
-    * [Instal Neovim Config](#instal-neovim-config)
-  * [Uninstall](#uninstall)
-* [License](#license)
-
-<!--toc:end-->
+# Ovim
 
 ## Installation
 
@@ -62,7 +51,7 @@ you'll also need to install pynvim through pip (which installed with python)
 pip install pynvim --upgrade
 ```
 
-### Instal Neovim Config
+### Install Ovim
 
 ***Windows:***
 
