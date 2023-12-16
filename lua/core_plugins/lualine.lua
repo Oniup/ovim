@@ -1,8 +1,16 @@
 local M = {}
+local icons = require("core.utils").icons
 
 M.sections = {
   mode = "mode",
-  diff = "diff",
+  diff = {
+    "diff",
+    symbols = {
+      added = icons.common.git.untracked .. " ",
+      modified = icons.common.git.renamed .. " ",
+      removed = icons.common.git.deleted .. " ",
+    },
+  },
   branch = "branch",
   location = "location",
   lsp_progress = { function() return require("lsp-progress").progress() end },
@@ -26,7 +34,6 @@ M.sections = {
   },
   diagnostics = {
     "diagnostics",
-    sections = { "error", "warn", "info", "hint" },
     diagnostics_color = {
       diagnostics_color = {
         error = 'DiagnosticError',
@@ -34,11 +41,16 @@ M.sections = {
         info  = 'DiagnosticInfo',
         hint  = 'DiagnosticHint',
       },
-      symbols = require("core.utils").icons.diagnostics,
       colored = true,
       update_in_insert = true,
       always_visable = true,
-    }
+    },
+    symbols = {
+      error = icons.diagnostics.error,
+      warn = icons.diagnostics.warn,
+      info = icons.diagnostics.info,
+      hint = icons.diagnostics.hint,
+    },
   }
 }
 
@@ -46,8 +58,6 @@ M.plugin = {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
-
-    -- "Exafunction/codeium.vim",
     "linrongbin16/lsp-progress.nvim",
   },
   event = "BufEnter",
@@ -61,7 +71,6 @@ M.plugin = {
       lualine_a = { M.sections.mode },
       lualine_b = { M.sections.branch, M.sections.diff },
       lualine_c = { M.sections.diagnostics },
-      -- lualine_x = { "codeium#GetStatusString" },
       lualine_x = {},
       lualine_y = { M.sections.lsp_progress, },
       lualine_z = { M.sections.filetype, M.sections.progress, M.sections.location },
@@ -75,8 +84,9 @@ M.plugin = {
       lualine_z = {},
     },
     extensions = {
-      "nvim-tree",
       "lazy",
+      "mason",
+      "nvim-tree",
       "nvim-dap-ui",
     }
   },
