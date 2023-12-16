@@ -88,6 +88,7 @@ M.plugin = {
       "mason",
       "nvim-tree",
       "nvim-dap-ui",
+      "toggleterm",
     }
   },
   config = function(_, opts)
