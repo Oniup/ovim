@@ -1,15 +1,7 @@
-# Oniup's Neovim Config
+# Ovim
 
-<!--toc:start-->
-
-* [Oniup's Neovim Config](#oniups-neovim-config)
-  * [Installation](#installation)
-    * [Dependencies](#dependencies)
-    * [Instal Neovim Config](#instal-neovim-config)
-  * [Uninstall](#uninstall)
-* [License](#license)
-
-<!--toc:end-->
+Is a small Neovim configuration setup to make it easy to customize and extend
+with your own configurations
 
 ## Installation
 
@@ -55,14 +47,16 @@ choco install [PACKAGE_NAME] -y
 * [FZF](https://github.com/junegunn/fzf) which is used for fuzzy search to
   improve telescope performance
 
-Once all those packages are installed, COC needs one more package to work,
-you'll also need to install pynvim through pip (which installed with python)
+Make sure that pynvim is installed and is the latest version
 
 ```bash
 pip install pynvim --upgrade
 ```
 
-### Instal Neovim Config
+> It is recommended to download and use a Nerd Font for displaying icons. However
+> it isn't required.
+
+### Install Ovim
 
 ***Windows:***
 
