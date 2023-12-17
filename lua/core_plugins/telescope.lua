@@ -2,19 +2,25 @@ local M = {}
 
 local icons = require("core.utils").icons
 
-local horizontal_layout = {
-  preview = true,
-  layout_strategy = "horizontal",
-  layout_config = {
-    width = 0.7,
-    height = 0.6,
-    preview_width = 0.65,
-  },
-}
-
-M.telescope_actions = function()
+local function telescope_actions()
   return require("telescope.actions")
 end
+
+local search_without_preview = {
+}
+
+local search_with_preview = {
+  preview = true,
+  results_title = false,
+  layout_strategy = "vertical",
+  layout_config = {
+    anchor = "N",
+    width = 0.5,
+    height = 0.6,
+    preview_height = 0.6,
+    prompt_position = "top"
+  }
+}
 
 M.plugin = {
   "nvim-telescope/telescope.nvim",
@@ -32,34 +38,35 @@ M.plugin = {
   },
   opts = {
     defaults = {
-      preview = false,
       mappings = {
         i = {
-          ["qq"] = function(buf) M.telescope_actions().close(buf) end,
-          ["<c-l>"] = function(buf) M.telescope_actions().select_vertical(buf) end,
-          ["<c-j>"] = function(buf) M.telescope_actions().select_horizontal(buf) end
+          ["qq"] = function(buf) telescope_actions().close(buf) end,
+          ["<c-l>"] = function(buf) telescope_actions().select_vertical(buf) end,
+          ["<c-j>"] = function(buf) telescope_actions().select_horizontal(buf) end
         },
         n = {
-          ["qq"] = function(buf) M.telescope_actions().close(buf) end,
-          ["<c-l>"] = function(buf) M.telescope_actions().select_vertical(buf) end,
-          ["<c-j>"] = function(buf) M.telescope_actions().select_horizontal(buf) end
+          ["qq"] = function(buf) telescope_actions().close(buf) end,
+          ["<c-l>"] = function(buf) telescope_actions().select_vertical(buf) end,
+          ["<c-j>"] = function(buf) telescope_actions().select_horizontal(buf) end
         },
       },
       border = true,
       borderchars = icons.border_chars[icons.border],
+      sorting_strategy = "ascending",
+      preview = false,
       results_title = false,
-      layout_strategy = "center",
+      layout_strategy = "horizontal",
       layout_config = {
-        width = 0.5,
-        height = 0.5,
+        anchor = "N",
+        width = 0.4,
+        height = 0.3,
         prompt_position = "top"
       },
-      sorting_strategy = "ascending",
     },
     pickers = {
-      help_tags = horizontal_layout,
-      live_grep = horizontal_layout,
-      media_files = horizontal_layout,
+      live_grep = search_with_preview,
+      help_tags = search_with_preview,
+      current_buffer_fuzzy_find = search_with_preview,
     },
     extensions = {
       fzf = {

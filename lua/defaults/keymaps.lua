@@ -57,8 +57,8 @@ return {
     },
     ["telescope"] = {
       n = {
-        ["<leader>fc"] = { function() telescope_builtin().current_buffer_fuzzy_find() end, desc = "Find in current buf" },
         ["<leader>ff"] = { function() telescope_builtin().find_files() end, desc = "Find file" },
+        ["<leader>fs"] = { function() telescope_builtin().current_buffer_fuzzy_find() end, desc = "Find in current buf" },
         ["<leader>fg"] = { function() telescope_builtin().live_grep() end, desc = "Live grep" },
         ["<leader>fh"] = { function() telescope_builtin().help_tags() end, desc = "Find vim help tag" },
         ["<leader>fb"] = { function() telescope().extensions.file_browser.file_browser() end, desc = "Open file browser" },
