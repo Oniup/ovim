@@ -6,9 +6,6 @@ local function telescope_actions()
   return require("telescope.actions")
 end
 
-local search_without_preview = {
-}
-
 local search_with_preview = {
   preview = true,
   results_title = false,
