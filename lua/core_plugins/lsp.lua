@@ -64,14 +64,9 @@ M.plugin = {
     "neovim/nvim-lspconfig",
     "nvim-lua/plenary.nvim",
 
-    -- LSP modules
-    "stevearc/dressing.nvim",   --- better ui
-    "ray-x/lsp_signature.nvim", --- shows signature help popup
-
     -- Other
-    "telescope/telescope.nvim", --- fuzzy finder
-    -- "ms-jpq/coq_nvim"           --- completion
-    "hrsh7th/nvim-cmp",         --- completion
+    "stevearc/dressing.nvim", --- better ui
+    "hrsh7th/nvim-cmp",       --- completion
   },
   lazy = false,
   priority = 999, -- initialized after color theme

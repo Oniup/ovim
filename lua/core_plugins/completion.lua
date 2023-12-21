@@ -101,7 +101,6 @@ M.plugin = {
     "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-calc",
     "hrsh7th/cmp-nvim-lsp-signature-help",
-    "rcarriga/cmp-dap",
   },
   config = function()
     local cmp = require("cmp")
@@ -124,12 +123,6 @@ M.plugin = {
           { name = "cmdline" }
         }
       ),
-    })
-
-    cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-      sources = {
-        { name = "dap" },
-      },
     })
   end
 }

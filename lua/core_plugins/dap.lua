@@ -57,6 +57,7 @@ M.plugin = {
   dependencies = {
     "rcarriga/nvim-dap-ui",
     "nvim-telescope/telescope-dap.nvim",
+    "rcarriga/cmp-dap",
   },
   lazy = true,
   opts = {
@@ -74,6 +75,12 @@ M.plugin = {
     telescope.load_extension("dap")
 
     M.load_all_dapconfigs({ "defaults.dapconfigs", "config.dapconfigs" })
+
+    require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+      sources = {
+        { name = "dap" },
+      },
+    })
   end,
 }
 
