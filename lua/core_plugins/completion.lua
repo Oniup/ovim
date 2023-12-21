@@ -2,9 +2,12 @@ local M = {}
 local icons = require("core.utils").icons
 
 local has_words_before = function()
-  local unpack = unpack or table.unpack
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+  local unpack = table.unpack or nil
+  if unpack then
+    local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+  end
+  return false
 end
 
 function M.cmp_get_default_opts()
@@ -34,6 +37,7 @@ function M.cmp_get_default_opts()
       ["<C-b>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
       ["<C-e>"] = cmp.mapping.abort(),
+      ["<CR>"] = cmp.mapping.confirm({ select = true }),
     }),
     sources = cmp.config.sources(
       {
@@ -54,7 +58,7 @@ function M.cmp_get_default_opts()
     formatting = {
       fields = { "kind", "abbr", "menu" },
       format = function(entry, vim_item)
-        vim_item.kind = icons.kind[vim_item.kind]
+        vim_item.kind = " " .. icons.kind[vim_item.kind]
         vim_item.menu = ({
           buffer = "buf",
           nvim_lsp = "lsp",
@@ -66,23 +70,7 @@ function M.cmp_get_default_opts()
     },
     snippet = {
       expand = function(args)
-        unpack = unpack or table.unpack
-        local line_num, col = unpack(vim.api.nvim_win_get_cursor(0))
-        local line_text = vim.api.nvim_buf_get_lines(0, line_num - 1, line_num, true)[1]
-        local indent = string.match(line_text, '^%s*')
-        local replace = vim.split(args.body, '\n', true)
-        local surround = string.match(line_text, '%S.*') or ''
-        local surround_end = surround:sub(col)
-
-        replace[1] = surround:sub(0, col - 1) .. replace[1]
-        replace[#replace] = replace[#replace] .. (#surround_end > 1 and ' ' or '') .. surround_end
-        if indent ~= '' then
-          for i, line in ipairs(replace) do
-            replace[i] = indent .. line
-          end
-        end
-
-        vim.api.nvim_buf_set_lines(0, line_num - 1, line_num, true, replace)
+        vim.fn["vsnip#anonymous"](args.body)
       end
     },
   }
@@ -101,6 +89,9 @@ M.plugin = {
     "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-calc",
     "hrsh7th/cmp-nvim-lsp-signature-help",
+
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/vim-vsnip',
   },
   event = "InsertEnter",
   config = function()
