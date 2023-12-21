@@ -7,7 +7,7 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
-function M.cmp_get_opts()
+function M.cmp_get_default_opts()
   local cmp = require("cmp")
 
   local opts = {
@@ -104,7 +104,13 @@ M.plugin = {
   },
   config = function()
     local cmp = require("cmp")
-    cmp.setup(M.cmp_get_opts())
+
+    local opts = M.cmp_get_default_opts()
+    if M.cmp_get_opts then
+      opts = vim.tbl_deep_extend("force", opts, M.cmp_get_opts())
+    end
+
+    cmp.setup(opts)
 
     cmp.setup.cmdline({ "/", "?" }, {
       mapping = cmp.mapping.preset.cmdline(),
