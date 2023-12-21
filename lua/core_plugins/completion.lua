@@ -102,6 +102,7 @@ M.plugin = {
     "hrsh7th/cmp-calc",
     "hrsh7th/cmp-nvim-lsp-signature-help",
   },
+  event = "InsertEnter",
   config = function()
     local cmp = require("cmp")
 
