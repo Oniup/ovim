@@ -3,7 +3,8 @@ local utils = require("core.utils")
 local icons = utils.icons
 
 function M.default_capabilities()
-  return require("coq").lsp_ensure_capabilities()
+  -- return require("coq").lsp_ensure_capabilities()
+  return require("cmp_nvim_lsp").default_capabilities()
 end
 
 function M.default_on_attach(_, bufnr)
@@ -69,7 +70,8 @@ M.plugin = {
 
     -- Other
     "telescope/telescope.nvim", --- fuzzy finder
-    "ms-jpq/coq_nvim"           --- completion
+    -- "ms-jpq/coq_nvim"           --- completion
+    "hrsh7th/nvim-cmp",         --- completion
   },
   lazy = false,
   priority = 999, -- initialized after color theme

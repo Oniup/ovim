@@ -12,6 +12,11 @@ M.settings = {
     completion = {
       callSnippet = "Replace",
     },
+    runtime = {
+      path = {
+        "?.lua", "?\\/init.lua", vim.fn.stdpath("data") .. "/lazy/*.lua"
+      }
+    }
   },
 }
 
