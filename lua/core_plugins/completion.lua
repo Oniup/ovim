@@ -51,14 +51,13 @@ function M.cmp_get_default_opts()
     ),
     window = {
       completion = {
-        col_offset = -3,
-        side_padding = 0,
+        side_padding = 1,
       },
     },
     formatting = {
       fields = { "kind", "abbr", "menu" },
       format = function(entry, vim_item)
-        vim_item.kind = " " .. icons.kind[vim_item.kind]
+        vim_item.kind = icons.kind[vim_item.kind]
         vim_item.menu = ({
           buffer = "buf",
           nvim_lsp = "lsp",
