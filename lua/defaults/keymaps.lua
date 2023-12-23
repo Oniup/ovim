@@ -65,7 +65,7 @@ return {
         ["<leader>fa"] = { function() telescope_builtin().builtin() end, desc = "All builtin funcs" },
       },
     },
-    ["neogen"] = {
+    ["doxygen"] = {
       n = {
         ["<leader>nf"] = {
           function() require("neogen").generate({}) end,
