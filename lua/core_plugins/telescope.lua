@@ -26,11 +26,6 @@ M.plugin = {
     "nvim-lua/popup.nvim",
     -- Extensions
     "BurntSushi/ripgrep",
-    {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build " ..
-          "build --config Release && cmake --install build --prefix build"
-    },
     "nvim-telescope/telescope-ui-select.nvim",
   },
   opts = {
@@ -65,20 +60,11 @@ M.plugin = {
       help_tags = search_with_preview,
       current_buffer_fuzzy_find = search_with_preview,
     },
-    extensions = {
-      fzf = {
-        fuzzy = true,
-        override_generic_sorter = true,
-        override_file_sorter = true,
-        case_mode = "smart_case",
-      },
-    }
   },
   config = function(_, opts)
     local telescope = require("telescope")
     telescope.setup(opts)
 
-    telescope.load_extension("fzf")
     telescope.load_extension("ui-select")
   end,
 }
