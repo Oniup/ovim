@@ -59,14 +59,15 @@ end
 M.plugin = {
   "williamboman/mason.nvim",
   dependencies = {
-    --- Required
+    -- Required
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
     "nvim-lua/plenary.nvim",
 
     -- Other
-    "stevearc/dressing.nvim", --- better ui
-    "hrsh7th/nvim-cmp",       --- completion
+    "stevearc/dressing.nvim",   -- better ui
+    "ray-x/lsp_signature.nvim", -- signature help popup
+    "hrsh7th/nvim-cmp",         -- completion
   },
   lazy = false,
   priority = 999, -- initialized after color theme

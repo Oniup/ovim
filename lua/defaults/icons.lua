@@ -7,6 +7,7 @@ M.common = {
     disabled = "",
     bullet = "●",
     bullet_disabled = "○",
+    insert = "»",
     arrow = "➜",
     star = "★",
     dash = "‒",
@@ -39,21 +40,9 @@ M.common = {
 
 M.border = "solid" -- Options: :h nvim_open_win
 M.border_chars = {
-  single = {
-    prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-    results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-    preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-  },
-  rounded = {
-    prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-    results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-    preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-  },
-  solid = {
-    prompt = { " ", " ", " ", " ", " ", " ", " ", " " },
-    results = { " ", " ", " ", " ", " ", " ", " ", " " },
-    preview = { " ", " ", " ", " ", " ", " ", " ", " " },
-  },
+  single = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+  rounded = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+  solid = { " ", " ", " ", " ", " ", " ", " ", " " },
   none = {}
 }
 
@@ -118,6 +107,12 @@ M.nvim_tree_glyphs = {
   bookmark = M.common.files.bookmark,
   folder = M.common.folder,
   git = M.common.git,
+}
+
+M.whichkey = {
+  breadcrumb = M.common.list.insert,
+  separator = M.common.list.arrow,
+  group = M.common.git.untracked,
 }
 
 M.kind = {

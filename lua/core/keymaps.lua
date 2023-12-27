@@ -2,13 +2,15 @@ local M = {}
 
 M.set_keymap = function(mode, key, map)
   local cmd = map[1]
-  local opts = map.opts
-  local desc = map.desc
+  local opts = {}
 
-  if not opts then
+  if not map.opts then
     opts = M.default_opts
   else
-    opts = vim.tbl_deep_extend("force", M.default_opts, opts)
+    opts = vim.tbl_deep_extend("force", M.default_opts, map.opts)
+  end
+  if map.desc then
+    opts["desc"] = map.desc
   end
 
   vim.keymap.set(mode, key, cmd, opts)
@@ -24,16 +26,18 @@ function M.set_plugin_keymap(plugin_name)
       if type(mappings) == "table" then
         for key, map in pairs(mappings) do
           local cmd = map[1]
-          local opts = map.opts
-          local desc = map.desc
+          local opts = {}
 
-          if not opts then
+          if not map.opts then
             opts = M.default_opts
           else
-            opts = vim.tbl_deep_extend("force", M.default_opts, opts)
+            opts = vim.tbl_deep_extend("force", M.default_opts, map.opts)
+          end
+          if not map.desc then
+            map.desc = "~"
           end
 
-          table.insert(plugin_keymaps, { key, cmd, opts, mode = mode })
+          table.insert(plugin_keymaps, { key, cmd, desc = map.desc, mode = mode })
         end
       end
     end

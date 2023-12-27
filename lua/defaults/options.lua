@@ -39,9 +39,14 @@ M.vim_opts = {
   synmaxcol = 200,      -- Don't bother syntax highlighting long lines
   completeopt = "menuone,noselect,noinsert",
 
-  backup = false,      -- Don't use generated backup files
-  swapfile = false,    -- Don't create swapfiles
-  writebackup = false, -- Don't write a backup file
+  backup = false,                -- Don't use generated backup files
+  swapfile = false,              -- Don't create swapfiles
+  writebackup = false,           -- Don't write a backup file
+
+  spelllang = { "en", "cjk" },   -- Enable spelling for English
+  spellsuggest = { "best", 10 }, -- Show x the best matching results
+  spell = false,                 -- Enable spell checker
+  spellcapcheck = "",            -- Don't check for capital letters
 
   fillchars = {
     foldopen = "",

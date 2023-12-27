@@ -23,8 +23,8 @@ M.plugin = {
       dap = true,
       dapui = false,
       delete_buffers = true,
-      nvim_tree = true,
-      symbols_outline = true,
+      nvim_tree = false,
+      symbols_outline = false,
     },
     telescope = {
       previewer = {

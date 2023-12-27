@@ -53,6 +53,9 @@ function M.cmp_get_default_opts()
       completion = {
         side_padding = 1,
       },
+      documentation = {
+        border = icons.border
+      }
     },
     formatting = {
       fields = { "kind", "abbr", "menu" },
