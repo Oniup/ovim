@@ -50,11 +50,7 @@ M.load_plugins = function()
     },
     checker = {
       enabled = true,
-      notify = false,
-    },
-    change_detection = {
-      enabled = true,
-      notify = false,
+      notify = true,
     },
     ui = {
       border = utils.icons.border,
@@ -72,6 +68,9 @@ M.load_plugins = function()
       },
     },
   })
+
+  -- Remove as not needed anymore
+  keymaps.plugin_keymaps = nil
 end
 
 return M
