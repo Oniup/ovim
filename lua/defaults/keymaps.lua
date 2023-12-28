@@ -31,8 +31,6 @@ return {
       ["<C-Down>"]   = { "<CMD>resize +2<CR>", desc = "Resize win +y" },
       ["<C-Left>"]   = { "<CMD>vertical resize -2<CR>", desc = "Resize win -x" },
       ["<C-Right>"]  = { "<CMD>vertical resize +2<CR>", desc = "Resize win +x" },
-
-      ["<leader>sp"] = { function() vim.o.spell = not vim.o.spell end, desc = "Toggle spell check" }
     },
   },
   plugins = {
@@ -44,13 +42,16 @@ return {
     ["terminal"] = {
       n = {
         ["<A-i>"] = {
-          "<CMD>ToggleTerm direction=horizontal<CR>",
+          function()
+            vim.cmd("ToggleTerm direction=horizontal name=toggle_terminal<CR>")
+            vim.o.spell = false;
+          end,
           desc = "Toggle terminal",
         },
       },
       t = {
         ["<A-i>"] = {
-          "<CMD>ToggleTerm direction=horizontal<CR>",
+          "<CMD>ToggleTerm direction=horizontal name=toggle_terminal<CR>",
           desc = "Toggle terminal",
         },
         ["jk"] = { "<C-\\><C-n>", desc = "Ecs into normal mode" },

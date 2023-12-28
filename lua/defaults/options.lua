@@ -45,7 +45,7 @@ M.vim_opts = {
 
   spelllang = { "en", "cjk" },   -- Enable spelling for English
   spellsuggest = { "best", 10 }, -- Show x the best matching results
-  spell = false,                 -- Enable spell checker
+  spell = true,                  -- Enable spell checker
   spellcapcheck = "",            -- Don't check for capital letters
 
   fillchars = {
@@ -67,8 +67,8 @@ M.vim_opts = {
 
   shortmess = vim.opt.shortmess
       + "A"  -- Ignore annoying swapfile messages
-      + "I"  -- No spash screen
-      + "O"  -- File-read message overrites previous
+      + "I"  -- No splash screen
+      + "O"  -- File-read message overrates previous
       + "T"  -- Truncate non-file messages in middle
       + "W"  -- Don't echo '[w]/[written]' when writing
       + "o"  -- Overwrite file-written message
@@ -78,7 +78,7 @@ M.vim_opts = {
   -- Influence how Vim formats text (:help fo-table)
   formatoptions = vim.opt.formatoptions
       - "a"  -- Don't autoformat
-      - "t"  -- Don't autoformat my code, have linters for that
+      - "t"  -- Don't autoformat my code, have linter's for that
       + "l"  -- Long lines are not broken up
       + "j"  -- Remove comment leader when joining comments
       + "r"  -- Continue comment with enter
