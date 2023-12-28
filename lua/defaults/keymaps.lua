@@ -33,6 +33,35 @@ return {
       ["<C-Right>"]  = { "<CMD>vertical resize +2<CR>", desc = "Resize win +x" },
     },
   },
+  lsp = {
+    buf = {
+      n = {
+        ["gd"] = { function() telescope().lsp_definitions() end },
+        ["gi"] = { function() telescope().lsp_implementations() end },
+        ["gt"] = { function() telescope().lsp_type_definitions() end },
+        ["gr"] = { function() telescope().lsp_references() end },
+        ["gl"] = { function() telescope().open_float() end },
+        ["K"] = { function() vim.lsp.buf.hover() end },
+        ["<leader>di"] = { function() telescope().diagnostics() end },
+        ["<leader>fo"] = { function() vim.lsp.buf.format() end },
+        ["<leader>ca"] = { function() vim.lsp.buf.code_action() end },
+        ["<leader>re"] = { function() vim.lsp.buf.rename() end },
+        ["<leader>gn"] = { function() vim.diagnostic.goto_next() end },
+        ["<leader>gp"] = { function() vim.diagnostic.goto_prev() end },
+      }
+    },
+    lang = {
+      {
+        ft = { "cpp", "hpp", "ini", "cc", "c", "h" },
+        n = {
+          ["<leader>o"] = {
+            "<CMD>ClangdSwitchSourceHeader<CR>",
+            desc = "swap btw h/c",
+          },
+        },
+      },
+    },
+  },
   plugins = {
     ["file_explorer"] = {
       n = {
@@ -54,7 +83,6 @@ return {
           "<CMD>ToggleTerm direction=horizontal name=toggle_terminal<CR>",
           desc = "Toggle terminal",
         },
-        ["jk"] = { "<C-\\><C-n>", desc = "Ecs into normal mode" },
       },
     },
     ["telescope"] = {
