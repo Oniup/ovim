@@ -1,4 +1,4 @@
-# Ovim
+# OVim
 
 Is a small Neovim configuration setup to make it easy to customize and extend
 with your own configurations
@@ -23,10 +23,10 @@ export HOMEBREW_CORE_GIT_REMOTE="..."  # put your Git mirror of Homebrew/homebre
 
 Install the following dependencies whatever package manager.
 
-> You'll need to install [Chocolatey](https://chocolatey.org/)
-> which is a windows based package manager. To install the following you'll
-> need to open a terminal with administration privileges otherwise windows will
-> reject the installation.
+> You'll need to install either [Chocolatey](https://chocolatey.org/) or
+> [Scoop](https://scoop.sh/) which are terminal based package managers.
+> *note: chocolatey requires the terminal to be elevated with admin privileges
+> to install anything*
 
 ```bash
 choco install [PACKAGE_NAME] -y
