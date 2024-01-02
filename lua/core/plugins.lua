@@ -50,7 +50,7 @@ M.load_plugins = function()
     },
     checker = {
       enabled = true,
-      notify = true,
+      notify = false,
     },
     ui = {
       border = utils.icons.border,

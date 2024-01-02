@@ -4,7 +4,8 @@ local icons = utils.icons
 
 function M.default_capabilities()
   -- return require("coq").lsp_ensure_capabilities()
-  return require("cmp_nvim_lsp").default_capabilities()
+  -- return require("cmp_nvim_lsp").default_capabilities()
+  return {}
 end
 
 function M.default_on_attach(_, bufnr)
