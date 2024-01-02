@@ -1,11 +1,14 @@
 local M = {}
+
 --- calls pcall for require to checks if the module exists
 --- @param module_name string
 --- @return table|nil module If exists with no errors, return the result, otherwise will print error if found with errors, otherwise nil
 function M.prequire(module_name)
   local ok, result = pcall(require, module_name)
   if not ok and result then
-    if not string.match(result, "module '" .. module_name .. "' not found:\n") then
+    if
+      not string.match(result, "module '" .. module_name .. "' not found:\n")
+    then
       vim.notify("Failed to prequire:\n" .. result, vim.log.levels.ERROR)
     end
   else
@@ -62,9 +65,9 @@ function M.set_term_shell(opts, other_shell)
     if vim.fn.has("win32") then
       shell_opts = {
         shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
-        shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command " ..
-            "[Console]::InputEncoding=[Console]::OutputEncoding=" ..
-            "[System.Text.Encoding]::UTF8;",
+        shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
+          .. "[Console]::InputEncoding=[Console]::OutputEncoding="
+          .. "[System.Text.Encoding]::UTF8;",
         shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
         shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
         shellquote = "",
@@ -125,15 +128,14 @@ function M.dapconfig_lang_template(adapter, language, overrides)
     name = "Launch => " .. adapter .. " " .. vim.inspect(language),
     type = adapter,
     request = "launch",
-    program =
-        function()
-          local exec = vim.fn.getcwd() .. "/"
-          exec = exec .. vim.fn.input("Path to exec: " .. exec)
-          if exec and vim.fn.has("win32") then
-            exec = string.gsub(exec, "/", "\\") .. ".exe"
-          end
-          return exec
-        end,
+    program = function()
+      local exec = vim.fn.getcwd() .. "/"
+      exec = exec .. vim.fn.input("Path to exec: " .. exec)
+      if exec and vim.fn.has("win32") then
+        exec = string.gsub(exec, "/", "\\") .. ".exe"
+      end
+      return exec
+    end,
     cwd = "${workspaceFolder}",
     stopAtEntry = false,
   }
@@ -149,7 +151,8 @@ end
 ---@param path string Relative path from where mason is installed (stdpath("data")/mason/packages/)
 ---@param is_exec boolean|nil Determines whether it is an executable. nil == false in this function
 function M.get_mason_package(path, is_exec)
-  local result = M.correct_path(vim.fn.stdpath("data") .. "/mason/packages/" .. path)
+  local result =
+    M.correct_path(vim.fn.stdpath("data") .. "/mason/packages/" .. path)
   if is_exec then
     result = M.correct_exec(result)
   end
@@ -166,11 +169,13 @@ function M.get_all_modules_within(modules_paths)
 
   -- Deconstruct provided paths and create platform specific commands
   for _, path in ipairs(modules_paths) do
-    local cmd = vim.fn.stdpath("config") .. "/lua/" .. string.gsub(path, "%.", "/")
+    local cmd = vim.fn.stdpath("config")
+      .. "/lua/"
+      .. string.gsub(path, "%.", "/")
     if vim.fn.has("win32") then
-      cmd = "dir /b/a-d \"" .. string.gsub(cmd, "/", "\\") .. "\""
+      cmd = 'dir /b/a-d "' .. string.gsub(cmd, "/", "\\") .. '"'
     else
-      cmd = "ls -pUqAL \"" .. cmd .. "\""
+      cmd = 'ls -pUqAL "' .. cmd .. '"'
     end
 
     table.insert(cmds, cmd)
@@ -184,7 +189,10 @@ function M.get_all_modules_within(modules_paths)
         if not entries_tbl[filename] then
           entries_tbl[filename] = { modules_paths[i] .. "." .. filename }
         else
-          table.insert(entries_tbl[filename], modules_paths[i] .. "." .. filename)
+          table.insert(
+            entries_tbl[filename],
+            modules_paths[i] .. "." .. filename
+          )
         end
       end
     end
@@ -195,10 +203,9 @@ end
 
 M.autocmd_id_name = "OvimAutoCmdGroup"
 
-M.autocmd_id = vim.api.nvim_create_augroup(
-  M.autocmd_id_name, {
-    clear = true
-  })
+M.autocmd_id = vim.api.nvim_create_augroup(M.autocmd_id_name, {
+  clear = true,
+})
 
 M.icons = require("defaults.icons")
 

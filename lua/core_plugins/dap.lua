@@ -8,18 +8,22 @@ function M.load_dap_config(module, dapconfig)
     end
 
     vim.notify(
-      "Failed to load dapconfig " .. vim.inspect(err_msg) .. "\nmodule = " ..
-      vim.inspect(module) .. "\ndapconfig = " .. vim.inspect(dapconfig),
+      "Failed to load dapconfig "
+        .. vim.inspect(err_msg)
+        .. "\nmodule = "
+        .. vim.inspect(module)
+        .. "\ndapconfig = "
+        .. vim.inspect(dapconfig),
       vim.log.levels.ERROR
     )
     return false
   end
 
   local passed_checks = passed(dapconfig, "dapconfig is null")
-      and passed(dapconfig.adapters, "adapters is null")
-      and passed(dapconfig.configurations, "configurations is null")
-      and passed(type(dapconfig.adapters) == "table")
-      and passed(type(dapconfig.configurations) == "table")
+    and passed(dapconfig.adapters, "adapters is null")
+    and passed(dapconfig.configurations, "configurations is null")
+    and passed(type(dapconfig.adapters) == "table")
+    and passed(type(dapconfig.configurations) == "table")
 
   if not passed_checks then
     return false
@@ -47,9 +51,13 @@ end
 
 function M.print_dap_lang_configurations()
   local dap = require("dap")
-  vim.notify("DAP adapters = " .. vim.inspect(dap.adapters) ..
-    "\nDAP configurations = " .. vim.inspect(dap.configurations),
-    vim.log.levels.INFO)
+  vim.notify(
+    "DAP adapters = "
+      .. vim.inspect(dap.adapters)
+      .. "\nDAP configurations = "
+      .. vim.inspect(dap.configurations),
+    vim.log.levels.INFO
+  )
 end
 
 M.plugin = {
@@ -67,22 +75,22 @@ M.plugin = {
           size = 40,
           position = "left",
           elements = {
-            { id = "scopes",      size = 0.25, },
-            { id = "breakpoints", size = 0.25, },
-            { id = "stacks",      size = 0.25, },
-            { id = "watches",     size = 0.25, },
+            { id = "scopes", size = 0.25 },
+            { id = "breakpoints", size = 0.25 },
+            { id = "stacks", size = 0.25 },
+            { id = "watches", size = 0.25 },
           },
         },
         {
           size = 10,
           position = "bottom",
           elements = {
-            { id = "repl",    size = 0.18, },
-            { id = "console", size = 1.0, },
+            { id = "repl", size = 0.18 },
+            { id = "console", size = 1.0 },
           },
-        }
+        },
       },
-    }
+    },
   },
   config = function(_, opts)
     local dap = require("dap")
@@ -97,11 +105,14 @@ M.plugin = {
 
     M.load_all_dapconfigs({ "defaults.dapconfigs", "config.dapconfigs" })
 
-    require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-      sources = {
-        { name = "dap" },
-      },
-    })
+    require("cmp").setup.filetype(
+      { "dap-repl", "dapui_watches", "dapui_hover" },
+      {
+        sources = {
+          { name = "dap" },
+        },
+      }
+    )
   end,
 }
 

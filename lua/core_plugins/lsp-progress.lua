@@ -37,9 +37,9 @@ M.plugin = {
         local builder = {}
         for _, cli in ipairs(lsp_clients) do
           if
-              type(cli) == "table"
-              and type(cli.name) == "string"
-              and string.len(cli.name) > 0
+            type(cli) == "table"
+            and type(cli.name) == "string"
+            and string.len(cli.name) > 0
           then
             if messages_map[cli.name] then
               table.insert(builder, stringify(cli.name, messages_map[cli.name]))
@@ -49,14 +49,13 @@ M.plugin = {
           end
         end
         if #builder > 0 then
-          -- return sign .. " " .. table.concat(builder, ", ")
           return table.concat(builder, ", ")
         end
       end
 
       return ""
     end,
-  }
+  },
 }
 
 return M

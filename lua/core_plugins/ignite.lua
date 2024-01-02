@@ -4,15 +4,15 @@ function M.correct_border()
   local border = require("core.utils").icons.border
   if border == "solid" then
     return {
-      NormalFloat           = { link = "NoBorderNormalFloat" },
-      FloatTitle            = { link = "NoBorderFloatTitle" },
-      FloatBorder           = { link = "Background2" },
+      NormalFloat = { link = "NoBorderNormalFloat" },
+      FloatTitle = { link = "NoBorderFloatTitle" },
+      FloatBorder = { link = "Background2" },
 
-      TelescopeNormal       = { link = "NormalFloat" },
+      TelescopeNormal = { link = "NormalFloat" },
       TelescopePromptNormal = { link = "NormalFloat" },
-      TelescopeBorder       = { link = "FloatBorder" },
+      TelescopeBorder = { link = "FloatBorder" },
       TelescopePromptBorder = { link = "FloatBorder" },
-      TelescopePromptTitle  = { link = "NoBorderFloatTitle" },
+      TelescopePromptTitle = { link = "NoBorderFloatTitle" },
       TelescopePreviewTitle = { link = "NoBorderFloatTitle" },
       TelescopeResultsTitle = { link = "NoBorderFloatTitle" },
     }
@@ -33,7 +33,7 @@ M.plugin = {
     -- TODO: Allow to change colorscheme
     require("ignite").setup(opts)
     vim.cmd.colorscheme("ignite")
-  end
+  end,
 }
 
 return M

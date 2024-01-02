@@ -14,8 +14,8 @@ M.plugin = {
       i = {
         ["qq"] = "Close",
       },
-    }
-  }
+    },
+  },
 }
 
 return M

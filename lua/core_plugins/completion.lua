@@ -5,7 +5,12 @@ local function has_words_before()
   local unpack = table.unpack or nil
   if unpack then
     local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    return col ~= 0
+      and vim.api
+          .nvim_buf_get_lines(0, line - 1, line, true)[1]
+          :sub(col, col)
+          :match("%s")
+        == nil
   end
   return false
 end
@@ -39,22 +44,19 @@ function M.cmp_get_default_opts()
       ["<C-e>"] = cmp.mapping.abort(),
       ["<CR>"] = cmp.mapping.confirm({ select = true }),
     },
-    sources = cmp.config.sources(
-      {
-        { name = "nvim_lsp" },
-        { name = "nvim_lsp_signature_help" },
-      },
-      {
-        { name = "buffer" },
-      }
-    ),
+    sources = cmp.config.sources({
+      { name = "nvim_lsp" },
+      { name = "nvim_lsp_signature_help" },
+    }, {
+      { name = "buffer" },
+    }),
     window = {
       completion = {
         side_padding = 1,
       },
       documentation = {
-        border = icons.border
-      }
+        border = icons.border,
+      },
     },
     formatting = {
       fields = { "kind", "abbr", "menu" },
@@ -67,12 +69,12 @@ function M.cmp_get_default_opts()
           cmdline = "cmd",
         })[entry.source.name]
         return vim_item
-      end
+      end,
     },
     snippet = {
       expand = function(args)
         vim.fn["vsnip#anonymous"](args.body)
-      end
+      end,
     },
   }
 
@@ -115,16 +117,13 @@ M.plugin = {
 
     cmp.setup.cmdline(":", {
       mapping = cmp.mapping.preset.cmdline(),
-      sources = cmp.config.sources(
-        {
-          { name = "path" },
-        },
-        {
-          { name = "cmdline" },
-        }
-      ),
+      sources = cmp.config.sources({
+        { name = "path" },
+      }, {
+        { name = "cmdline" },
+      }),
     })
-  end
+  end,
 }
 
 return M

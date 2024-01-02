@@ -9,9 +9,9 @@ end
 local enable_preview = {
   preview = true,
   layout_config = {
-    width = 0.8,
-    preview_width = 0.5,
-  }
+    width = 0.80,
+    preview_width = 0.50,
+  },
 }
 
 M.plugin = {
@@ -23,25 +23,27 @@ M.plugin = {
     "BurntSushi/ripgrep",
     {
       "nvim-telescope/telescope-fzf-native.nvim",
-      build =
-      "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+      build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     },
     "nvim-telescope/telescope-ui-select.nvim",
   },
   opts = {
     defaults = {
-      mappings = {
-        i = {
-          ["qq"] = function(buf) telescope_actions().close(buf) end,
-          ["<c-l>"] = function(buf) telescope_actions().select_vertical(buf) end,
-          ["<c-j>"] = function(buf) telescope_actions().select_horizontal(buf) end
-        },
-        n = {
-          ["qq"] = function(buf) telescope_actions().close(buf) end,
-          ["<c-l>"] = function(buf) telescope_actions().select_vertical(buf) end,
-          ["<c-j>"] = function(buf) telescope_actions().select_horizontal(buf) end
-        },
+      vimgrep_arguments = {
+        "rg",
+        "-L",
+        "--color=never",
+        "--no-heading",
+        "--with-filename",
+        "--line-number",
+        "--column",
+        "--smart-case",
       },
+      initial_mode = "insert",
+      selection_strategy = "reset",
+      prompt_prefix = "   ",
+      selection_caret = "  ",
+      entry_prefix = "  ",
       border = true,
       borderchars = icons.border_chars[icons.border],
       sorting_strategy = "ascending",
@@ -51,8 +53,36 @@ M.plugin = {
       layout_config = {
         prompt_position = "top",
         anchor = "N",
-        width = 0.4,
-        height = 0.5,
+        width = 0.40,
+        height = 0.50,
+      },
+      -- file_sorter = function() return require("telescope.sorters").get_fuzzy_file end,
+      file_ignore_patterns = { "node_modules" },
+      -- generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+      path_display = { "truncate" },
+      mappings = {
+        i = {
+          ["qq"] = function(buf)
+            telescope_actions().close(buf)
+          end,
+          ["<c-l>"] = function(buf)
+            telescope_actions().select_vertical(buf)
+          end,
+          ["<c-j>"] = function(buf)
+            telescope_actions().select_horizontal(buf)
+          end,
+        },
+        n = {
+          ["qq"] = function(buf)
+            telescope_actions().close(buf)
+          end,
+          ["<c-l>"] = function(buf)
+            telescope_actions().select_vertical(buf)
+          end,
+          ["<c-j>"] = function(buf)
+            telescope_actions().select_horizontal(buf)
+          end,
+        },
       },
     },
     pickers = {

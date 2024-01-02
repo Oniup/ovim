@@ -11,7 +11,7 @@ M.plugin = {
       style = "minimal",
       relative = "cursor",
     },
-  }
+  },
 }
 
 return M

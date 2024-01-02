@@ -37,7 +37,10 @@ function M.set_plugin_keymap(plugin_name)
             map.desc = "~"
           end
 
-          table.insert(plugin_keymaps, { key, cmd, desc = map.desc, mode = mode })
+          table.insert(
+            plugin_keymaps,
+            { key, cmd, desc = map.desc, mode = mode }
+          )
         end
       end
     end
@@ -64,7 +67,9 @@ M.load_keymaps = function()
   M.plugin_keymaps = keymaps["plugins"]
 
   for mode, mappings in pairs(keymaps["general"]) do
-    if vim.tbl_contains(M.mapping_modes, mode) and type(mappings) == "table" then
+    if
+      vim.tbl_contains(M.mapping_modes, mode) and type(mappings) == "table"
+    then
       for key, map in pairs(mappings) do
         M.set_keymap(mode, key, map)
       end

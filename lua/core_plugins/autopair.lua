@@ -3,7 +3,7 @@ local M = {}
 M.plugin = {
   "windwp/nvim-autopairs",
   event = { "InsertEnter" },
-  opts = {}
+  opts = {},
 }
 
 return M

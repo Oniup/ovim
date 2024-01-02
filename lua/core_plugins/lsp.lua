@@ -3,15 +3,36 @@ local utils = require("core.utils")
 local icons = utils.icons
 
 function M.default_capabilities()
-  -- return require("coq").lsp_ensure_capabilities()
-  -- return require("cmp_nvim_lsp").default_capabilities()
-  return {}
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+  capabilities.textDocument.completion.completionItem = {
+    documentationFormat = { "markdown", "plaintext" },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+      properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+      },
+    },
+  }
+
+  return capabilities
 end
 
-function M.default_on_attach(_, bufnr)
+function M.default_on_attach(client, bufnr)
   local opts = { buffer = bufnr, silent = true }
   local telescope = require("telescope.builtin")
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+  client.server_capabilities.documentFormattingProvider = false
+  client.server_capabilities.documentRangeFormattingProvider = false
 
   -- TODO: Have this with all the other keybindings
   vim.keymap.set("n", "gd", telescope.lsp_definitions, opts)
@@ -60,18 +81,13 @@ end
 M.plugin = {
   "williamboman/mason.nvim",
   dependencies = {
-    -- Required
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
     "nvim-lua/plenary.nvim",
-
-    -- Other
-    "stevearc/dressing.nvim",   -- better ui
-    "ray-x/lsp_signature.nvim", -- signature help popup
-    "hrsh7th/nvim-cmp",         -- completion
+    "stevearc/dressing.nvim",
+    "nvimtools/none-ls.nvim",
   },
   lazy = false,
-  priority = 999, -- initialized after color theme
   opts = {
     mason = {
       ui = {
@@ -99,7 +115,7 @@ M.plugin = {
           border = icons.border,
           source = "always",
           header = "",
-          prefix = ""
+          prefix = "",
         },
       },
     },
@@ -115,23 +131,24 @@ M.plugin = {
 
     for _, sign in ipairs({
       { name = "DiagnosticSignError", text = icons.diagnostics.error },
-      { name = "DiagnosticSignWarn",  text = icons.diagnostics.warn },
-      { name = "DiagnosticSignHint",  text = icons.diagnostics.hint },
-      { name = "DiagnosticSignInfo",  text = icons.diagnostics.info },
+      { name = "DiagnosticSignWarn", text = icons.diagnostics.warn },
+      { name = "DiagnosticSignHint", text = icons.diagnostics.hint },
+      { name = "DiagnosticSignInfo", text = icons.diagnostics.info },
     }) do
       vim.fn.sign_define(sign.name, {
         texthl = sign.name,
         text = sign.text,
-        numhl = ""
+        numhl = "",
       })
     end
 
     vim.diagnostic.config(opts.display.diagnostics)
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = icons.border,
-      focusable = true,
-    })
-  end
+    vim.lsp.handlers["textDocument/hover"] =
+      vim.lsp.with(vim.lsp.handlers.hover, {
+        border = icons.border,
+        focusable = true,
+      })
+  end,
 }
 
 return M

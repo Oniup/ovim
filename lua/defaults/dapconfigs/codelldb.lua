@@ -7,24 +7,28 @@ M.adapters = {
     type = "server",
     port = "${port}",
     executable = {
-      command = utils.get_mason_package("codelldb/extension/adapter/codelldb", true),
+      command = utils.get_mason_package(
+        "codelldb/extension/adapter/codelldb",
+        true
+      ),
       args = {
-        "--port", "${port}"
+        "--port",
+        "${port}",
       },
-      detached = false
-    }
-  }
+      detached = false,
+    },
+  },
 }
 
 M.configurations = {
   c = {
-    utils.dapconfig_lang_template("codelldb", "C")
+    utils.dapconfig_lang_template("codelldb", "C"),
   },
   cpp = {
-    utils.dapconfig_lang_template("codelldb", "C++")
+    utils.dapconfig_lang_template("codelldb", "C++"),
   },
   rust = {
-    utils.dapconfig_lang_template("codelldb", "Rust")
+    utils.dapconfig_lang_template("codelldb", "Rust"),
   },
 }
 

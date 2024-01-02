@@ -27,7 +27,7 @@ M.plugin = {
       root_folder_label = false,
       indent_width = 1,
       icons = {
-        glyphs = icons.nvim_tree_glyphs
+        glyphs = icons.nvim_tree_glyphs,
       },
     },
     diagnostics = {

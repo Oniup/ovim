@@ -6,14 +6,18 @@ M.sections = {
   diff = {
     "diff",
     symbols = {
-      added = icons.common.git.untracked .. " ",
-      modified = icons.common.git.renamed .. " ",
-      removed = icons.common.git.deleted .. " ",
+      added = icons.nvim_tree_glyphs.git.untracked .. " ",
+      modified = icons.nvim_tree_glyphs.git.renamed .. " ",
+      removed = icons.nvim_tree_glyphs.git.deleted .. " ",
     },
   },
   branch = "branch",
   location = "location",
-  lsp_progress = { function() return require("lsp-progress").progress() end },
+  lsp_progress = {
+    function()
+      return require("lsp-progress").progress()
+    end,
+  },
   progress = "progress",
   filename = {
     "filename",
@@ -36,10 +40,10 @@ M.sections = {
     "diagnostics",
     diagnostics_color = {
       diagnostics_color = {
-        error = 'DiagnosticError',
-        warn  = 'DiagnosticWarn',
-        info  = 'DiagnosticInfo',
-        hint  = 'DiagnosticHint',
+        error = "DiagnosticError",
+        warn = "DiagnosticWarn",
+        info = "DiagnosticInfo",
+        hint = "DiagnosticHint",
       },
       colored = true,
       update_in_insert = true,
@@ -51,7 +55,7 @@ M.sections = {
       info = icons.diagnostics.info,
       hint = icons.diagnostics.hint,
     },
-  }
+  },
 }
 
 M.plugin = {
@@ -63,7 +67,9 @@ M.plugin = {
   event = "BufEnter",
   opts = {
     options = {
-      theme = function() return require("ignite.lualine_theme") end,
+      theme = function()
+        return require("ignite.lualine_theme")
+      end,
       component_separators = { right = "", left = "" },
       section_separators = { right = "", left = "" },
     },
@@ -72,8 +78,12 @@ M.plugin = {
       lualine_b = { M.sections.branch, M.sections.diff },
       lualine_c = { M.sections.diagnostics },
       lualine_x = {},
-      lualine_y = { M.sections.lsp_progress, },
-      lualine_z = { M.sections.filetype, M.sections.progress, M.sections.location },
+      lualine_y = { M.sections.lsp_progress },
+      lualine_z = {
+        M.sections.filetype,
+        M.sections.progress,
+        M.sections.location,
+      },
     },
     inactive_sections = {
       lualine_a = {},
@@ -89,7 +99,7 @@ M.plugin = {
       "nvim-tree",
       "nvim-dap-ui",
       "toggleterm",
-    }
+    },
   },
   config = function(_, opts)
     require("lualine").setup(opts)

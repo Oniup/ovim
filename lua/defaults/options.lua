@@ -1,7 +1,4 @@
 local M = {}
-
-vim.g.load_doxygen_syntax = 1
-vim.g.doxygen_enhanced_colour = 1
 vim.loader.enable()
 
 M.leader_key = " "
@@ -17,8 +14,8 @@ M.vim_opts = {
   shiftwidth = 2,
   softtabstop = 2,
   shiftround = true, -- always indent by multiple of shiftwidth
-  expandtab = true,  -- Always use spaces instead of tabs
-  scrolloff = 5,     -- Start scrolling x lines before edge of view port
+  expandtab = true, -- Always use spaces instead of tabs
+  scrolloff = 5, -- Start scrolling x lines before edge of view port
   splitbelow = true, -- Open horizontal splits below the current one
   splitright = true, -- Open vertical splits right of the current one
   autoindent = true,
@@ -28,25 +25,25 @@ M.vim_opts = {
   hidden = true, -- allows you to hide buffers with unsaved changes without being prompted
   wrap = false,
 
-  mouse = "a",          -- Enables mouse functionality
-  list = true,          -- Show white spaces
+  mouse = "a", -- Enables mouse functionality
+  list = true, -- Show white spaces
 
   inccommand = "split", -- Line preview of :s results
-  incsearch = true,     -- Do incremental search
-  ignorecase = true,    -- Ignore case in search
+  incsearch = true, -- Do incremental search
+  ignorecase = true, -- Ignore case in search
 
   termguicolors = true, -- Use 24bit colors
-  synmaxcol = 200,      -- Don't bother syntax highlighting long lines
+  synmaxcol = 200, -- Don't bother syntax highlighting long lines
   completeopt = "menuone,noselect,noinsert",
 
-  backup = false,                -- Don't use generated backup files
-  swapfile = false,              -- Don't create swapfiles
-  writebackup = false,           -- Don't write a backup file
+  backup = false, -- Don't use generated backup files
+  swapfile = false, -- Don't create swapfiles
+  writebackup = false, -- Don't write a backup file
 
-  spelllang = { "en", "cjk" },   -- Enable spelling for English
+  spelllang = { "en", "cjk" }, -- Enable spelling for English
   spellsuggest = { "best", 10 }, -- Show x the best matching results
-  spell = true,                  -- Enable spell checker
-  spellcapcheck = "",            -- Don't check for capital letters
+  spell = true, -- Enable spell checker
+  spellcapcheck = "", -- Don't check for capital letters
 
   fillchars = {
     foldopen = "",
@@ -66,24 +63,24 @@ M.vim_opts = {
   },
 
   shortmess = vim.opt.shortmess
-      + "A"  -- Ignore annoying swapfile messages
-      + "I"  -- No splash screen
-      + "O"  -- File-read message overrates previous
-      + "T"  -- Truncate non-file messages in middle
-      + "W"  -- Don't echo '[w]/[written]' when writing
-      + "o"  -- Overwrite file-written message
-      + "t"  -- Truncate file messages at start
-      + "c", -- Don't show matching messages
+    + "A" -- Ignore annoying swapfile messages
+    + "I" -- No splash screen
+    + "O" -- File-read message overrates previous
+    + "T" -- Truncate non-file messages in middle
+    + "W" -- Don't echo '[w]/[written]' when writing
+    + "o" -- Overwrite file-written message
+    + "t" -- Truncate file messages at start
+    + "c", -- Don't show matching messages
 
   -- Influence how Vim formats text (:help fo-table)
   formatoptions = vim.opt.formatoptions
-      - "a"  -- Don't autoformat
-      - "t"  -- Don't autoformat my code, have linter's for that
-      + "l"  -- Long lines are not broken up
-      + "j"  -- Remove comment leader when joining comments
-      + "r"  -- Continue comment with enter
-      - "o"  -- Don't continue comment with w/ o and o
-      + "n", -- Smart auto indenting inside numbered lists
+    - "a" -- Don't autoformat
+    - "t" -- Don't autoformat my code, have linter's for that
+    + "l" -- Long lines are not broken up
+    + "j" -- Remove comment leader when joining comments
+    + "r" -- Continue comment with enter
+    - "o" -- Don't continue comment with w/ o and o
+    + "n", -- Smart auto indenting inside numbered lists
 }
 
 return M

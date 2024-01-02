@@ -3,7 +3,8 @@ local utils = require("core.utils")
 local keymaps = require("core.keymaps")
 
 M.get_plugin_configs = function()
-  local modules_paths = utils.get_all_modules_within({ "core_plugins", "config.plugins" })
+  local modules_paths =
+    utils.get_all_modules_within({ "core_plugins", "config.plugins" })
 
   -- Load modules
   local configs = {}
@@ -19,7 +20,11 @@ M.get_plugin_configs = function()
 
       table.insert(configs, config.plugin)
     else
-      vim.notify("plugin config for " .. vim.inspect(name) .. " requires a M.plugin table for lazy.nvim to interpret.")
+      vim.notify(
+        "plugin config for "
+          .. vim.inspect(name)
+          .. " requires a M.plugin table for lazy.nvim to interpret."
+      )
     end
   end
 
@@ -60,10 +65,33 @@ M.load_plugins = function()
     performance = {
       rtp = {
         disabled_plugins = {
-          "netrwPlugin",
-          "tarPlugin",
+          "2html_plugin",
           "tohtml",
+          "getscript",
+          "getscriptPlugin",
+          "gzip",
+          "logipat",
+          "netrw",
+          "netrwPlugin",
+          "netrwSettings",
+          "netrwFileHandlers",
+          "matchit",
+          "tar",
+          "tarPlugin",
+          "rrhelper",
+          "spellfile_plugin",
+          "vimball",
+          "vimballPlugin",
+          "zip",
           "zipPlugin",
+          "tutor",
+          "rplugin",
+          "syntax",
+          "synmenu",
+          "optwin",
+          "compiler",
+          "bugreport",
+          "ftplugin",
         },
       },
     },
