@@ -95,7 +95,7 @@ return {
     },
   },
   plugins = {
-    ["file_explorer"] = {
+    nvimtree = {
       n = {
         ["<leader>e"] = {
           "<cmd> NvimTreeToggle <cr>",
@@ -103,7 +103,7 @@ return {
         },
       },
     },
-    ["terminal"] = {
+    toggleterm = {
       n = {
         ["<A-i>"] = {
           function()
@@ -120,7 +120,7 @@ return {
         },
       },
     },
-    ["telescope"] = {
+    telescope = {
       n = {
         ["<leader>ff"] = {
           "<cmd> Telescope find_files <cr>",
@@ -144,17 +144,7 @@ return {
         },
       },
     },
-    ["doxygen"] = {
-      n = {
-        ["<leader>nf"] = {
-          function()
-            require("neogen").generate({})
-          end,
-          desc = "Gen comment template",
-        },
-      },
-    },
-    ["possession"] = {
+    possession = {
       n = {
         ["<leader>se"] = {
           "<cmd>  Telescope possession list <cr>",
@@ -162,7 +152,7 @@ return {
         },
       },
     },
-    ["dap"] = {
+    dap = {
       n = {
         ["<F5>"] = {
           "<cmd> DapContinue <cr>",
@@ -181,7 +171,7 @@ return {
         },
 
         ["<leader>bb"] = {
-          "<cmd>  DapToggleBreakpoints <cr>",
+          "<cmd>  DapToggleBreakpoint <cr>",
           desc = "Toggle breakpoint",
         },
         ["<leader>bc"] = {

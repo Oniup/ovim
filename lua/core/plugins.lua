@@ -14,6 +14,9 @@ M.get_plugin_configs = function()
     if config and config.plugin then
       config.plugin.keys = keymaps.set_plugin_keymap(name)
 
+      if not config.plugin.init then
+      end
+
       if config.before_loading then
         config.before_loading()
       end
@@ -96,9 +99,6 @@ M.load_plugins = function()
       },
     },
   })
-
-  -- Remove as not needed anymore
-  keymaps.plugin_keymaps = nil
 end
 
 return M

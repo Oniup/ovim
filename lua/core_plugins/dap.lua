@@ -49,17 +49,6 @@ function M.load_all_dapconfigs(modules_paths)
   end
 end
 
-function M.print_dap_lang_configurations()
-  local dap = require("dap")
-  vim.notify(
-    "DAP adapters = "
-      .. vim.inspect(dap.adapters)
-      .. "\nDAP configurations = "
-      .. vim.inspect(dap.configurations),
-    vim.log.levels.INFO
-  )
-end
-
 M.plugin = {
   "mfussenegger/nvim-dap",
   dependencies = {
