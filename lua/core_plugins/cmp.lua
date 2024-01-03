@@ -52,7 +52,8 @@ function M.cmp_get_default_opts()
     }),
     window = {
       completion = {
-        side_padding = 1,
+        winhighlight = "Normal:NormalFloat",
+        border = icons.border,
       },
       documentation = {
         border = icons.border,
@@ -90,7 +91,6 @@ M.plugin = {
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-cmdline",
-    "hrsh7th/cmp-calc",
     "hrsh7th/cmp-nvim-lsp-signature-help",
 
     -- Snippets

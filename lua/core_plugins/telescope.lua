@@ -14,6 +14,22 @@ local enable_preview = {
   },
 }
 
+local function get_correct_border_chars()
+  if type(icons.border) == "table" then
+    return {
+      icons.border[2],
+      icons.border[4],
+      icons.border[6],
+      icons.border[8],
+      icons.border[1],
+      icons.border[3],
+      icons.border[5],
+      icons.border[7],
+    }
+  end
+  return icons.border_chars[icons.border]
+end
+
 M.plugin = {
   "nvim-telescope/telescope.nvim",
   dependencies = {
@@ -45,7 +61,7 @@ M.plugin = {
       selection_caret = "  ",
       entry_prefix = "  ",
       border = true,
-      borderchars = icons.border_chars[icons.border],
+      borderchars = get_correct_border_chars(),
       sorting_strategy = "ascending",
       preview = false,
       results_title = false,

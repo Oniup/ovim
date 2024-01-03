@@ -1,6 +1,6 @@
 local M = {}
 
-M.border = "solid" -- Options: :h nvim_open_win
+M.border = "rounded"
 M.border_chars = {
   single = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
   rounded = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -31,12 +31,7 @@ M.lazy = {
   source = "󰅱 ",
   start = "",
   task = "",
-  list = {
-    "●",
-    "➜",
-    "★",
-    "‒",
-  },
+  list = { "●", "➜", "★", "‒" },
 }
 
 M.diagnostics = {

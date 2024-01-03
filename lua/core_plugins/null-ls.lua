@@ -12,7 +12,6 @@ M.plugin = {
       sources = {
         builtins.formatting.stylua,
         builtins.formatting.clang_format,
-        builtins.completion.spell,
       },
     }
   end,

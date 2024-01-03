@@ -201,6 +201,19 @@ function M.get_all_modules_within(modules_paths)
   return entries_tbl
 end
 
+function M.get_installed_lsp_client_names()
+  local cmd = 'ls -pUqAL "' .. M.mason_install_path .. '"'
+  if vim.fn.has("win32") then
+      cmd = 'dir /b "' .. string.gsub(M.mason_install_path, "/", "\\") .. '"'
+  end
+
+  local servers = {}
+  for client in io.popen(cmd):lines() do
+    table.insert(servers, client)
+  end
+  return servers
+end
+
 M.autocmd_id_name = "OvimAutoCmdGroup"
 
 M.autocmd_id = vim.api.nvim_create_augroup(M.autocmd_id_name, {
@@ -208,5 +221,7 @@ M.autocmd_id = vim.api.nvim_create_augroup(M.autocmd_id_name, {
 })
 
 M.icons = require("defaults.icons")
+
+M.mason_install_path = M.correct_path(vim.fn.stdpath("data") .. "/mason/packages")
 
 return M

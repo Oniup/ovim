@@ -95,7 +95,6 @@ M.plugin = {
     },
     extensions = {
       "lazy",
-      "mason",
       "nvim-tree",
       "nvim-dap-ui",
       "toggleterm",
