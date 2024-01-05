@@ -32,6 +32,7 @@ end
 
 M.plugin = {
   "nvim-telescope/telescope.nvim",
+  name = "telescope",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-lua/popup.nvim",

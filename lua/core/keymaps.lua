@@ -1,20 +1,5 @@
 local M = {}
 
-M.set_keymap = function(mode, key, map)
-  local cmd = map[1]
-  local opts = {}
-
-  if not map.opts then
-    opts = M.default_opts
-  else
-    opts = vim.tbl_deep_extend("force", M.default_opts, map.opts)
-  end
-  if map.desc then
-    opts["desc"] = map.desc
-  end
-
-  vim.keymap.set(mode, key, cmd, opts)
-end
 
 function M.get_plugin_keymaps(plugin_name)
   local keymaps = M.plugin_keymaps[plugin_name]
@@ -108,15 +93,6 @@ function M.load_keymaps()
   M.general = keymaps["general"]
   M.plugin_keymaps = keymaps["plugins"]
 
-  for mode, mappings in pairs(M.general) do
-    if
-      vim.tbl_contains(M.mapping_modes, mode) and type(mappings) == "table"
-    then
-      for key, map in pairs(mappings) do
-        M.set_keymap(mode, key, map)
-      end
-    end
-  end
 end
 
 return M

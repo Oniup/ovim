@@ -1,5 +1,27 @@
 local M = {}
 
+--- Combines two option tables giving right side options priority
+--- @param lhs table Default options
+--- @param rhs table|nil Override/add options
+---@return table opts Combined options
+function M.map_opts(lhs, rhs)
+  if not rhs then
+    return lhs
+  end
+
+  if vim.tbl_islist(rhs) then
+    for _, v in ipairs(rhs) do
+      if v then
+        lhs = vim.tbl_deep_extend("force", lhs, v)
+      end
+    end
+    return lhs
+  end
+
+  lhs = vim.tbl_deep_extend("force", lhs, rhs)
+  return lhs
+end
+
 --- calls pcall for require to checks if the module exists
 --- @param module_name string
 --- @return table|nil module If exists with no errors, return the result, otherwise will print error if found with errors, otherwise nil
@@ -36,66 +58,59 @@ function M.prequire_extend(module_names)
   return modules
 end
 
---- Combines users defined icons and the Ovim's default icons together
---- and stores it. To access the final icons table `require("core.utils").icons`.
---- All plugins that requires an icon should refer to this table.
-function M.load_icons()
-  local usr_icons_ok, usr_icons = pcall(require, "config.icons")
-  if usr_icons_ok then
-    M.icons = vim.tbl_deep_extend("force", M.icons, usr_icons)
+function M.load_options()
+  local opts = M.map_opts(require("core.options"), M.prequire("config.options"))
+
+  for k, v in pairs(opts) do
+    vim.opt[k] = v
   end
 end
 
---- @brief Inserts term shell options for target shell. If no shell is given,
---- then will use defaults. However for windows, will prioritize using pwsh
---- over powershell unless specified
----
---- @param opts table Current options table
---- @param other_shell string|table|nil Target another shell
---- @return table opts Extended options table with terminal shell options
-function M.set_term_shell(opts, other_shell)
-  local shell_opts = {}
-  local other_shell_success = false
+function M.load_icons()
+  M.icons = M.map_opts(require("core.icons"), M.prequire("config.icons"))
+end
 
-  if other_shell then
-    --- TODO: ...
+function M.load_mappings()
+  M.mappings =
+    M.map_opts(require("core.mappings"), M.prequire("config.mappings"))
+
+  vim.g.mapleader = M.mappings.leader
+  vim.g.maplocalleader = M.mappings.leader
+
+  M.set_mappings("general")
+end
+
+--- Sets loads all mappings within the given table using vim.keymap.set(...)
+--- @param tbl_key string Mapping group name
+function M.set_mappings(tbl_key)
+  local registered = M.mappings[tbl_key]
+
+  if not registered then
+    vim.notify(
+      tbl_key .. " mappings don't exists or have not been registered",
+      vim.log.levels.ERROR
+    )
   end
 
-  if not other_shell_success then
-    if vim.fn.has("win32") then
-      shell_opts = {
-        shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
-        shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
-          .. "[Console]::InputEncoding=[Console]::OutputEncoding="
-          .. "[System.Text.Encoding]::UTF8;",
-        shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-        shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-        shellquote = "",
-        shellxquote = "",
-      }
+  for mode, mappings in pairs(registered) do
+    for key, map in pairs(mappings) do
+      local cmd = map[1]
+      local desc = map[2]
+      local opts = M.mappings.default_opts
+
+      if map["opts"] then
+        opts = M.map_opts(opts, map["opts"])
+      end
+      if desc and type(desc) == "string" then
+        opts["desc"] = desc
+      end
+
+      vim.keymap.set(mode, key, cmd, opts)
     end
   end
-
-  return vim.tbl_deep_extend("force", opts, shell_opts)
 end
 
---- @param path string
---- @return string Path If executable, sets the correct file type at end
-function M.correct_exec(path)
-  if vim.fn.has("win32") then
-    return path .. ".exe"
-  end
-  return path
-end
-
---- @param path string
---- @return string Path If on windows, converts all / to \
-function M.correct_path(path)
-  if vim.fn.has("win32") then
-    return string.gsub(path, "/", "\\")
-  end
-  return path
-end
+-------------------------------------------------------------------------------
 
 --- Chooses the correct path based on your platform
 --- @param unix string Unix specific path
@@ -106,21 +121,6 @@ function M.os_correct_path(unix, win32)
     return win32
   end
   return unix
-end
-
---- Chooses the correct path based on your platform
---- @param stdpath string Uses vim.fn.stdpath(...) to get first half of path
---- @param unix string Unix specific second half of path
---- @param win32 string Windows specific second half of path
---- @return string Path Combined stdpath with the platform specific path
-function M.nvim_correct_path(stdpath, unix, win32)
-  local first = vim.fn.stdpath(stdpath) .. "/"
-  if vim.fn.has("win32") then
-    local full = first .. win32
-    return full:gsub("/", "\\")
-  else
-    return first .. unix
-  end
 end
 
 function M.dapconfig_lang_template(adapter, language, overrides)
@@ -204,7 +204,7 @@ end
 function M.get_installed_lsp_client_names()
   local cmd = 'ls -pUqAL "' .. M.mason_install_path .. '"'
   if vim.fn.has("win32") then
-      cmd = 'dir /b "' .. string.gsub(M.mason_install_path, "/", "\\") .. '"'
+    cmd = 'dir /b "' .. string.gsub(M.mason_install_path, "/", "\\") .. '"'
   end
 
   local servers = {}
@@ -214,14 +214,6 @@ function M.get_installed_lsp_client_names()
   return servers
 end
 
-M.autocmd_id_name = "OvimAutoCmdGroup"
-
-M.autocmd_id = vim.api.nvim_create_augroup(M.autocmd_id_name, {
-  clear = true,
-})
-
-M.icons = require("defaults.icons")
-
-M.mason_install_path = M.correct_path(vim.fn.stdpath("data") .. "/mason/packages")
+M.mason_install_path = vim.fn.stdpath("data") .. "/mason/packages"
 
 return M
