@@ -1,4 +1,4 @@
-# OVim
+# Ovim
 
 Is a small Neovim configuration setup to make it easy to customize and extend
 with your own configurations

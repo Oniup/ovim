@@ -5,7 +5,7 @@ M.leader = " "
 
 M.general = {
   n = {
-    ["qq"] = { "<cmd> bdelete <cr>", "Delete current buffer" },
+    ["q"] = { "<cmd> bdelete <cr>", "Delete current buffer" },
     ["<S-l>"] = { "<cmd> bnext <cr>", "Next buf" },
     ["<S-h>"] = { "<cmd> bprevious <cr>", "Previous buf" },
 
@@ -29,43 +29,18 @@ M.general = {
 
 M.lspconfig = {
   n = {
-    ["gd"] = { "<cmd> Telescope lsp_definitions <cr>" },
-    ["gi"] = { "<cmd> Telescope lsp_implementations <cr>" },
-    ["gt"] = { "<cmd> Telescope lsp_type_definitions <cr>" },
-    ["gr"] = { "<cmd> Telescope lsp_references <cr>" },
-    ["gl"] = { "<cmd> Telescope open_float <cr>" },
-    ["K"] = {
-      function()
-        vim.lsp.buf.hover()
-      end,
-    },
-
-    ["<leader>di"] = { "<cmd> Telescope diagnostics() <cr>" },
-    ["<leader>fo"] = {
-      function()
-        vim.lsp.buf.format()
-      end,
-    },
-    ["<leader>ca"] = {
-      function()
-        vim.lsp.buf.code_action()
-      end,
-    },
-    ["<leader>re"] = {
-      function()
-        vim.lsp.buf.rename()
-      end,
-    },
-    ["<leader>gn"] = {
-      function()
-        vim.diagnostic.goto_next()
-      end,
-    },
-    ["<leader>gp"] = {
-      function()
-        vim.diagnostic.goto_prev()
-      end,
-    },
+    ["gd"] = { "<cmd> Telescope lsp_definitions <cr>", "Definitions" },
+    ["gi"] = { "<cmd> Telescope lsp_implementations <cr>", "Implementations" },
+    ["gt"] = { "<cmd> Telescope lsp_type_definitions <cr>", "Type definitions" },
+    ["gr"] = { "<cmd> Telescope lsp_references <cr>", "References" },
+    ["gl"] = { vim.diagnostic.open_float, "Open diagnostic float window" },
+    ["K"] = { vim.lsp.buf.hover, "Hover info" },
+    ["<leader>di"] = { "<cmd> Telescope diagnostics <cr>", "See diagnostics" },
+    ["<leader>fo"] = { vim.lsp.buf.format, "Format file" },
+    ["<leader>ca"] = { vim.lsp.buf.code_action, "Code actions" },
+    ["<leader>re"] = { vim.lsp.buf.rename, "Rename" },
+    ["<leader>gn"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
+    ["<leader>gp"] = { vim.diagnostic.goto_prev, "Go to prev diagnostic" },
   },
 }
 
@@ -73,7 +48,7 @@ M.clangd = {
   n = {
     ["<leader>o"] = {
       "<cmd> ClangdSwitchSourceHeader <cr>",
-      "swap btw h/c",
+      "Swap between header and source",
     },
   },
 }
@@ -107,7 +82,7 @@ M.toggleterm = {
 
 M.telescope = {
   n = {
-    ["<leader>ff"] = {
+    ["<leader>fi"] = {
       "<cmd> Telescope find_files <cr>",
       "Find file",
     },
@@ -157,7 +132,7 @@ M.dap = {
       "Terminate dap session",
     },
 
-    ["<leader>bb"] = {
+    ["<leader>br"] = {
       "<cmd> DapToggleBreakpoint <cr>",
       "Toggle breakpoint",
     },
@@ -174,13 +149,13 @@ M.dap = {
 
     ["<leader>dm"] = {
       "<cmd> Telescope dap commands <cr>",
-      "Show dap commands",
+      "Show jap commands",
     },
     ["<leader>dc"] = {
       "<cmd> Telescope dap configurations <cr>",
       "Show dap configurations",
     },
-    ["<leader>dl"] = {
+    ["<leader>jl"] = {
       "<cmd> Telescope dap variables <cr>",
       "Show dap variables",
     },

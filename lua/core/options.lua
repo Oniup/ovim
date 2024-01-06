@@ -3,6 +3,7 @@ local M = {
   relativenumber = false,
   showmode = false,
   signcolumn = "yes", -- number: for thinner lines
+  laststatus = 0,
   cmdheight = 1,
   cursorline = true,
   tabstop = 2,

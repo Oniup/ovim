@@ -29,7 +29,7 @@ function M.prequire(module_name)
   local ok, result = pcall(require, module_name)
   if not ok and result then
     if
-      not string.match(result, "module '" .. module_name .. "' not found:\n")
+      not string.find(result, "module '" .. module_name .. "' not found:", 1, true)
     then
       vim.notify("Failed to prequire:\n" .. result, vim.log.levels.ERROR)
     end
@@ -85,32 +85,131 @@ end
 function M.set_mappings(tbl_key)
   local registered = M.mappings[tbl_key]
 
-  if not registered then
-    vim.notify(
-      tbl_key .. " mappings don't exists or have not been registered",
-      vim.log.levels.ERROR
-    )
-  end
+  if registered then
+    for mode, mappings in pairs(registered) do
+      for key, map in pairs(mappings) do
+        local cmd = map[1]
+        local desc = map[2]
+        local opts = M.mappings.default_opts
 
-  for mode, mappings in pairs(registered) do
-    for key, map in pairs(mappings) do
-      local cmd = map[1]
-      local desc = map[2]
-      local opts = M.mappings.default_opts
+        if map["opts"] then
+          opts = M.map_opts(opts, map["opts"])
+        end
+        if desc and type(desc) == "string" then
+          opts["desc"] = desc
+        end
 
-      if map["opts"] then
-        opts = M.map_opts(opts, map["opts"])
+        vim.keymap.set(mode, key, cmd, opts)
       end
-      if desc and type(desc) == "string" then
-        opts["desc"] = desc
-      end
-
-      vim.keymap.set(mode, key, cmd, opts)
     end
+
+    return true
   end
+
+  return false
 end
 
--------------------------------------------------------------------------------
+function M.plugin_config(name)
+  local core = M.prequire("plugins.configs." .. name)
+  local override = M.prequire("config.plug_overrides." .. name)
+
+  if core then
+    return M.map_opts(core, override)
+  elseif override then
+    return override
+  end
+
+  return nil
+end
+
+function M.stripped_plugin_name(name)
+  local common_ignore = { "lua", "nvim", "vim" }
+  for _, str in ipairs(common_ignore) do
+    name = string.gsub(name, "%." .. str, "")
+  end
+  return name
+end
+
+function M.plugin_setup_config()
+  local plugins = M.map_opts(require("plugins"), M.prequire("config.plugins"))
+
+  for _, plug in ipairs(plugins) do
+    if not plug.config then
+      plug.config = function(lazy_plugin, opts)
+        local plug_call_name = M.stripped_plugin_name(lazy_plugin.name)
+        local config = M.plugin_config(plug_call_name)
+
+        if config then
+          if not opts then
+            opts = config.opts
+          else
+            opts = M.map_opts(opts, config.opts)
+          end
+
+          if config.require_name then
+            plug_call_name = config.require_name
+          end
+        else
+          if not opts then
+            opts = {}
+          end
+        end
+
+        require(plug_call_name).setup(opts)
+
+        if config and config.setup_callback then
+          config.setup_callback(config)
+        end
+      end
+    end
+
+    plug.init = function(lazy_plugin)
+      local name = lazy_plugin.name
+
+      if not lazy_plugin._.cache then
+        if lazy_plugin.lazy then
+          M.lazy_load_plugin_on_file_open(lazy_plugin.name)
+          return
+        end
+      end
+
+      M.set_mappings(M.stripped_plugin_name(lazy_plugin.name))
+    end
+  end
+
+  return plugins
+end
+
+--- Modified variant of https://github.com/NvChad/NvChad/blob/v2.0/lua/core/utils.lua
+function M.lazy_load_plugin_on_file_open(plugin)
+  vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
+    group = vim.api.nvim_create_augroup("LazyLoadOnFileOpen_" .. plugin, {}),
+    callback = function()
+      local current_file = vim.fn.expand "%"
+      local load_plugin = current_file ~= "NvimTree_1" and current_file ~= "[lazy]" and current_file ~= ""
+
+      if load_plugin then
+        vim.api.nvim_del_augroup_by_name("LazyLoadOnFileOpen_" .. plugin)
+
+        if plugin ~= "treesitter" then
+          vim.schedule(function()
+              M.set_mappings(M.stripped_plugin_name(plugin))
+
+              require("lazy").load { plugins = plugin }
+
+              if plugin == "lspconfig" then
+                vim.cmd "silent! do FileType"
+              end
+            end,
+            0
+          )
+        else
+          require("lazy").load { plugins = plugin }
+        end
+      end
+    end,
+  })
+end
 
 --- Chooses the correct path based on your platform
 --- @param unix string Unix specific path
@@ -144,18 +243,6 @@ function M.dapconfig_lang_template(adapter, language, overrides)
     result = vim.tbl_deep_extend("force", result, overrides)
   end
 
-  return result
-end
-
---- Gets the full path of relative path of mason package
----@param path string Relative path from where mason is installed (stdpath("data")/mason/packages/)
----@param is_exec boolean|nil Determines whether it is an executable. nil == false in this function
-function M.get_mason_package(path, is_exec)
-  local result =
-    M.correct_path(vim.fn.stdpath("data") .. "/mason/packages/" .. path)
-  if is_exec then
-    result = M.correct_exec(result)
-  end
   return result
 end
 
@@ -199,19 +286,6 @@ function M.get_all_modules_within(modules_paths)
   end
 
   return entries_tbl
-end
-
-function M.get_installed_lsp_client_names()
-  local cmd = 'ls -pUqAL "' .. M.mason_install_path .. '"'
-  if vim.fn.has("win32") then
-    cmd = 'dir /b "' .. string.gsub(M.mason_install_path, "/", "\\") .. '"'
-  end
-
-  local servers = {}
-  for client in io.popen(cmd):lines() do
-    table.insert(servers, client)
-  end
-  return servers
 end
 
 M.mason_install_path = vim.fn.stdpath("data") .. "/mason/packages"
