@@ -2,7 +2,12 @@ return {
   {
     "Oniup/ignite.nvim",
     lazy = false,
-    priority = 1000,
+  },
+  {
+    "nvim-tree/nvim-web-devicons",
+    opts = {
+      lazy_load_plugin_on_file_open = false,
+    },
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -38,13 +43,43 @@ return {
     dependencies = {
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
-      "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
     },
     event = "InsertEnter",
+  },
+  {
+    "neovim/nvim-lspconfig",
+    name = "lspconfig",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-nvim-lsp",
+
+      -- "nvimtools/none-ls.nvim",
+
+      "linrongbin16/lsp-progress.nvim",
+      "stevearc/dressing.nvim",
+    },
+  },
+  {
+    "linrongbin16/lsp-progress.nvim",
+    "nvim-tree/nvim-web-devicons",
+    dependencies = {
+      "lspconfig"
+    },
+    opts = {
+      lazy_load_plugin_on_file_open = false,
+    },
+  },
+  {
+    "williamboman/mason.nvim",
+    dependencies = {
+      "lspconfig",
+    },
+    cmd = {
+      "Mason", "MasonInstall", "MasonUpdate", "MasonUninstallAll", "MasonLog",
+    },
   },
   {
     "akinsho/toggleterm.nvim",
@@ -54,7 +89,6 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
-      -- "linrongbin16/lsp-progress.nvim",
     },
   },
   {

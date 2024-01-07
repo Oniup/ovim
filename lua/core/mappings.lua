@@ -27,7 +27,7 @@ M.general = {
   },
 }
 
-M.lspconfig = {
+M.lsp = {
   n = {
     ["gd"] = { "<cmd> Telescope lsp_definitions <cr>", "Definitions" },
     ["gi"] = { "<cmd> Telescope lsp_implementations <cr>", "Implementations" },
@@ -44,7 +44,7 @@ M.lspconfig = {
   },
 }
 
-M.clangd = {
+M.lsp_clangd = {
   n = {
     ["<leader>o"] = {
       "<cmd> ClangdSwitchSourceHeader <cr>",

@@ -141,21 +141,24 @@ function M.plugin_setup_config()
 
         if config then
           if not opts then
-            opts = config.opts
+            opts = config.opts or {}
           else
             opts = M.map_opts(opts, config.opts)
           end
 
-          if config.require_name then
-            plug_call_name = config.require_name
+          if config.setup ~= nil and type(config.setup) == "function" then
+            config.setup(lazy_plugin, opts)
+          elseif config.setup == true or config.setup == nil then
+            if config.require_name then
+              plug_call_name = config.require_name
+          end
+
+            require(plug_call_name).setup(opts)
           end
         else
-          if not opts then
-            opts = {}
-          end
+          require(plug_call_name).setup(opts)
         end
 
-        require(plug_call_name).setup(opts)
 
         if config and config.setup_callback then
           config.setup_callback(config)
@@ -165,11 +168,23 @@ function M.plugin_setup_config()
 
     plug.init = function(lazy_plugin)
       local name = lazy_plugin.name
+      local opts = lazy_plugin.opts
 
-      if not lazy_plugin._.cache then
+      local opts = {
+          lazy_load_plugin_on_file_open = not lazy_plugin._.cache,
+      }
+      if lazy_plugin.opts then
+        opts = vim.tbl_deep_extend("force", opts, lazy_plugin.opts)
+
+        -- Remove these options, should not be passed to plugin when loaded
+        for k, _ in pairs(opts) do
+          lazy_plugin.opts[k] = nil
+        end
+      end
+
+      if opts.lazy_load_plugin_on_file_open then
         if lazy_plugin.lazy then
           M.lazy_load_plugin_on_file_open(lazy_plugin.name)
-          return
         end
       end
 
@@ -193,8 +208,6 @@ function M.lazy_load_plugin_on_file_open(plugin)
 
         if plugin ~= "treesitter" then
           vim.schedule(function()
-              M.set_mappings(M.stripped_plugin_name(plugin))
-
               require("lazy").load { plugins = plugin }
 
               if plugin == "lspconfig" then
