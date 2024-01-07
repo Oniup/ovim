@@ -51,7 +51,7 @@ return {
       },
       "burntsushi/ripgrep",
       "nvim-telescope/telescope-ui-select.nvim",
-    }
+    },
   },
   {
     "jedrzejboczar/possession.nvim",
@@ -105,8 +105,8 @@ return {
     name = "lspconfig",
     dependencies = {
       "mason",
-      -- "nvimtools/none-ls.nvim",
       "lsp-progress",
+      "null-ls",
       "stevearc/dressing.nvim",
     },
   },
@@ -122,6 +122,16 @@ return {
     },
   },
   {
+    "nvimtools/none-ls.nvim",
+    name = "null-ls",
+    dependencies = {
+      "lspconfig",
+    },
+    opts = {
+      lazy_load_plugin_on_file_open = false,
+    },
+  },
+  {
     "williamboman/mason.nvim",
     name = "mason",
     dependencies = {
@@ -130,7 +140,11 @@ return {
       "williamboman/mason-lspconfig.nvim",
     },
     cmd = {
-      "Mason", "MasonInstall", "MasonUpdate", "MasonUninstallAll", "MasonLog",
+      "Mason",
+      "MasonInstall",
+      "MasonUpdate",
+      "MasonUninstallAll",
+      "MasonLog",
     },
   },
 

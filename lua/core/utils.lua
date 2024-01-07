@@ -29,7 +29,12 @@ function M.prequire(module_name)
   local ok, result = pcall(require, module_name)
   if not ok and result then
     if
-      not string.find(result, "module '" .. module_name .. "' not found:", 1, true)
+      not string.find(
+        result,
+        "module '" .. module_name .. "' not found:",
+        1,
+        true
+      )
     then
       vim.notify("Failed to prequire:\n" .. result, vim.log.levels.ERROR)
     end
@@ -116,7 +121,7 @@ function M.set_mappings(tbl_key, override_opts)
   return false
 end
 
-function M.plugin_config(name)
+function M.get_mapped_plugin_config(name)
   local core = M.prequire("plugins.configs." .. name)
   local override = M.prequire("config.plugins.configs" .. name)
 
@@ -137,98 +142,8 @@ function M.stripped_plugin_name(name)
   return name
 end
 
-function M.plugin_setup_config()
-  local plugins = M.map_opts(require("plugins"), M.prequire("config.plugins"))
-
-  for _, plug in ipairs(plugins) do
-    if not plug.config then
-      plug.config = function(lazy_plugin, opts)
-        local plug_call_name = M.stripped_plugin_name(lazy_plugin.name)
-        local config = M.plugin_config(plug_call_name)
-
-        if config then
-          if not opts then
-            opts = config.opts or {}
-          else
-            opts = M.map_opts(opts, config.opts)
-          end
-
-          if config.setup ~= nil and type(config.setup) == "function" then
-            config.setup(lazy_plugin, opts)
-          elseif config.setup == true or config.setup == nil then
-            if config.require_name then
-              plug_call_name = config.require_name
-          end
-
-            require(plug_call_name).setup(opts)
-          end
-        else
-          require(plug_call_name).setup(opts)
-        end
-
-
-        if config and config.setup_callback then
-          config.setup_callback(config)
-        end
-      end
-    end
-
-    plug.init = function(lazy_plugin)
-      local name = lazy_plugin.name
-      local opts = lazy_plugin.opts
-
-      local opts = {
-          lazy_load_plugin_on_file_open = not lazy_plugin._.cache,
-      }
-      if lazy_plugin.opts then
-        opts = vim.tbl_deep_extend("force", opts, lazy_plugin.opts)
-
-        -- Remove these options, should not be passed to plugin when loaded
-        for k, _ in pairs(opts) do
-          lazy_plugin.opts[k] = nil
-        end
-      end
-
-      if opts.lazy_load_plugin_on_file_open then
-        if lazy_plugin.lazy then
-          M.lazy_load_plugin_on_file_open(lazy_plugin.name)
-        end
-      end
-
-      M.set_mappings(M.stripped_plugin_name(lazy_plugin.name))
-    end
-  end
-
-  return plugins
-end
-
---- Modified variant of https://github.com/NvChad/NvChad/blob/v2.0/lua/core/utils.lua
-function M.lazy_load_plugin_on_file_open(plugin)
-  vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
-    group = vim.api.nvim_create_augroup("LazyLoadOnFileOpen_" .. plugin, {}),
-    callback = function()
-      local current_file = vim.fn.expand "%"
-      local load_plugin = current_file ~= "NvimTree_1" and current_file ~= "[lazy]" and current_file ~= ""
-
-      if load_plugin then
-        vim.api.nvim_del_augroup_by_name("LazyLoadOnFileOpen_" .. plugin)
-
-        if plugin ~= "treesitter" then
-          vim.schedule(function()
-              require("lazy").load { plugins = plugin }
-
-              if plugin == "lspconfig" then
-                vim.cmd "silent! do FileType"
-              end
-            end,
-            0
-          )
-        else
-          require("lazy").load { plugins = plugin }
-        end
-      end
-    end,
-  })
+function M.load_plugins()
+  require("core.plugins").load_lazy_plugins()
 end
 
 --- Chooses the correct path based on your platform

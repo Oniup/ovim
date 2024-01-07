@@ -1,20 +1,13 @@
 local M = {}
 
-M.plugin = {
-  "nvimtools/none-ls.nvim",
-  dependencies = {
-    "neovim/nvim-lspconfig",
+local builtins = require("null-ls.builtins")
+
+M.opts = {
+  debug = true,
+  sources = {
+    builtins.formatting.stylua,
+    builtins.formatting.clang_format,
   },
-  opts = function()
-    local builtins = require("null-ls.builtins")
-    return {
-      debug = true,
-      sources = {
-        builtins.formatting.stylua,
-        builtins.formatting.clang_format,
-      },
-    }
-  end,
 }
 
 return M

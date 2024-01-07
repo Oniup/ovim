@@ -95,12 +95,12 @@ M.opts = {
 }
 
 M.setup_callback = function()
-   -- vim.api.nvim_create_augroup("lualine_group", { clear = true })
-   -- vim.api.nvim_create_autocmd("User", {
-   --   group = "lualine_group",
-   --   pattern = "LspProgressStatusUpdated",
-   --   callback = require("lualine").refresh,
-   -- })
+  -- vim.api.nvim_create_augroup("lualine_group", { clear = true })
+  -- vim.api.nvim_create_autocmd("User", {
+  --   group = "lualine_group",
+  --   pattern = "LspProgressStatusUpdated",
+  --   callback = require("lualine").refresh,
+  -- })
 end
 
 return M

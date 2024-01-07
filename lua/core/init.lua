@@ -1,74 +1,9 @@
 local u = require("core.utils")
 
+vim.loader.enable()
+
 u.load_options()
 u.load_mappings()
 u.load_ui()
-
-vim.loader.enable()
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup(u.plugin_setup_config(), {
-  defaults = {
-    lazy = true,
-    version = "*",
-  },
-  install = {
-    missing = true,
-  },
-  checker = {
-    enabled = true,
-    notify = false,
-  },
-  ui = {
-    border = u.ui.border.type,
-    size = { width = 0.6, height = 0.6 },
-    icons = u.ui.icons.lazy,
-  },
-  performance = {
-    rtp = {
-      disabled_plugins = {
-        "2html_plugin",
-        "tohtml",
-        "getscript",
-        "getscriptPlugin",
-        "gzip",
-        "logipat",
-        "netrw",
-        "netrwPlugin",
-        "netrwSettings",
-        "netrwFileHandlers",
-        "matchit",
-        "tar",
-        "tarPlugin",
-        "rrhelper",
-        "spellfile_plugin",
-        "vimball",
-        "vimballPlugin",
-        "zip",
-        "zipPlugin",
-        "tutor",
-        "rplugin",
-        "syntax",
-        "synmenu",
-        "optwin",
-        "compiler",
-        "bugreport",
-        "ftplugin",
-      },
-    },
-  },
-})
-
+u.load_plugins()
 u.load_ui_modules()
