@@ -4,13 +4,10 @@ local u = require("core.utils")
 
 M.opts = {
   ensure_installed = {
-    -- Language servers
     "lua-language-server",
     "vim-language-server",
     "json-lsp",
-    "misspell",
 
-    -- Formatters and linters
     "stylua",
   },
   mason = {
@@ -19,25 +16,22 @@ M.opts = {
       border = u.icons.border,
     },
   },
- --  mason_tools = {
- --    auto_update = true,
- --    run_on_start = true, -- Automatically install / update on startup.
- --    start_delay = 3000, -- Set a delay (in ms) before the installation starts
- --    debounce_hours = 5, -- Set to 0 if run_on_start == false
- --  },
 }
 
-function M.setup(lazy_plugin, opts)
+function M.setup(_, opts)
   require("mason").setup(opts.mason)
-  local registry = require("mason-registry")
+  require("mason-lspconfig").setup()
 
-  vim.g.mason_installed_list = registry.get_installed_package_names()
+  local registry = require("mason-registry")
+  registry.update()
 
   if opts.ensure_installed then
+    local installed_list = registry.get_installed_package_names()
+
     for _, client in ipairs(opts.ensure_installed) do
-      if not vim.tbl_contains(vim.g.mason_installed_list, client) then
+      if not vim.tbl_contains(installed_list, client) then
         vim.cmd("MasonInstall " .. client)
-        table.insert(vim.g.mason_installed_list, client)
+        table.insert(installed_list, client)
       end
     end
   end

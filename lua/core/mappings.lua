@@ -42,6 +42,9 @@ M.lsp = {
     ["<leader>gn"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
     ["<leader>gp"] = { vim.diagnostic.goto_prev, "Go to prev diagnostic" },
   },
+  i = {
+    ["<C-h>"] = { vim.lsp.buf.signature_help, "Signature Help" },
+  },
 }
 
 M.lsp_clangd = {

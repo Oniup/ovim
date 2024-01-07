@@ -51,7 +51,7 @@ M.opts = {
   }),
   window = {
     completion = {
-      winhighlight = "Normal:NormalFloat",
+      winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel",
       border = icons.border,
     },
     documentation = {

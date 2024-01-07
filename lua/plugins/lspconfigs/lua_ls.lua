@@ -1,6 +1,4 @@
-local M = {}
-
-M.settings = {
+return {
   Lua = {
     diagnostics = {
       globals = { "vim" },
@@ -16,5 +14,3 @@ M.settings = {
     },
   },
 }
-
-return M

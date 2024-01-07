@@ -82,7 +82,8 @@ end
 
 --- Sets loads all mappings within the given table using vim.keymap.set(...)
 --- @param tbl_key string Mapping group name
-function M.set_mappings(tbl_key)
+--- @param override_opts table|nil A third option overrides for specific cases
+function M.set_mappings(tbl_key, override_opts)
   local registered = M.mappings[tbl_key]
 
   if registered then
@@ -99,7 +100,7 @@ function M.set_mappings(tbl_key)
           opts["desc"] = desc
         end
 
-        vim.keymap.set(mode, key, cmd, opts)
+        vim.keymap.set(mode, key, cmd, M.map_opts(opts, override_opts))
       end
     end
 
@@ -111,7 +112,7 @@ end
 
 function M.plugin_config(name)
   local core = M.prequire("plugins.configs." .. name)
-  local override = M.prequire("config.plug_overrides." .. name)
+  local override = M.prequire("config.plugins.configs" .. name)
 
   if core then
     return M.map_opts(core, override)
