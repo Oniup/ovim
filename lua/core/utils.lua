@@ -66,10 +66,6 @@ function M.load_options()
   end
 end
 
-function M.load_icons()
-  M.icons = M.map_opts(require("core.icons"), M.prequire("config.icons"))
-end
-
 function M.load_mappings()
   M.mappings =
     M.map_opts(require("core.mappings"), M.prequire("config.mappings"))
@@ -78,6 +74,16 @@ function M.load_mappings()
   vim.g.maplocalleader = M.mappings.leader
 
   M.set_mappings("general")
+end
+
+function M.load_ui()
+  M.ui = M.map_opts(require("core.ui"), M.prequire("config.ui"))
+end
+
+function M.load_ui_modules()
+  for _, module in ipairs(M.ui.load_ui_module) do
+    require(module).set(M.ui)
+  end
 end
 
 --- Sets loads all mappings within the given table using vim.keymap.set(...)

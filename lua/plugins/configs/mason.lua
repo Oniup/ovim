@@ -1,6 +1,6 @@
 local M = {}
 
-local u = require("core.utils")
+local ui = require("core.utils").ui
 
 M.opts = {
   ensure_installed = {
@@ -12,8 +12,8 @@ M.opts = {
   },
   mason = {
     ui = {
-      icons = u.icons.mason,
-      border = u.icons.border,
+      icons = ui.icons.mason,
+      border = ui.border.type,
     },
   },
 }

@@ -1,6 +1,6 @@
 local M = {}
 
-local icons = require("core.utils").icons
+local ui = require("core.utils").ui
 
 M.require_name = "nvim-tree"
 
@@ -16,7 +16,7 @@ M.opts = {
   actions = {
     file_popup = {
       open_win_config = {
-        border = icons.border,
+        border = ui.border.type,
       },
     },
   },
@@ -24,16 +24,16 @@ M.opts = {
     root_folder_label = false,
     indent_width = 1,
     icons = {
-      glyphs = icons.nvim_tree_glyphs,
+      glyphs = ui.icons.nvim_tree_glyphs,
     },
   },
   diagnostics = {
     enable = false,
     icons = {
-      error = icons.diagnostics.error,
-      warning = icons.diagnostics.warn,
-      info = icons.diagnostics.info,
-      hint = icons.diagnostics.hint,
+      error = ui.icons.diagnostics.error,
+      warning = ui.icons.diagnostics.warn,
+      info = ui.icons.diagnostics.info,
+      hint = ui.icons.diagnostics.hint,
     },
   },
 }

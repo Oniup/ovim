@@ -1,6 +1,6 @@
 local M = {}
 
-local icons = require("core.utils").icons
+local ui = require("core.utils").ui
 local cmp = require("cmp")
 
 local function has_words_before()
@@ -52,16 +52,16 @@ M.opts = {
   window = {
     completion = {
       winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel",
-      border = icons.border,
+      border = ui.border.type,
     },
     documentation = {
-      border = icons.border,
+      border = ui.border.type,
     },
   },
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
-      vim_item.kind = icons.kind[vim_item.kind]
+      vim_item.kind = ui.icons.kind[vim_item.kind]
       vim_item.menu = ({
         buffer = "buf",
         nvim_lsp = "lsp",

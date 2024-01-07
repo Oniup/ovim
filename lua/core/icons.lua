@@ -1,13 +1,5 @@
 local M = {}
 
-M.border = "rounded"
-M.border_chars = {
-  single = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-  rounded = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-  solid = { " ", " ", " ", " ", " ", " ", " ", " " },
-  none = {},
-}
-
 M.mason = {
   package_installed = "",
   package_pending = "",

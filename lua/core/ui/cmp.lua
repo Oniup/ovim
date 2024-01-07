@@ -1,7 +1,7 @@
 local M = {}
 
 function M.set(opts)
-  -- TODO: ...
+  M.ui = opts.cmp
 end
 
 return M

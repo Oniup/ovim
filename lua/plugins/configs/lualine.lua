@@ -1,6 +1,6 @@
 local M = {}
 
-local icons = require("core.utils").icons
+local ui = require("core.utils").ui
 
 vim.opt.laststatus = 3
 
@@ -9,9 +9,9 @@ M.sections = {
   diff = {
     "diff",
     symbols = {
-      added = icons.nvim_tree_glyphs.git.untracked .. " ",
-      modified = icons.nvim_tree_glyphs.git.renamed .. " ",
-      removed = icons.nvim_tree_glyphs.git.deleted .. " ",
+      added = ui.icons.nvim_tree_glyphs.git.untracked .. " ",
+      modified = ui.icons.nvim_tree_glyphs.git.renamed .. " ",
+      removed = ui.icons.nvim_tree_glyphs.git.deleted .. " ",
     },
   },
   branch = "branch",
@@ -53,10 +53,10 @@ M.sections = {
       always_visable = true,
     },
     symbols = {
-      error = icons.diagnostics.error,
-      warn = icons.diagnostics.warn,
-      info = icons.diagnostics.info,
-      hint = icons.diagnostics.hint,
+      error = ui.icons.diagnostics.error,
+      warn = ui.icons.diagnostics.warn,
+      info = ui.icons.diagnostics.info,
+      hint = ui.icons.diagnostics.hint,
     },
   },
 }

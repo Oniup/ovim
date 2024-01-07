@@ -2,7 +2,7 @@ local u = require("core.utils")
 
 u.load_options()
 u.load_mappings()
-u.load_icons()
+u.load_ui()
 
 vim.loader.enable()
 
@@ -32,9 +32,9 @@ require("lazy").setup(u.plugin_setup_config(), {
     notify = false,
   },
   ui = {
-    border = u.icons.border,
+    border = u.ui.border.type,
     size = { width = 0.6, height = 0.6 },
-    icons = u.icons.lazy,
+    icons = u.ui.icons.lazy,
   },
   performance = {
     rtp = {
@@ -70,3 +70,5 @@ require("lazy").setup(u.plugin_setup_config(), {
     },
   },
 })
+
+u.load_ui_modules()

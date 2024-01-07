@@ -1,11 +1,11 @@
 local M = {}
-local icons = require("core.utils").icons
+local ui = require("core.utils").ui
 
 M.plugin = {
   "stevearc/dressing.nvim",
   opts = {
     input = {
-      border = icons.border,
+      border = ui.border.type,
     },
     mappings = {
       n = {
