@@ -56,7 +56,7 @@ M.opts = {
 }
 
 function M.setup(_, opts)
-  local modules_paths = u.get_all_modules_within({
+  local modules_paths = u.get_all_modules_at({
     "config.lspconfigs",
     "plugins.lspconfigs",
   })

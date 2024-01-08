@@ -38,7 +38,7 @@ function M.load_dap_config(module, dapconfig)
 end
 
 function M.load_all_dapconfigs(modules_paths)
-  local module_names = utils.get_all_modules_within(modules_paths)
+  local module_names = utils.get_all_modules_at(modules_paths)
 
   for _, modules in pairs(module_names) do
     local dapconfig = utils.prequire_extend(modules)

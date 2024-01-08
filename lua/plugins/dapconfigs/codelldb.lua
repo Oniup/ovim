@@ -1,4 +1,4 @@
-local utils = require("core.utils")
+local u = require("core.utils")
 
 local M = {}
 
@@ -7,9 +7,8 @@ M.adapters = {
     type = "server",
     port = "${port}",
     executable = {
-      command = utils.get_mason_package(
-        "codelldb/extension/adapter/codelldb",
-        true
+      command = u.os_correct_exec(
+        u.mason_install_path .. "codelldb/extension/adapter/codelldb"
       ),
       args = {
         "--port",
@@ -22,13 +21,13 @@ M.adapters = {
 
 M.configurations = {
   c = {
-    utils.dapconfig_lang_template("codelldb", "C"),
+    u.dap_config_template("codelldb", "C"),
   },
   cpp = {
-    utils.dapconfig_lang_template("codelldb", "C++"),
+    u.dap_config_template("codelldb", "C++"),
   },
   rust = {
-    utils.dapconfig_lang_template("codelldb", "Rust"),
+    u.dap_config_template("codelldb", "Rust"),
   },
 }
 

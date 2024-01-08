@@ -1,5 +1,7 @@
 local M = {}
 
+M.mason_install_path = vim.fn.stdpath("data") .. "/mason/packages"
+
 --- Combines two option tables giving right side options priority
 --- @param lhs table Default options
 --- @param rhs table|nil Override/add options
@@ -49,18 +51,29 @@ end
 --- @param module_names table
 --- @return table|nil extended_module Result of all listed and then tbl_deep_extend in order
 function M.prequire_extend(module_names)
-  local modules = nil
+  local modules = {}
   for _, module in ipairs(module_names) do
     local tbl = M.prequire(module)
-    if tbl then
-      if not modules then
-        modules = tbl
-      else
-        modules = vim.tbl_deep_extend("force", modules, tbl)
-      end
+
+    if type(tbl) == "table" then
+      modules = M.map_opts(modules, tbl)
+    else
+      vim.notify(
+        "Cannot combine module " .. module .. ", it doesn't return a table",
+        vim.log.levels.ERROR
+      )
     end
   end
+
   return modules
+end
+
+function M.os_correct_exec(path)
+  if vim.fn.has("win32") then
+    return path .. ".exe"
+  end
+
+  return path
 end
 
 function M.load_options()
@@ -92,9 +105,12 @@ function M.load_ui_module(name)
     end
   end
 
-  local module = M.prequire("core.ui." .. name)
-  if module then
-    module.load()
+  for _, v in ipairs({ "config", "core" }) do
+    local module = M.prequire(v .. ".ui." .. name)
+    if module then
+      module.load()
+      return
+    end
   end
 end
 
@@ -164,7 +180,7 @@ function M.os_correct_path(unix, win32)
   return unix
 end
 
-function M.dapconfig_lang_template(adapter, language, overrides)
+function M.dap_config_template(adapter, language, overrides)
   local result = {
     name = "Launch => " .. adapter .. " " .. vim.inspect(language),
     type = adapter,
@@ -181,22 +197,19 @@ function M.dapconfig_lang_template(adapter, language, overrides)
     stopAtEntry = false,
   }
 
-  if overrides then
-    result = vim.tbl_deep_extend("force", result, overrides)
-  end
-
-  return result
+  result = M.map_opts(result, overrides)
 end
 
-function M.get_all_modules_within(modules_paths)
+function M.get_all_modules_at(modules_paths)
   if not type(modules_paths) == "table" then
     return {}
   end
 
   local cmds = {}
-  local entries_tbl = {}
+  local entries = {}
 
-  -- Deconstruct provided paths and create platform specific commands
+  -- Deconstruct provided paths and create platform specific command to list
+  -- lua contents
   for _, path in ipairs(modules_paths) do
     local cmd = vim.fn.stdpath("config")
       .. "/lua/"
@@ -210,26 +223,24 @@ function M.get_all_modules_within(modules_paths)
     table.insert(cmds, cmd)
   end
 
-  -- Insert module entries
+  -- Store module entries to be loaded later
   for i, cmd in ipairs(cmds) do
     for filename in io.popen(cmd):lines() do
       filename = string.match(filename, "^(.*)%.lua$")
+
       if filename then
-        if not entries_tbl[filename] then
-          entries_tbl[filename] = { modules_paths[i] .. "." .. filename }
+        -- Support multiple modules with the same name, but located at
+        -- different path to be interpreted later
+        if not entries[filename] then
+          entries[filename] = { modules_paths[i] .. "." .. filename }
         else
-          table.insert(
-            entries_tbl[filename],
-            modules_paths[i] .. "." .. filename
-          )
+          table.insert(entries[filename], modules_paths[i] .. "." .. filename)
         end
       end
     end
   end
 
-  return entries_tbl
+  return entries
 end
-
-M.mason_install_path = vim.fn.stdpath("data") .. "/mason/packages"
 
 return M
