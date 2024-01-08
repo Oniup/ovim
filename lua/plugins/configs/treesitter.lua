@@ -1,7 +1,5 @@
 local M = {}
 
-M.require_name = "nvim-treesitter.configs"
-
 M.opts = {
   ensure_installed = {
     "lua",

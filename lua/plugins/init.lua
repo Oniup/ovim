@@ -8,6 +8,9 @@ return {
     "nvim-treesitter/nvim-treesitter",
     name = "treesitter",
     buld = ":TSUpdate",
+    opts = {
+      setup_module = "nvim-treesitter.configs",
+    },
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -39,16 +42,16 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
+    opts = {
+      setup_module = "nvim-tree",
+    },
   },
   {
     "nvim-telescope/telescope.nvim",
+    name = "telescope",
     cmd = { "Telescope" },
     dependencies = {
       "nvim-lua/popup.nvim",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -s. -bbuild -dcmake_build_type=release && cmake --build build --config release && cmake --install build --prefix build",
-      },
       "burntsushi/ripgrep",
       "nvim-telescope/telescope-ui-select.nvim",
     },
@@ -113,7 +116,10 @@ return {
     "stevearc/dressing.nvim",
     name = "lsp-dressing",
     dependencies = {
-      "lspconfig"
+      "lspconfig",
+    },
+    opts = {
+      setup_module = "dressing",
     },
   },
   {
@@ -123,9 +129,6 @@ return {
       "lspconfig",
       "nvim-tree/nvim-web-devicons",
     },
-    -- opts = {
-    --   lazy_load_plugin_on_file_open = false,
-    -- },
   },
   {
     "nvimtools/none-ls.nvim",
@@ -133,9 +136,6 @@ return {
     dependencies = {
       "lspconfig",
     },
-    -- opts = {
-    --   lazy_load_plugin_on_file_open = false,
-    -- },
   },
   {
     "williamboman/mason.nvim",
@@ -157,8 +157,5 @@ return {
   -- Plugin Utility APIs ------------------------------------------------------
   {
     "nvim-tree/nvim-web-devicons",
-    -- opts = {
-    --   lazy_load_plugin_on_file_open = false,
-    -- },
   },
 }

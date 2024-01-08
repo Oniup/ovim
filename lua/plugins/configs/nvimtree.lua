@@ -2,8 +2,6 @@ local M = {}
 
 local ui = require("core.utils").ui
 
-M.require_name = "nvim-tree"
-
 M.opts = {
   sync_root_with_cwd = true,
   respect_buf_cwd = true,

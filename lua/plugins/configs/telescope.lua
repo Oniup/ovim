@@ -12,7 +12,6 @@ M.enable_preview = {
 }
 
 M.extension_list = {
-  "fzf",
   "ui-select",
 }
 
@@ -45,20 +44,16 @@ M.opts = {
       width = 0.40,
       height = 0.50,
     },
-    file_sorter = function() return require("telescope.sorters").get_fuzzy_file end,
-    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    -- file_sorter = function() return require("telescope.sorters").get_fuzzy_file end,
+    -- generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    -- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+    -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     file_ignore_patterns = { "node_modules", ".git", ".cache" },
     path_display = { "truncate" },
     mappings = {
-      i = {
-        ["q"] = actions.close,
-        ["<C-l>"] = actions.select_vertical,
-        ["<C-j>"] = actions.select_horizontal,
-      },
       n = {
         ["q"] = actions.close,
-        ["<C-l>"] = actions.select_vertical,
-        ["<C-j>"] = actions.select_horizontal,
       },
     },
   },
@@ -66,14 +61,6 @@ M.opts = {
     current_buffer_fuzzy_find = M.enable_preview,
     live_grep = M.enable_preview,
     help_tags = M.enable_preview,
-  },
-  extensions = {
-    fzf = {
-      fuzzy = true,
-      override_generic_sorter = true,
-      override_file_sorter = true,
-      case_mode = "smart_case",
-    },
   },
 }
 

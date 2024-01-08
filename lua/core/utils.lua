@@ -105,12 +105,14 @@ function M.load_ui_module(name)
     end
   end
 
-  for _, v in ipairs({ "config", "core" }) do
-    local module = M.prequire(v .. ".ui." .. name)
-    if module then
-      module.load()
-      return
-    end
+  local module = M.map_opts(
+    {},
+    { M.prequire("core.ui." .. name), M.prequire("config.ui." .. name) }
+  )
+
+  if not vim.tbl_isempty(module) then
+    module.load()
+    return
   end
 end
 
@@ -145,16 +147,10 @@ function M.set_mappings(tbl_key, override_opts)
 end
 
 function M.get_mapped_plugin_config(name)
-  local core = M.prequire("plugins.configs." .. name)
-  local override = M.prequire("config.plugins.configs" .. name)
-
-  if core then
-    return M.map_opts(core, override)
-  elseif override then
-    return override
-  end
-
-  return nil
+  return M.map_opts({}, {
+    M.prequire("plugins.configs." .. name),
+    M.prequire("config.plugins.configs." .. name),
+  })
 end
 
 function M.stripped_plugin_name(name)
@@ -166,7 +162,8 @@ function M.stripped_plugin_name(name)
 end
 
 function M.load_plugins()
-  require("core.plugins").load_lazy_plugins()
+  local opts = M.get_mapped_plugin_config("lazy_nvim")
+  require("core.plugins").load_lazy_plugins(opts)
 end
 
 --- Chooses the correct path based on your platform

@@ -16,9 +16,10 @@ return {
       fields = { "kind", "abbr", "menu" },
     },
   },
+  lspconfig = {},
   colorscheme = {
     theme = "ignite",
     hl_overrides = {},
   },
-  disable_ui_module = {}, -- lsp | bufferline | etc...
+  disable_ui_module = {}, -- lspconfig | bufferline | etc...
 }

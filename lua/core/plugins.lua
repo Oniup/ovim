@@ -3,61 +3,75 @@ local M = {}
 local u = require("core.utils")
 
 function M.plugin_setup_config()
-  local plugins = u.map_opts(require("plugins"), u.prequire("config.plugins"))
+  local plugins = require("plugins")
+  table.insert(plugins, { import = "config.plugins" })
 
-  for _, plug in ipairs(plugins) do
-    if not plug.config then
-      plug.config = function(lazy_plugin, opts)
-        local plugin_name = u.stripped_plugin_name(lazy_plugin.name)
-        local call_setup_name = plugin_name
-        local config = u.get_mapped_plugin_config(plugin_name)
+  -- Construct lazy init and config functions
+  for i, plug in ipairs(plugins) do
+    -- Construction options (default lazy opts are used for this)
+    local loading_opts = u.map_opts({
+      enable_config = true,
+      enable_plugin = true,
+    }, plug.opts)
 
-        if config then
-          if not opts then
-            opts = config.opts or {}
-          else
-            opts = u.map_opts(opts, config.opts)
-          end
-
-          if config.setup ~= nil and type(config.setup) == "function" then
-            config.setup(lazy_plugin, opts)
-          elseif config.setup == true or config.setup == nil then
-            if config.require_name then
-              call_setup_name = config.require_name
-            end
-
-            require(call_setup_name).setup(opts)
-          end
-        else
-          require(call_setup_name).setup(opts)
-        end
-
-        u.load_ui_module(plugin_name)
-
-        if config and config.setup_callback then
-          config.setup_callback(config)
-        end
-      end
+    if not loading_opts.enable_plugin then
+      table.remove(plugins, i)
     end
 
+    -- Create init function for loading mappings and custom lazy loading logic
     plug.init = function(lazy_plugin)
-      local name = lazy_plugin.name
-      local lazy_load_opts = {
-        on_file_open = not lazy_plugin._.cache,
-      }
+      if not loading_opts.lazy_on_file_open then
+        loading_opts.lazy_on_file_open = not lazy_plugin._.cache
+      end
 
-      if lazy_load_opts.on_file_open and lazy_plugin.lazy then
+      local name = lazy_plugin.name
+      if loading_opts.lazy_on_file_open and lazy_plugin.lazy then
         M.lazy_load_plugin_on_file_open(name)
       end
 
       u.set_mappings(u.stripped_plugin_name(name))
+    end
+
+    -- Create config function if it doesn't already exist
+    if not plug.config and loading_opts.enable_config then
+      plug.config = function(lazy_plugin, _)
+        local plug_name = u.stripped_plugin_name(lazy_plugin.name)
+        local plug_settings = u.get_mapped_plugin_config(plug_name)
+
+        local call_setup_name = plug_name
+        if loading_opts.setup_module then
+          call_setup_name = loading_opts.setup_module
+        end
+
+        if not vim.tbl_isempty(plug_settings) then
+          -- Call custom config function if it exists
+          if
+            plug_settings.setup ~= nil
+            and type(plug_settings.setup) == "function"
+          then
+            plug_settings.setup(lazy_plugin, plug_settings.opts)
+
+          -- Auto call plugin setup function and pass options from config module
+          elseif plug_settings.setup == true or plug_settings.setup == nil then
+            require(call_setup_name).setup(plug_settings.opts)
+          end
+        else
+          require(call_setup_name).setup(plug_settings.opts)
+        end
+
+        u.load_ui_module(plug_name)
+
+        if plug_settings and plug_settings.setup_callback then
+          plug_settings.setup_callback(plug_settings)
+        end
+      end
     end
   end
 
   return plugins
 end
 
-function M.load_lazy_plugins()
+function M.load_lazy_plugins(opts)
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -71,57 +85,7 @@ function M.load_lazy_plugins()
   end
   vim.opt.rtp:prepend(lazypath)
 
-  require("lazy").setup(M.plugin_setup_config(), {
-    defaults = {
-      lazy = true,
-      version = "*",
-    },
-    install = {
-      missing = true,
-    },
-    checker = {
-      enabled = true,
-      notify = false,
-    },
-    ui = {
-      border = u.ui.border.type,
-      size = { width = 0.6, height = 0.6 },
-      icons = u.ui.icons.lazy,
-    },
-    performance = {
-      rtp = {
-        disabled_plugins = {
-          "2html_plugin",
-          "tohtml",
-          "getscript",
-          "getscriptPlugin",
-          "gzip",
-          "logipat",
-          "netrw",
-          "netrwPlugin",
-          "netrwSettings",
-          "netrwFileHandlers",
-          "matchit",
-          "tar",
-          "tarPlugin",
-          "rrhelper",
-          "spellfile_plugin",
-          "vimball",
-          "vimballPlugin",
-          "zip",
-          "zipPlugin",
-          "tutor",
-          "rplugin",
-          "syntax",
-          "synmenu",
-          "optwin",
-          "compiler",
-          "bugreport",
-          "ftplugin",
-        },
-      },
-    },
-  })
+  require("lazy").setup(M.plugin_setup_config(), opts)
 end
 
 --- Modified variant of https://github.com/NvChad/NvChad/blob/v2.0/lua/core/utils.lua
@@ -129,12 +93,10 @@ function M.lazy_load_plugin_on_file_open(plugin)
   vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
     group = vim.api.nvim_create_augroup("LazyLoadOnFileOpen_" .. plugin, {}),
     callback = function()
-      local current_file = vim.fn.expand("%")
-      local load_plugin = current_file ~= "NvimTree_1"
-        and current_file ~= "[lazy]"
-        and current_file ~= ""
+      local ft = vim.fn.expand("%")
+      local ft_allowed = ft ~= "NvimTree_1" and ft ~= "[lazy]" and ft ~= ""
 
-      if load_plugin then
+      if ft_allowed then
         vim.api.nvim_del_augroup_by_name("LazyLoadOnFileOpen_" .. plugin)
 
         if plugin ~= "treesitter" then

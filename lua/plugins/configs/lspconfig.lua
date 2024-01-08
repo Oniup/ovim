@@ -80,7 +80,6 @@ function M.setup(_, opts)
 
       require("lspconfig")[server].setup(server_opts)
     end,
-
   })
 end
 
