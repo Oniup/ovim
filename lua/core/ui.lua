@@ -2,11 +2,12 @@ return {
   icons = require("core.icons"),
   border = {
     type = "rounded",
-    telescope_borderchars = {
+    telescope = {
       single = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
       double = { "═", "║", "═", "║", "╔", "╗", "╝", "╚" },
       rounded = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
       solid = { " ", " ", " ", " ", " ", " ", " ", " " },
+      shadow = { " ", "░", "░", " ", " ", " ", "░", " " },
       none = {},
     },
   },

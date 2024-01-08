@@ -42,24 +42,12 @@ function M.plugin_setup_config()
 
     plug.init = function(lazy_plugin)
       local name = lazy_plugin.name
-      local opts = {
-        lazy_load_plugin_on_file_open = not lazy_plugin._.cache,
+      local lazy_load_opts = {
+        on_file_open = not lazy_plugin._.cache,
       }
 
-      -- Remove init only options, should not be passed to config
-      if lazy_plugin.opts then
-        for k, _ in pairs(opts) do
-          if lazy_plugin.opts[k] then
-            opts[k] = lazy_plugin.opts[k]
-            lazy_plugin.opts[k] = nil
-          end
-        end
-      end
-
-      if opts.lazy_load_plugin_on_file_open then
-        if lazy_plugin.lazy then
-          M.lazy_load_plugin_on_file_open(name)
-        end
+      if lazy_load_opts.on_file_open and lazy_plugin.lazy then
+        M.lazy_load_plugin_on_file_open(name)
       end
 
       u.set_mappings(u.stripped_plugin_name(name))

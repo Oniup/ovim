@@ -88,7 +88,6 @@ return {
   },
   {
     "numToStr/Comment.nvim",
-    event = "InsertEnter",
     keys = {
       { "gcc", mode = "n", desc = "Comment toggle current line" },
       { "gc", mode = { "n", "o" }, desc = "Comment toggle linewise" },
@@ -108,6 +107,13 @@ return {
       "lsp-progress",
       "null-ls",
       "stevearc/dressing.nvim",
+    },
+  },
+  {
+    "stevearc/dressing.nvim",
+    name = "lsp-dressing",
+    dependencies = {
+      "lspconfig"
     },
   },
   {

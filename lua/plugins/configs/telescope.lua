@@ -1,5 +1,6 @@
 local M = {}
 
+local ui = require("core.utils").ui
 local actions = require("telescope.actions")
 
 M.enable_preview = {
@@ -32,8 +33,8 @@ M.opts = {
     prompt_prefix = "   ",
     selection_caret = "  ",
     entry_prefix = "  ",
-    -- border = false,
-    -- borderchars = get_correct_border_chars(),
+    border = ui.border.type ~= "none",
+    borderchars = ui.border.telescope[ui.border.type],
     sorting_strategy = "ascending",
     preview = false,
     results_title = false,
@@ -44,9 +45,9 @@ M.opts = {
       width = 0.40,
       height = 0.50,
     },
-    -- file_sorter = function() return require("telescope.sorters").get_fuzzy_file end,
-    file_ignore_patterns = { "node_modules" },
-    -- generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    file_sorter = function() return require("telescope.sorters").get_fuzzy_file end,
+    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    file_ignore_patterns = { "node_modules", ".git", ".cache" },
     path_display = { "truncate" },
     mappings = {
       i = {
