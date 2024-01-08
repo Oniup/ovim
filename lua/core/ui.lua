@@ -1,5 +1,3 @@
-local u = require("core.utils")
-
 return {
   icons = require("core.icons"),
   border = {
@@ -21,9 +19,5 @@ return {
     theme = "ignite",
     hl_overrides = {},
   },
-  load_ui_module = {
-    "core.ui.lsp",
-    "core.ui.bufferline",
-    "core.ui.cmp",
-  },
+  disable_ui_module = {}, -- lsp | bufferline | etc...
 }

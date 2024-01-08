@@ -1,7 +1,8 @@
 local M = {}
 
-function M.set(opts)
-  M.ui = opts.cmp
+local u = require("core.utils")
+
+function M.load()
 end
 
 return M

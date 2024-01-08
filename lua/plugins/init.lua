@@ -117,9 +117,9 @@ return {
       "lspconfig",
       "nvim-tree/nvim-web-devicons",
     },
-    opts = {
-      lazy_load_plugin_on_file_open = false,
-    },
+    -- opts = {
+    --   lazy_load_plugin_on_file_open = false,
+    -- },
   },
   {
     "nvimtools/none-ls.nvim",
@@ -127,9 +127,9 @@ return {
     dependencies = {
       "lspconfig",
     },
-    opts = {
-      lazy_load_plugin_on_file_open = false,
-    },
+    -- opts = {
+    --   lazy_load_plugin_on_file_open = false,
+    -- },
   },
   {
     "williamboman/mason.nvim",
@@ -151,8 +151,8 @@ return {
   -- Plugin Utility APIs ------------------------------------------------------
   {
     "nvim-tree/nvim-web-devicons",
-    opts = {
-      lazy_load_plugin_on_file_open = false,
-    },
+    -- opts = {
+    --   lazy_load_plugin_on_file_open = false,
+    -- },
   },
 }

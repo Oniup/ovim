@@ -85,9 +85,16 @@ function M.load_ui()
   M.ui = M.map_opts(require("core.ui"), M.prequire("config.ui"))
 end
 
-function M.load_ui_modules()
-  for _, module in ipairs(M.ui.load_ui_module) do
-    require(module).set(M.ui)
+function M.load_ui_module(name)
+  for _, v in ipairs(M.ui.disable_ui_module) do
+    if name == v then
+      return
+    end
+  end
+
+  local module = M.prequire("core.ui." .. name)
+  if module then
+    module.load()
   end
 end
 

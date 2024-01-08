@@ -1,7 +1,6 @@
 local M = {}
 
 local u = require("core.utils")
-local ui = require("core.utils").ui
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 M.capabilities.textDocument.completion.completionItem = {
@@ -47,7 +46,7 @@ M.opts = {
       severity_sort = true,
       float = {
         focusable = true,
-        border = ui.border.type,
+        border = u.ui.border.type,
         source = "always",
         header = "",
         prefix = "",
@@ -81,6 +80,7 @@ function M.setup(_, opts)
 
       require("lspconfig")[server].setup(server_opts)
     end,
+
   })
 end
 

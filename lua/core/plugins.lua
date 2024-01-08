@@ -8,8 +8,9 @@ function M.plugin_setup_config()
   for _, plug in ipairs(plugins) do
     if not plug.config then
       plug.config = function(lazy_plugin, opts)
-        local plug_call_name = u.stripped_plugin_name(lazy_plugin.name)
-        local config = u.get_mapped_plugin_config(plug_call_name)
+        local plugin_name = u.stripped_plugin_name(lazy_plugin.name)
+        local call_setup_name = plugin_name
+        local config = u.get_mapped_plugin_config(plugin_name)
 
         if config then
           if not opts then
@@ -22,14 +23,16 @@ function M.plugin_setup_config()
             config.setup(lazy_plugin, opts)
           elseif config.setup == true or config.setup == nil then
             if config.require_name then
-              plug_call_name = config.require_name
+              call_setup_name = config.require_name
             end
 
-            require(plug_call_name).setup(opts)
+            require(call_setup_name).setup(opts)
           end
         else
-          require(plug_call_name).setup(opts)
+          require(call_setup_name).setup(opts)
         end
+
+        u.load_ui_module(plugin_name)
 
         if config and config.setup_callback then
           config.setup_callback(config)
