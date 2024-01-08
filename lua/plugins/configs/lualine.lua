@@ -2,7 +2,7 @@ local M = {}
 
 local ui = require("core.utils").ui
 
-vim.opt.laststatus = 3
+vim.opt.laststatus = 2
 
 M.sections = {
   mode = "mode",
@@ -91,6 +91,10 @@ M.opts = {
   },
   extensions = {
     "nvim-dap-ui",
+    -- "lazy",
+    -- "mason",
+    "nvim-tree",
+    "toggleterm",
   },
 }
 

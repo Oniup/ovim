@@ -14,6 +14,8 @@ M.opts = {
     ui = {
       icons = ui.icons.mason,
       border = ui.border.type,
+      width = 0.6,
+      height = 0.6,
     },
   },
 }

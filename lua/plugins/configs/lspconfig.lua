@@ -81,6 +81,20 @@ function M.setup(_, opts)
       require("lspconfig")[server].setup(server_opts)
     end,
   })
+
+  vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
+    group = vim.api.nvim_create_augroup("LspConfigCheckFile", {}),
+    callback = function()
+      local this = vim.fn.expand("%")
+      local not_allowed = { "NvimTree_1", "[lazy]", "[mason]", "" }
+      for _, ft in ipairs(not_allowed) do
+        if this == ft then
+          return
+        end
+      end
+      vim.cmd([[silent! do FileType]])
+    end,
+  })
 end
 
 return M
