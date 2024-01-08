@@ -3,6 +3,9 @@
 Is a **Based** Neovim configuration setup to make it easy to customize and extend
 with your own configurations
 
+Example of custom overrides and the ones I personally use, can be found
+[here](https://github.com/Oniup/based_vim_config),
+
 ## Installation
 
 ***Linux:***

@@ -5,6 +5,8 @@ local actions = require("telescope.actions")
 
 M.enable_preview = {
   preview = true,
+  preview_cutoff = 1, -- Preview should always show (unless previewer = false)
+  layout_strategy = "horizontal",
   layout_config = {
     width = 0.80,
     preview_width = 0.50,
@@ -37,18 +39,18 @@ M.opts = {
     sorting_strategy = "ascending",
     preview = false,
     results_title = false,
-    layout_strategy = "horizontal",
+    layout_strategy = "center",
     layout_config = {
       prompt_position = "top",
       anchor = "N",
       width = 0.40,
       height = 0.50,
     },
-    -- file_sorter = function() return require("telescope.sorters").get_fuzzy_file end,
-    -- generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-    -- file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-    -- grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-    -- qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+    file_sorter = require("telescope.sorters").get_fuzzy_file,
+    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     file_ignore_patterns = { "node_modules", ".git", ".cache" },
     path_display = { "truncate" },
     mappings = {

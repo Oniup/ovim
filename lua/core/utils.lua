@@ -77,7 +77,7 @@ function M.os_correct_exec(path)
 end
 
 function M.load_options()
-  local opts = M.map_opts(require("core.options"), M.prequire("config.options"))
+  local opts = M.map_opts(require("core.options"), M.prequire("custom.options"))
 
   for k, v in pairs(opts) do
     vim.opt[k] = v
@@ -86,7 +86,7 @@ end
 
 function M.load_mappings()
   M.mappings =
-    M.map_opts(require("core.mappings"), M.prequire("config.mappings"))
+    M.map_opts(require("core.mappings"), M.prequire("custom.mappings"))
 
   vim.g.mapleader = M.mappings.leader
   vim.g.maplocalleader = M.mappings.leader
@@ -95,7 +95,7 @@ function M.load_mappings()
 end
 
 function M.load_ui()
-  M.ui = M.map_opts(require("core.ui"), M.prequire("config.ui"))
+  M.ui = M.map_opts(require("core.ui"), M.prequire("custom.ui"))
 end
 
 function M.load_ui_module(name)
@@ -107,7 +107,7 @@ function M.load_ui_module(name)
 
   local module = M.map_opts(
     {},
-    { M.prequire("core.ui." .. name), M.prequire("config.ui." .. name) }
+    { M.prequire("core.ui." .. name), M.prequire("custom.ui." .. name) }
   )
 
   if not vim.tbl_isempty(module) then
@@ -149,7 +149,7 @@ end
 function M.get_mapped_plugin_config(name)
   return M.map_opts({}, {
     M.prequire("plugins.configs." .. name),
-    M.prequire("config.plugins.configs." .. name),
+    M.prequire("custom.plugins.configs." .. name),
   })
 end
 

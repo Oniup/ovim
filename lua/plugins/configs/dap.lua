@@ -92,7 +92,7 @@ M.plugin = {
     local telescope = require("telescope")
     telescope.load_extension("dap")
 
-    M.load_all_dapconfigs({ "defaults.dapconfigs", "config.dapconfigs" })
+    M.load_all_dapconfigs({ "plugins.dapconfigs", "custom.plugins.dapconfigs" })
 
     require("cmp").setup.filetype(
       { "dap-repl", "dapui_watches", "dapui_hover" },

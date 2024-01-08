@@ -4,7 +4,7 @@ local u = require("core.utils")
 
 function M.plugin_setup_config()
   local plugins = require("plugins")
-  table.insert(plugins, { import = "config.plugins" })
+  table.insert(plugins, { import = "custom.plugins" })
 
   -- Construct lazy init and config functions
   for i, plug in ipairs(plugins) do
