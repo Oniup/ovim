@@ -10,6 +10,7 @@ return {
     buld = ":TSUpdate",
     opts = {
       setup_module = "nvim-treesitter.configs",
+      lazy_on_file_open = true,
     },
   },
   {
@@ -18,6 +19,9 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
+    opts = {
+      lazy_on_file_open = true,
+    },
   },
   {
     "akinsho/bufferline.nvim",
@@ -25,9 +29,15 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
+    opts = {
+      lazy_on_file_open = true,
+    },
   },
   {
     "lewis6991/gitsigns.nvim",
+    opts = {
+      lazy_on_file_open = true,
+    },
   },
   {
     "folke/which-key.nvim",
@@ -111,6 +121,11 @@ return {
       "null-ls",
       "stevearc/dressing.nvim",
     },
+    opts = {
+      enable = {
+        setup = false,
+      },
+    },
   },
   {
     "stevearc/dressing.nvim",
@@ -128,6 +143,9 @@ return {
     dependencies = {
       "lspconfig",
       "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      lazy_on_file_open = true,
     },
   },
   {
@@ -151,6 +169,11 @@ return {
       "MasonUpdate",
       "MasonUninstallAll",
       "MasonLog",
+    },
+    opts = {
+      enable = {
+        setup = false,
+      },
     },
   },
 

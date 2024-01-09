@@ -22,12 +22,10 @@ M.capabilities.textDocument.completion.completionItem = {
 }
 
 function M.on_attach(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
+  local opts = { buffer = bufnr }
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
-
-  local opts = { buffer = bufnr }
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   u.set_mappings("lsp", opts)
   u.set_mappings("lsp_" .. client, opts)
 end
@@ -55,29 +53,19 @@ M.opts = {
   },
 }
 
-function M.setup(_, opts)
-  local modules_paths = u.get_all_modules_at({
-    "custom.plugins.lspconfigs",
-    "plugins.lspconfigs",
-  })
+function M.loaded_callback(config)
+  local opts = config.opts
 
   require("mason-lspconfig").setup_handlers({
     function(server)
       local server_opts = {
         on_attach = opts.lspconfig.on_attach,
         capabilities = opts.lspconfig.capabilities,
+        settings = u.map_opts({}, {
+          u.prequire("plugins.lspconfigs." .. server),
+          u.prequire("custom.plugins.lspconfigs." .. server),
+        }),
       }
-
-      for name, modules in pairs(modules_paths) do
-        if name == server then
-          local settings = {}
-          for _, module in ipairs(modules) do
-            settings = u.map_opts(settings, u.prequire(module))
-          end
-          server_opts.settings = settings
-        end
-      end
-
       require("lspconfig")[server].setup(server_opts)
     end,
   })

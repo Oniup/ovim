@@ -66,7 +66,7 @@ M.opts = {
   },
 }
 
-function M.setup_callback(config)
+function M.loaded_callback(config)
   for _, ext in ipairs(config.extension_list) do
     require("telescope").load_extension(ext)
   end

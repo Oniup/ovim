@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup_callback()
+function M.loaded_callback()
   vim.cmd.colorscheme("ignite")
 end
 

@@ -7,27 +7,26 @@ function M.plugin_setup_config()
   table.insert(plugins, { import = "custom.plugins" })
   -- Construct lazy init and config functions
   for i, plug in ipairs(plugins) do
-    -- Construction options (default lazy opts are used for this)
     local loading_opts = u.map_opts({
-      enable_config = true,
-      enable_plugin = true,
+      enable = {
+        config = true,
+        plugin = true,
+        setup = true,
+      },
     }, plug.opts)
-    if not loading_opts.enable_plugin then
+    plug.opts = nil
+    if not loading_opts.enable.plugin then
       table.remove(plugins, i)
     end
     -- Create init function for loading mappings and custom lazy loading logic
     plug.init = function(lazy_plugin)
-      if not loading_opts.lazy_on_file_open then
-        loading_opts.lazy_on_file_open = not lazy_plugin._.cache
-      end
-      local name = lazy_plugin.name
       if loading_opts.lazy_on_file_open and lazy_plugin.lazy then
-        M.lazy_load_plugin_on_file_open(name)
+        M.lazy_load_plugin_on_file_open(lazy_plugin.name)
       end
-      u.set_mappings(u.stripped_plugin_name(name))
+      u.set_mappings(u.stripped_plugin_name(lazy_plugin.name))
     end
-    -- Create config function if it doesn't already exist
-    if not plug.config and loading_opts.enable_config then
+    -- Create config function
+    if loading_opts.enable.config then
       plug.config = function(lazy_plugin, _)
         local plug_name = u.stripped_plugin_name(lazy_plugin.name)
         local plug_settings = u.get_mapped_plugin_config(plug_name)
@@ -35,24 +34,13 @@ function M.plugin_setup_config()
         if loading_opts.setup_module then
           call_setup_name = loading_opts.setup_module
         end
-        if not vim.tbl_isempty(plug_settings) then
-          -- Call custom config function if it exists
-          if
-            plug_settings.setup ~= nil
-            and type(plug_settings.setup) == "function"
-          then
-            plug_settings.setup(lazy_plugin, plug_settings.opts)
-          -- Auto call plugin setup function and pass options from config module
-          elseif plug_settings.setup == true or plug_settings.setup == nil then
-            require(call_setup_name).setup(plug_settings.opts)
-          end
-        else
+        if loading_opts.enable.setup then
           require(call_setup_name).setup(plug_settings.opts)
         end
-        u.load_ui_module(plug_name)
-        if plug_settings and plug_settings.setup_callback then
-          plug_settings.setup_callback(plug_settings)
+        if plug_settings and plug_settings.loaded_callback then
+          plug_settings.loaded_callback(plug_settings)
         end
+        u.load_ui_module(plug_name)
       end
     end
   end

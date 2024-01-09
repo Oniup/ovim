@@ -36,7 +36,7 @@ M.opts = {
   },
 }
 
-M.setup_callback = function(plugin_config)
+function M.loaded_callback()
   local telescope = require("telescope")
   telescope.load_extension("possession")
 end

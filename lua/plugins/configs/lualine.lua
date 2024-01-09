@@ -17,9 +17,7 @@ M.sections = {
   branch = "branch",
   location = "location",
   lsp_progress = {
-    function()
-      return require("lsp-progress").progress()
-    end,
+    require("lsp-progress").progress,
   },
   progress = "progress",
   filename = {
@@ -98,7 +96,7 @@ M.opts = {
   },
 }
 
-M.setup_callback = function()
+function M.loaded_callback()
   vim.api.nvim_create_augroup("lualine_group", { clear = true })
   vim.api.nvim_create_autocmd("User", {
     group = "lualine_group",

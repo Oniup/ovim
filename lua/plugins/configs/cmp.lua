@@ -79,7 +79,7 @@ M.opts = {
   },
 }
 
-function M.setup_callback()
+function M.loaded_callback()
   cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({

@@ -6,20 +6,18 @@ M.leader = " "
 M.general = {
   n = {
     ["q"] = { "<cmd> bdelete <cr>", "Delete current buffer" },
+    -- Change buffer
     ["<S-l>"] = { "<cmd> bnext <cr>", "Next buf" },
     ["<S-h>"] = { "<cmd> bprevious <cr>", "Previous buf" },
-
+    -- Cursor jump between windows
     ["<C-h>"] = { "<C-w>h", "Cursor -> left side window" },
     ["<C-j>"] = { "<C-w>j", "Cursor -> lower window" },
     ["<C-k>"] = { "<C-w>k", "Cursor -> upper window" },
     ["<C-l>"] = { "<C-w>l", "Cursor -> right side window" },
-
+    -- Create split windows
     ["<leader>sj"] = { "<cmd> split <cr>", "Split window below" },
-    ["<leader>sl"] = {
-      "<cmd> vsplit <cr>",
-      "Split window to the right",
-    },
-
+    ["<leader>sl"] = { "<cmd> vsplit <cr>", "Split window to the right" },
+    -- Resize Windows
     ["<C-Up>"] = { "<cmd> resize -2 <cr>", "Resize win -y" },
     ["<C-Down>"] = { "<cmd> resize +2 <cr>", "Resize win +y" },
     ["<C-Left>"] = { "<cmd> vertical resize -2 <cr>", "Resize win -x" },
@@ -69,7 +67,7 @@ M.toggleterm = {
   n = {
     ["<A-i>"] = {
       function()
-        vim.cmd("ToggleTerm direction=horizontal name=toggle_terminal <cr>")
+        vim.cmd([[ToggleTerm direction=horizontal name=toggle_terminal <cr>]])
         vim.o.spell = false
       end,
       "Toggle terminal",
@@ -119,6 +117,7 @@ M.possession = {
 
 M.dap = {
   n = {
+    -- Control
     ["<F5>"] = {
       "<cmd> DapContinue <cr>",
       "Start/Continue debugging",
@@ -126,7 +125,6 @@ M.dap = {
     ["<F10>"] = { "<cmd> DapStepOver <cr>", "Step over" },
     ["<F11>"] = { "<cmd> DapStepInto <cr>", "Step into" },
     ["<F12>"] = { "<cmd> DapStepOut <cr>", "Step out" },
-
     ["<leader>dt"] = {
       function()
         require("dap").terminate()
@@ -134,7 +132,7 @@ M.dap = {
       end,
       "Terminate dap session",
     },
-
+    -- Breakpoints
     ["<leader>br"] = {
       "<cmd> DapToggleBreakpoint <cr>",
       "Toggle breakpoint",
@@ -149,7 +147,7 @@ M.dap = {
       "<cmd> Telescope dap list_breakpoints <cr>",
       "List breakpoints",
     },
-
+    -- Telescope dap menus
     ["<leader>dm"] = {
       "<cmd> Telescope dap commands <cr>",
       "Show jap commands",

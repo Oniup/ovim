@@ -20,7 +20,8 @@ M.opts = {
   },
 }
 
-function M.setup(_, opts)
+function M.loaded_callback(config)
+  local opts = config.opts
   require("mason").setup(opts.mason)
   require("mason-lspconfig").setup()
 
@@ -29,7 +30,6 @@ function M.setup(_, opts)
 
   if opts.ensure_installed then
     local installed_list = registry.get_installed_package_names()
-
     for _, client in ipairs(opts.ensure_installed) do
       if not vim.tbl_contains(installed_list, client) then
         vim.cmd("MasonInstall " .. client)

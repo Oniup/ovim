@@ -1,20 +1,24 @@
 local M = {
   number = true,
   relativenumber = false,
+
   showmode = false,
   signcolumn = "yes", -- number: for thinner lines
   laststatus = 0,
   cmdheight = 1,
   cursorline = true,
+
   tabstop = 2,
   shiftwidth = 2,
   softtabstop = 2,
   shiftround = true, -- always indent by multiple of shiftwidth
   expandtab = true, -- Always use spaces instead of tabs
   scrolloff = 5, -- Start scrolling x lines before edge of view port
+
   splitbelow = true, -- Open horizontal splits below the current one
   splitright = true, -- Open vertical splits right of the current one
   autoindent = true,
+
   fileencoding = "utf-8",
   smarttab = true,
   smartindent = true,
@@ -82,14 +86,16 @@ local M = {
 if vim.fn.has("win32") then
   if vim.fn.executable("pwsh") then
     M.shell = "pwsh"
-    M.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
-      .. "[Console]::InputEncoding=[Console]::OutputEncoding="
-      .. "[System.Text.Encoding]::UTF8;"
-    M.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-    M.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-    M.shellquote = ""
-    M.shellxquote = ""
+  else
+    M.shell = "powershell"
   end
+  M.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
+    .. "[Console]::InputEncoding=[Console]::OutputEncoding="
+    .. "[System.Text.Encoding]::UTF8;"
+  M.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+  M.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+  M.shellquote = ""
+  M.shellxquote = ""
 end
 
 return M
