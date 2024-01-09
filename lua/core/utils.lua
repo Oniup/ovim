@@ -98,24 +98,6 @@ function M.load_ui()
   M.ui = M.map_opts(require("core.ui"), M.prequire("custom.ui"))
 end
 
-function M.load_ui_module(name)
-  for _, v in ipairs(M.ui.disable_ui_module) do
-    if name == v then
-      return
-    end
-  end
-
-  local module = M.map_opts(
-    {},
-    { M.prequire("core.ui." .. name), M.prequire("custom.ui." .. name) }
-  )
-
-  if not vim.tbl_isempty(module) then
-    module.load()
-    return
-  end
-end
-
 --- Sets loads all mappings within the given table using vim.keymap.set(...)
 --- @param tbl_key string Mapping group name
 --- @param override_opts table|nil A third option overrides for specific cases

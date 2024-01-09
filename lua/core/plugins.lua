@@ -40,7 +40,6 @@ function M.plugin_setup_config()
         if plug_settings and plug_settings.loaded_callback then
           plug_settings.loaded_callback(plug_settings)
         end
-        u.load_ui_module(plug_name)
       end
     end
   end
