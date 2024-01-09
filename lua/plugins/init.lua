@@ -17,7 +17,7 @@ return {
     "nvim-lualine/lualine.nvim",
     name = "lualine",
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      "devicons",
     },
     opts = {
       lazy_on_file_open = true,
@@ -27,7 +27,7 @@ return {
     "akinsho/bufferline.nvim",
     name = "bufferline",
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      "devicons",
     },
     opts = {
       lazy_on_file_open = true,
@@ -50,7 +50,7 @@ return {
     name = "nvimtree",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      "devicons",
     },
     opts = {
       setup_module = "nvim-tree",
@@ -142,7 +142,7 @@ return {
     name = "lsp-progress",
     dependencies = {
       "lspconfig",
-      "nvim-tree/nvim-web-devicons",
+      "devicons",
     },
     opts = {
       lazy_on_file_open = true,
@@ -160,7 +160,7 @@ return {
     name = "mason",
     dependencies = {
       "lspconfig",
-      "nvim-tree/nvim-web-devicons",
+      "devicons",
       "williamboman/mason-lspconfig.nvim",
     },
     cmd = {
@@ -180,5 +180,9 @@ return {
   -- Plugin Utility APIs ------------------------------------------------------
   {
     "nvim-tree/nvim-web-devicons",
+    name = "devicons",
+    opts = {
+      setup_module = "nvim-web-devicons",
+    },
   },
 }
