@@ -176,6 +176,36 @@ return {
       },
     },
   },
+  -- Debug Adapter Protocol ---------------------------------------------------
+  {
+    "mfussenegger/nvim-dap",
+    name = "dap",
+    dependencies = {
+      "mason",
+      "jay-babu/mason-nvim-dap.nvim",
+    },
+    cmd = {
+      "DapToggleBreakpoint",
+    },
+    opts = {
+      enable = {
+        setup = false,
+      },
+    },
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    name = "dapui",
+    dependencies = {
+      "dap",
+      "nvim-telescope/telescope-dap.nvim",
+      "rcarriga/cmp-dap",
+    },
+    cmd = {
+      "DapContinue",
+      "Telescope dap",
+    },
+  },
 
   -- Plugin Utility APIs ------------------------------------------------------
   {
