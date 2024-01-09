@@ -40,13 +40,6 @@ return {
     },
   },
   {
-    "Bekaboo/dropbar.nvim",
-    name = "breadcrumbs",
-    opts = {
-      setup_module = "dropbar",
-    },
-  },
-  {
     "folke/which-key.nvim",
     keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
   },

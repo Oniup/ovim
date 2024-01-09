@@ -18,20 +18,20 @@ local function has_words_before()
 end
 
 M.menu_names = {
-  nvim_lsp = "LSP",
-  nvim_lua = "NVIM LSP",
-  cmp_tabnine = "TABNINE",
-  codeium = "CODEIUM",
-  copilot = "COPILOT",
-  buffer = "BUFFER",
-  luasnip = "SNIP",
-  path = "PATH",
-  cmdline = "COMMAND",
-  calc = "CALC",
-  emoji = "EMOJI",
-  treesitter = "TREESITTER",
-  crates = "CRATES",
-  tmux = "TMUX",
+  nvim_lsp = "lsp",
+  nvim_lua = "lsp",
+  cmp_tabnine = "tabnine",
+  codeium = "codeium",
+  copilot = "copilot",
+  buffer = "buffer",
+  luasnip = "snip",
+  path = "path",
+  cmdline = "command",
+  calc = "calc",
+  emoji = "emoji",
+  treesitter = "treesitter",
+  crates = "crates",
+  tmux = "tmux",
 }
 
 M.opts = {
@@ -105,6 +105,7 @@ M.opts = {
       end
       -- Limit width size
       if ui.cmp.fixed_width then
+        -- https://github.com/hrsh7th/nvim-cmp/discussions/609#discussioncomment-5727678
         local content = item.abbr
         local win_width = vim.api.nvim_win_get_width(0)
         local max_content_width = math.floor(win_width * ui.cmp.fixed_width)

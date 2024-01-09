@@ -4,6 +4,9 @@ M.default_opts = { silent = true }
 M.leader = " "
 
 M.general = {
+  i = {
+    ["jk"] = { "<esc>", "Esc into normal mode" },
+  },
   n = {
     ["q"] = { "<cmd> bdelete <cr>", "Delete current buffer" },
     -- Change buffer
@@ -26,6 +29,9 @@ M.general = {
 }
 
 M.lsp = {
+  i = {
+    ["<C-h>"] = { vim.lsp.buf.signature_help, "Signature Help" },
+  },
   n = {
     ["gd"] = { "<cmd> Telescope lsp_definitions <cr>", "Definitions" },
     ["gi"] = { "<cmd> Telescope lsp_implementations <cr>", "Implementations" },
@@ -39,9 +45,6 @@ M.lsp = {
     ["<leader>re"] = { vim.lsp.buf.rename, "Rename" },
     ["<leader>gn"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
     ["<leader>gp"] = { vim.diagnostic.goto_prev, "Go to prev diagnostic" },
-  },
-  i = {
-    ["<C-h>"] = { vim.lsp.buf.signature_help, "Signature Help" },
   },
 }
 
