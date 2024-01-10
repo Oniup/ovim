@@ -36,7 +36,7 @@ return {
     kind = "icon", -- "none", "icon", "text"
     field_arrangement = { "kind", "abbr", "menu" },
     selected_background_color = "PmenuSel",
-    fixed_width = 0.2,
+    fixed_width = 0.4,
     background = {
       color = "darker",
     },

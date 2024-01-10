@@ -48,15 +48,6 @@ M.lsp = {
   },
 }
 
-M.lsp_clangd = {
-  n = {
-    ["<leader>o"] = {
-      "<cmd> ClangdSwitchSourceHeader <cr>",
-      "Swap between header and source",
-    },
-  },
-}
-
 M.nvimtree = {
   n = {
     ["<leader>e"] = {

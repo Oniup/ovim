@@ -1,54 +1,63 @@
 local M = {}
 
+local ui = require("core.utils").ui
+
 M.opts = {
+  spinner = ui.icons.spinner,
+  series_format = function(title, message, percentage)
+    local fmt = {}
+    local has_title = false
+    local has_msg = true
+    local done = false
+    if type(title) == "string" and string.len(title) > 0 then
+      table.insert(fmt, title)
+      has_title = true
+    end
+    if type(message) == "string" and string.len(message) > 0 then
+      table.insert(fmt, message)
+      has_msg = true
+    end
+    if percentage and (has_msg or has_title) then
+      table.insert(fmt, string.format("%.0f%%%%", percentage))
+      done = percentage == 100.0
+    end
+    return { msg = table.concat(fmt, " "), done = done }
+  end,
   client_format = function(client_name, spinner, series_messages)
     if #series_messages == 0 then
       return nil
     end
+    local msgs = {}
+    local done = true
+    for _, msg in ipairs(series_messages) do
+      if not msg.done then
+        done = false
+      end
+      table.insert(msgs, msg.msg)
+    end
+    local prefix = done and ui.icons.done or spinner
     return {
       name = client_name,
-      body = spinner .. " " .. table.concat(series_messages, ", "),
+      body = prefix .. " " .. table.concat(msgs, ", "),
     }
   end,
   format = function(client_messages)
-    --- @param name string
-    --- @param msg string?
-    --- @return string
-    local function stringify(name, msg)
-      return msg and string.format("%s %s", name, msg) or name
-    end
-
-    -- local sign = "" -- nf-fa-gear \uf013
-    local lsp_clients = vim.lsp.get_active_clients()
-    local messages_map = {}
-    for _, climsg in ipairs(client_messages) do
-      messages_map[climsg.name] = climsg.body
-    end
-
-    if #lsp_clients > 0 then
-      table.sort(lsp_clients, function(a, b)
-        return a.name < b.name
-      end)
-      local builder = {}
-      for _, cli in ipairs(lsp_clients) do
-        if
-          type(cli) == "table"
-          and type(cli.name) == "string"
-          and string.len(cli.name) > 0
-        then
-          if messages_map[cli.name] then
-            table.insert(builder, stringify(cli.name, messages_map[cli.name]))
-          else
-            table.insert(builder, stringify(cli.name))
-          end
-        end
-      end
-      if #builder > 0 then
-        return table.concat(builder, ", ")
+    local fmt_tbl = {}
+    local msgs = {}
+    for _, cli_msg in ipairs(client_messages) do
+      if #cli_msg.body > 0 then
+        msgs[cli_msg.name] =
+          string.format("%s => %s", cli_msg.name, cli_msg.body)
       end
     end
-
-    return ""
+    for _, cli in ipairs(vim.lsp.get_active_clients()) do
+      if msgs[cli.name] then
+        table.insert(fmt_tbl, msgs[cli.name])
+      else
+        table.insert(fmt_tbl, cli.name)
+      end
+    end
+    return table.concat(fmt_tbl, " | ")
   end,
 }
 

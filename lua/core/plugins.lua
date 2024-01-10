@@ -4,7 +4,10 @@ local u = require("core.utils")
 
 function M.plugin_setup_config()
   local plugins = require("plugins")
-  table.insert(plugins, { import = "custom.plugins" })
+  local usr_plugins = u.prequire("custom.plugins")
+  if usr_plugins then
+    table.insert(plugins, usr_plugins)
+  end
   -- Construct lazy init and config functions
   for i, plug in ipairs(plugins) do
     local loading_opts = u.map_opts({

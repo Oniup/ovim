@@ -117,9 +117,9 @@ return {
     name = "lspconfig",
     dependencies = {
       "mason",
-      "lsp-progress",
       "null-ls",
-      "stevearc/dressing.nvim",
+      "lsp-progress",
+      "lsp-dressing",
     },
     opts = {
       enable = {
@@ -153,6 +153,12 @@ return {
     name = "null-ls",
     dependencies = {
       "lspconfig",
+      "nvim-lua/plenary.nvim",
+    },
+    opts = {
+      enable = {
+        setup = false,
+      },
     },
   },
   {
@@ -176,6 +182,7 @@ return {
       },
     },
   },
+
   -- Debug Adapter Protocol ---------------------------------------------------
   {
     "mfussenegger/nvim-dap",

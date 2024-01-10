@@ -6,6 +6,9 @@ M.mason = {
   package_uninstalled = "",
 }
 
+M.spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" }
+M.done = ""
+
 M.lazy = {
   cmd = " ",
   config = "",
