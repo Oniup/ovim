@@ -4,11 +4,11 @@ local ui = require("core.utils").ui
 
 M.opts = {
   spinner = ui.icons.spinner,
-  series_format = function(title, message, percentage)
+  decay = 3000,
+  series_format = function(title, message, percentage, done)
     local fmt = {}
     local has_title = false
     local has_msg = true
-    local done = false
     if type(title) == "string" and string.len(title) > 0 then
       table.insert(fmt, title)
       has_title = true
@@ -19,7 +19,6 @@ M.opts = {
     end
     if percentage and (has_msg or has_title) then
       table.insert(fmt, string.format("%.0f%%%%", percentage))
-      done = percentage == 100.0
     end
     return { msg = table.concat(fmt, " "), done = done }
   end,
@@ -53,8 +52,6 @@ M.opts = {
     for _, cli in ipairs(vim.lsp.get_active_clients()) do
       if msgs[cli.name] then
         table.insert(fmt_tbl, msgs[cli.name])
-      else
-        table.insert(fmt_tbl, cli.name)
       end
     end
     return table.concat(fmt_tbl, " | ")

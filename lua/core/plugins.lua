@@ -6,38 +6,39 @@ function M.plugin_setup_config()
   local plugins = require("plugins")
   local usr_plugins = u.prequire("custom.plugins")
   if usr_plugins then
-    table.insert(plugins, usr_plugins)
+    for _, plug in ipairs(usr_plugins) do
+      table.insert(plugins, plug)
+    end
   end
   -- Construct lazy init and config functions
   for i, plug in ipairs(plugins) do
-    local loading_opts = u.map_opts({
-      enable = {
-        config = true,
-        plugin = true,
-        setup = true,
-      },
+    local plug_opts = u.map_tbl({
+      enabled = true,
+      enable_config = true,
+      enable_setup = true,
+      lazy_on_file_open = false,
     }, plug.opts)
     plug.opts = nil
-    if not loading_opts.enable.plugin then
+    if not plug_opts.enabled then
       table.remove(plugins, i)
     end
     -- Create init function for loading mappings and custom lazy loading logic
     plug.init = function(lazy_plugin)
-      if loading_opts.lazy_on_file_open and lazy_plugin.lazy then
+      if plug_opts.lazy_on_file_open then
         M.lazy_load_plugin_on_file_open(lazy_plugin.name)
       end
       u.set_mappings(u.stripped_plugin_name(lazy_plugin.name))
     end
     -- Create config function
-    if loading_opts.enable.config then
+    if plug_opts.enable_config then
       plug.config = function(lazy_plugin, _)
         local plug_name = u.stripped_plugin_name(lazy_plugin.name)
         local plug_settings = u.get_mapped_plugin_config(plug_name)
         local call_setup_name = plug_name
-        if loading_opts.setup_module then
-          call_setup_name = loading_opts.setup_module
+        if plug_opts.setup_module_name then
+          call_setup_name = plug_opts.setup_module_name
         end
-        if loading_opts.enable.setup then
+        if plug_opts.enable_setup then
           require(call_setup_name).setup(plug_settings.opts)
         end
         if plug_settings and plug_settings.loaded_callback then

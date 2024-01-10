@@ -6,21 +6,18 @@ M.mason_install_path = vim.fn.stdpath("data") .. "/mason/packages"
 --- @param lhs table Default options
 --- @param rhs table|nil Override/add options
 ---@return table opts Combined options
-function M.map_opts(lhs, rhs)
-  if not rhs then
-    return lhs
-  end
-
-  if vim.tbl_islist(rhs) then
-    for _, v in ipairs(rhs) do
-      if v then
-        lhs = vim.tbl_deep_extend("force", lhs, v)
+function M.map_tbl(lhs, rhs)
+  if rhs then
+    if vim.tbl_islist(rhs) then
+      for _, v in pairs(rhs) do
+        if v ~= nil then
+          lhs = vim.tbl_deep_extend("force", lhs, v)
+        end
       end
+    else
+      lhs = vim.tbl_deep_extend("force", lhs, rhs)
     end
-    return lhs
   end
-
-  lhs = vim.tbl_deep_extend("force", lhs, rhs)
   return lhs
 end
 
@@ -56,7 +53,7 @@ function M.prequire_extend(module_names)
     local tbl = M.prequire(module)
 
     if type(tbl) == "table" then
-      modules = M.map_opts(modules, tbl)
+      modules = M.map_tbl(modules, tbl)
     else
       vim.notify(
         "Cannot combine module " .. module .. ", it doesn't return a table",
@@ -77,7 +74,7 @@ function M.os_correct_exec(path)
 end
 
 function M.load_options()
-  local opts = M.map_opts(require("core.options"), M.prequire("custom.options"))
+  local opts = M.map_tbl(require("core.options"), M.prequire("custom.options"))
 
   for k, v in pairs(opts) do
     vim.opt[k] = v
@@ -86,7 +83,7 @@ end
 
 function M.load_mappings()
   M.mappings =
-    M.map_opts(require("core.mappings"), M.prequire("custom.mappings"))
+    M.map_tbl(require("core.mappings"), M.prequire("custom.mappings"))
 
   vim.g.mapleader = M.mappings.leader
   vim.g.maplocalleader = M.mappings.leader
@@ -95,7 +92,7 @@ function M.load_mappings()
 end
 
 function M.load_ui()
-  M.ui = M.map_opts(require("core.ui"), M.prequire("custom.ui"))
+  M.ui = M.map_tbl(require("core.ui"), M.prequire("custom.ui"))
 end
 
 --- Sets loads all mappings within the given table using vim.keymap.set(...)
@@ -112,13 +109,13 @@ function M.set_mappings(tbl_key, override_opts)
         local opts = M.mappings.default_opts
 
         if map["opts"] then
-          opts = M.map_opts(opts, map["opts"])
+          opts = M.map_tbl(opts, map["opts"])
         end
         if desc and type(desc) == "string" then
           opts["desc"] = desc
         end
 
-        vim.keymap.set(mode, key, cmd, M.map_opts(opts, override_opts))
+        vim.keymap.set(mode, key, cmd, M.map_tbl(opts, override_opts))
       end
     end
 
@@ -129,7 +126,7 @@ function M.set_mappings(tbl_key, override_opts)
 end
 
 function M.get_mapped_plugin_config(name)
-  return M.map_opts({}, {
+  return M.map_tbl({}, {
     M.prequire("plugins.configs." .. name),
     M.prequire("custom.plugins.configs." .. name),
   })
@@ -176,7 +173,7 @@ function M.dap_config_template(adapter, language, overrides)
     stopAtEntry = false,
   }
 
-  result = M.map_opts(result, overrides)
+  result = M.map_tbl(result, overrides)
 end
 
 function M.get_all_modules_at(modules_paths)

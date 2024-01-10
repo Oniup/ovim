@@ -105,7 +105,7 @@ function M.loaded_callback(config)
       local server_opts = {
         on_attach = opts.lspconfig.on_attach,
         capabilities = opts.lspconfig.capabilities,
-        settings = u.map_opts({}, {
+        settings = u.map_tbl({}, {
           u.prequire("plugins.lspconfigs." .. server),
           u.prequire("custom.plugins.lspconfigs." .. server),
         }),

@@ -9,7 +9,7 @@ return {
     name = "treesitter",
     buld = ":TSUpdate",
     opts = {
-      setup_module = "nvim-treesitter.configs",
+      setup_module_name = "nvim-treesitter.configs",
       lazy_on_file_open = true,
     },
   },
@@ -51,9 +51,10 @@ return {
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     dependencies = {
       "devicons",
+      "dressing",
     },
     opts = {
-      setup_module = "nvim-tree",
+      setup_module_name = "nvim-tree",
     },
   },
   {
@@ -93,7 +94,9 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
     },
-    event = "InsertEnter",
+    opts = {
+      lazy_on_file_open = true,
+    },
   },
   {
     "windwp/nvim-autopairs",
@@ -118,24 +121,16 @@ return {
     dependencies = {
       "mason",
       "null-ls",
+      "dressing",
       "lsp-progress",
-      "lsp-dressing",
     },
     opts = {
-      enable = {
-        setup = false,
-      },
+      enable_setup = false,
     },
   },
   {
     "stevearc/dressing.nvim",
-    name = "lsp-dressing",
-    dependencies = {
-      "lspconfig",
-    },
-    opts = {
-      setup_module = "dressing",
-    },
+    name = "dressing",
   },
   {
     "linrongbin16/lsp-progress.nvim",
@@ -156,9 +151,7 @@ return {
       "nvim-lua/plenary.nvim",
     },
     opts = {
-      enable = {
-        setup = false,
-      },
+      enable_setup = false,
     },
   },
   {
@@ -177,9 +170,7 @@ return {
       "MasonLog",
     },
     opts = {
-      enable = {
-        setup = false,
-      },
+      enable_setup = false,
     },
   },
 
@@ -195,9 +186,7 @@ return {
       "DapToggleBreakpoint",
     },
     opts = {
-      enable = {
-        setup = false,
-      },
+      enable_setup = false,
     },
   },
   {
@@ -219,7 +208,7 @@ return {
     "nvim-tree/nvim-web-devicons",
     name = "devicons",
     opts = {
-      setup_module = "nvim-web-devicons",
+      setup_module_name = "nvim-web-devicons",
     },
   },
 }

@@ -2,8 +2,6 @@ local M = {}
 
 local ui = require("core.utils").ui
 
-vim.opt.laststatus = 2
-
 M.sections = {
   mode = "mode",
   diff = {
@@ -71,10 +69,9 @@ M.opts = {
     lualine_a = { M.sections.mode },
     lualine_b = { M.sections.branch, M.sections.diff },
     lualine_c = { M.sections.diagnostics },
-    lualine_x = {},
-    lualine_y = { M.sections.lsp_progress },
+    lualine_x = { M.sections.lsp_progress },
+    lualine_y = { M.sections.filetype },
     lualine_z = {
-      M.sections.filetype,
       M.sections.progress,
       M.sections.location,
     },
@@ -89,14 +86,13 @@ M.opts = {
   },
   extensions = {
     "nvim-dap-ui",
-    -- "lazy",
-    -- "mason",
-    "nvim-tree",
     "toggleterm",
   },
 }
 
 function M.loaded_callback()
+  vim.opt.laststatus = 3
+  vim.opt.cursorline = true
   vim.api.nvim_create_augroup("lualine_group", { clear = true })
   vim.api.nvim_create_autocmd("User", {
     group = "lualine_group",

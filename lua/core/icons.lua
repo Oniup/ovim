@@ -8,6 +8,7 @@ M.mason = {
 
 M.spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" }
 M.done = ""
+M.check = ""
 
 M.lazy = {
   cmd = " ",
