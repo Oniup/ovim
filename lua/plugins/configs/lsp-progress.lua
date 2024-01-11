@@ -3,7 +3,7 @@ local M = {}
 local ui = require("core.utils").ui
 
 M.opts = {
-  spinner = ui.icons.spinner,
+  spinner = ui.icons.progress.spinner,
   decay = 3000,
   series_format = function(title, message, percentage, done)
     local fmt = {}
@@ -34,7 +34,7 @@ M.opts = {
       end
       table.insert(msgs, msg.msg)
     end
-    local prefix = done and ui.icons.done or spinner
+    local prefix = done and ui.icons.progress.done or spinner
     return {
       name = client_name,
       body = prefix .. " " .. table.concat(msgs, ", "),
@@ -45,8 +45,12 @@ M.opts = {
     local msgs = {}
     for _, cli_msg in ipairs(client_messages) do
       if #cli_msg.body > 0 then
-        msgs[cli_msg.name] =
-          string.format("%s => %s", cli_msg.name, cli_msg.body)
+        msgs[cli_msg.name] = string.format(
+          "%s %s %s",
+          cli_msg.name,
+          ui.icons.progress.tasks,
+          cli_msg.body
+        )
       end
     end
     for _, cli in ipairs(vim.lsp.get_active_clients()) do

@@ -6,9 +6,30 @@ M.mason = {
   package_uninstalled = "",
 }
 
-M.spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" }
-M.done = ""
-M.check = ""
+M.progress = {
+  spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" },
+  done = "",
+  tasks = "➜",
+}
+
+M.dapui = {
+  debugging_controls = {
+    disconnect = "",
+    pause = "",
+    play = "",
+    run_last = "",
+    step_back = "",
+    step_into = "",
+    step_out = "",
+    step_over = "",
+    terminate = "",
+  },
+  expanding_controls = {
+    collapsed = "",
+    current_frame = "",
+    expanded = "",
+  },
+}
 
 M.lazy = {
   cmd = " ",
@@ -53,6 +74,7 @@ M.gitsigns = {
   changedelete = { text = "│" },
   untracked = { text = "│" },
 }
+
 M.nvim_tree_glyphs = {
   default = "󰈚",
   symlink = "",
@@ -80,7 +102,7 @@ M.nvim_tree_glyphs = {
 
 M.whichkey = {
   breadcrumb = "»",
-  separator = "➜",
+  separator = "➜ ",
   group = "",
 }
 

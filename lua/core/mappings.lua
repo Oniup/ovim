@@ -113,7 +113,10 @@ M.dap = {
   n = {
     -- Control
     ["<F5>"] = {
-      "<cmd> DapContinue <cr>",
+      function()
+        require("dap").continue()
+        require("dapui").open()
+      end,
       "Start/Continue debugging",
     },
     ["<F10>"] = { "<cmd> DapStepOver <cr>", "Step over" },

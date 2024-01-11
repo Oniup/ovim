@@ -197,10 +197,6 @@ return {
       "nvim-telescope/telescope-dap.nvim",
       "rcarriga/cmp-dap",
     },
-    cmd = {
-      "DapContinue",
-      "Telescope dap",
-    },
   },
 
   -- Plugin Utility APIs ------------------------------------------------------

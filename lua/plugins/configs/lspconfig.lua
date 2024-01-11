@@ -19,7 +19,7 @@ function M.ui_set_handlers()
     vim.lsp.with(vim.lsp.handlers.signature_help, {
       border = ui.border.type,
       focusable = false,
-      relative = "cursor",
+      -- relative = "cursor",
     })
 end
 
@@ -37,7 +37,7 @@ function M.ui_set_diagnostics()
     })
   end
 
-  vim.diagnostic.config(ui.diagnostics)
+  vim.diagnostic.config(ui.lsp.diagnostics)
 end
 
 function M.load_ui()
@@ -78,22 +78,6 @@ M.opts = {
   lspconfig = {
     capabilities = M.capabilities,
     on_attach = M.on_attach,
-  },
-  ui = {
-    diagnostics = {
-      virtual_text = false,
-      signs = true,
-      update_in_insert = true,
-      underline = true,
-      severity_sort = true,
-      float = {
-        focusable = true,
-        border = u.ui.border.type,
-        source = "always",
-        header = "",
-        prefix = "",
-      },
-    },
   },
 }
 
