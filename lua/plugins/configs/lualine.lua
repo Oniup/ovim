@@ -2,6 +2,9 @@ local M = {}
 
 local ui = require("core.utils").ui
 
+M.statusline_mode = 3
+M.cmdline_height = 1
+
 M.sections = {
   mode = "mode",
   diff = {
@@ -90,9 +93,9 @@ M.opts = {
   },
 }
 
-function M.loaded_callback()
-  vim.opt.laststatus = 3
-  vim.opt.cursorline = true
+function M.loaded_callback(config)
+  vim.opt.laststatus = config.statusline_mode
+  vim.opt.cmdheight = config.cmdline_height
   vim.api.nvim_create_augroup("lualine_group", { clear = true })
   vim.api.nvim_create_autocmd("User", {
     group = "lualine_group",

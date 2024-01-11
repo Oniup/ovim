@@ -1,31 +1,34 @@
-# Based Vim
+# Ovim
 
-Is a **Based** Neovim configuration setup to make it easy to customize and extend
+[showcase_image](./images/showcase.png)
+
+Is a small Neovim configuration setup to make it easy to customize and extend
 with your own configurations
 
-Example of custom overrides and the ones I personally use, can be found
-[here](https://github.com/Oniup/based_vim_config),
+Example of custom configuration and the ones I personally use, can be found
+[here](https://github.com/Oniup/ovim-config.git). The configuration targets
+C/C++ development
 
 ## Installation
 
 ***Linux:***
 
-> **Chads** are known to use this operating system. Used your **Based** packages
-> manager of your choice to install the [dependencies](#Dependencies)
+Very straight forward, just use your favorite package manager to install the 
+[dependencies](#Dependencies)
 
 ***MacOS:***
 
-> To install the required packages listed under [dependencies](#Dependencies),
-> you'll need Homebrew
+To install the required packages listed under [dependencies](#Dependencies),
+you'll need Homebrew
 
 ***Windows:***
 
-> Install the either [Chocolatey](https://chocolatey.org/) or
-> [Scoop](https://scoop.sh/) to install the listed packages under
-> [dependencies](#Dependencies)
+Install the either [Chocolatey](https://chocolatey.org/) or
+[Scoop](https://scoop.sh/) to install the listed packages under
+[dependencies](#Dependencies)
 
-    Chocolatey requires the terminal to be elevated with admin privileges to
-    install anything
+> Chocolatey requires the terminal to be elevated with admin privileges to
+> install anything
 
 ### Dependencies
 
@@ -51,24 +54,21 @@ pip install pynvim --upgrade
 > It is recommended to download and use a Nerd Font for displaying icons. However
 > it isn't required.
 
-### Install Based Vim
+### Clone Repo
 
 ***Windows:***
 
 ```
-git clone https://github.com/Oniup/based_vim.git $HOME\AppData\Local\nvim --depth 1
+git clone https://github.com/Oniup/ovim.git $HOME\AppData\Local\nvim --depth 1
 ```
 
 ***Linux/MacOS:***
 
 ```bash
-git clone https://github.com/Oniup/based_vim.git ~/.config/nvim --depth 1
+git clone https://github.com/Oniup/ovim.git ~/.config/nvim --depth 1
 ```
 
 ## Uninstall
-
-To make your config **Un-Based**, delete the following directories to reset
-Neovim configuration to default.
 
 ***On Linux/MacOS:***
 
