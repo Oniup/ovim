@@ -1,7 +1,8 @@
 local M = {}
 
-local ui = require("core.utils").ui
 local cmp = require("cmp")
+local u = require("core.utils")
+local ui = u.ui
 
 local function has_words_before()
   local unpack = table.unpack or nil
@@ -15,6 +16,48 @@ local function has_words_before()
         == nil
   end
   return false
+end
+
+function M.popup_fmt(entry, item)
+  local insert = table.insert
+  local concat = table.concat
+  local fmt = {
+    abbr = item.abbr,
+    kind = "",
+    menu = "",
+  }
+  local builder = {}
+  local wrap = ui.cmp.menu.wrap
+  -- Menu UI options
+  if ui.cmp.menu.source then
+    insert(builder, (M.menu_names)[entry.source.name] or "unknown")
+  end
+  if ui.cmp.menu.kind then
+    insert(builder, item.kind)
+  end
+  fmt.menu = wrap[1] .. concat(builder, " ") .. wrap[2]
+  -- Kind UI options
+  builder = {}
+  wrap = ui.cmp.kind.wrap_name
+  if ui.cmp.kind.icon then
+    insert(builder, ui.icons.kind[item.kind] or "?")
+  end
+  if ui.cmp.kind.name then
+    insert(builder, wrap[1] .. string.lower(item.kind) .. wrap[2])
+  end
+  fmt.kind = concat(builder, " ")
+  -- Content
+  if ui.cmp.fixed_width then
+    -- https://github.com/hrsh7th/nvim-cmp/discussions/609#discussioncomment-5727678
+    local win_width = vim.api.nvim_win_get_width(0)
+    local max_abbr_width = math.floor(win_width * ui.cmp.fixed_width) - 10
+    if #item.abbr > max_abbr_width then
+      fmt.abbr = vim.fn.strcharpart(item.abbr, 0, max_abbr_width - 3) .. "..."
+    else
+      fmt.abbr = item.abbr .. (" "):rep(max_abbr_width - #item.abbr)
+    end
+  end
+  return u.map_tbl(item, fmt)
 end
 
 M.menu_names = {
@@ -88,45 +131,7 @@ M.opts = {
   },
   formatting = {
     fields = ui.cmp.field_arrangement,
-    format = function(entry, item)
-      -- Menu UI options
-      item.menu = ""
-      local menu_ui = ui.cmp.menu
-      if menu_ui.source then
-        item.menu = (M.menu_names)[entry.source.name] or "unknown src"
-        if menu_ui.wrap_source and #menu_ui.wrap_source == 2 then
-          item.menu = menu_ui.wrap_source[1]
-            .. item.menu
-            .. menu_ui.wrap_source[2]
-        end
-      end
-      if menu_ui.kind_text then
-        item.menu = item.kind .. " " .. item.menu
-      end
-      -- Limit width size
-      if ui.cmp.fixed_width then
-        -- https://github.com/hrsh7th/nvim-cmp/discussions/609#discussioncomment-5727678
-        local content = item.abbr
-        local win_width = vim.api.nvim_win_get_width(0)
-        local max_content_width = math.floor(win_width * ui.cmp.fixed_width)
-          - 10
-        if #content > max_content_width then
-          item.abbr = vim.fn.strcharpart(content, 0, max_content_width - 3)
-            .. "..."
-        else
-          item.abbr = content .. (" "):rep(max_content_width - #content)
-        end
-      end
-      -- Kind Icon
-      if ui.cmp.kind == "icon" then
-        item.kind = ui.icons.kind[item.kind] or "?"
-      elseif ui.cmp.kind == "text" then
-        item.kind = item.kind
-      else
-        item.kind = ""
-      end
-      return item
-    end,
+    format = M.popup_fmt,
   },
   snippet = {
     expand = function(args)
@@ -134,15 +139,5 @@ M.opts = {
     end,
   },
 }
-
-function M.loaded_callback()
-  cmp.setup.cmdline(":", {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-      { name = "path" },
-      { name = "cmdline" },
-    }),
-  })
-end
 
 return M

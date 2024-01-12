@@ -24,20 +24,28 @@ return {
     },
   },
   {
-    "akinsho/bufferline.nvim",
-    name = "bufferline",
+    "romgrk/barbar.nvim",
     dependencies = {
       "devicons",
+      "gitsigns",
     },
     opts = {
       lazy_on_file_open = true,
     },
   },
+  -- {
+  --   "akinsho/bufferline.nvim",
+  --   name = "bufferline",
+  --   dependencies = {
+  --     "devicons",
+  --   },
+  --   opts = {
+  --     lazy_on_file_open = true,
+  --   },
+  -- },
   {
     "lewis6991/gitsigns.nvim",
-    opts = {
-      lazy_on_file_open = true,
-    },
+    name = "gitsigns",
   },
   {
     "folke/which-key.nvim",
@@ -92,7 +100,6 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
     },
     opts = {
       lazy_on_file_open = true,

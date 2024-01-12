@@ -38,11 +38,15 @@ M.border = {
 M.cmp = {
   menu = {
     source = true,
-    wrap_source = { "(", ")" },
-    kind_text = true,
+    kind = false,
+    wrap = { "", "" },
   },
-  kind = "icon", -- "none", "icon", "text"
-  field_arrangement = { "kind", "abbr", "menu" },
+  kind = {
+    icon = true,
+    name = true,
+    wrap_name = { "(", ")" },
+  },
+  field_arrangement = { "abbr", "kind", "menu" },
   selected_background_color = "PmenuSel",
   fixed_width = 0.4,
   background = {

@@ -2,13 +2,19 @@ local M = {}
 
 local ui = require("core.utils").ui
 
-M.statusline_mode = 3
+M.statusline_mode = 2
 M.cmdline_height = 1
 
 M.sections = {
-  mode = "mode",
+  mode = {
+    "mode",
+    fmt = function(output)
+      return string.sub(output, 1, 1)
+    end,
+  },
   diff = {
     "diff",
+    colored = true,
     symbols = {
       added = ui.icons.nvim_tree_glyphs.git.untracked .. " ",
       modified = ui.icons.nvim_tree_glyphs.git.renamed .. " ",
@@ -16,24 +22,43 @@ M.sections = {
     },
   },
   branch = "branch",
-  location = "location",
+  location = {
+    "location",
+    fmt = function(output)
+      if output then
+        local cutoff = string.find(output, ":") - 1
+        output = string.sub(output, 1, cutoff)
+          .. "/"
+          .. vim.api.nvim_buf_line_count(vim.api.nvim_get_current_buf())
+      end
+      return output
+    end,
+  },
   lsp_progress = {
     require("lsp-progress").progress,
   },
   progress = "progress",
   filename = {
     "filename",
+    fmt = function(output)
+      return string.match(output, "^(.*)%." .. vim.bo.filetype .. "$")
+    end,
     file_status = false,
     newfile_status = false,
     path = 0,
     symbols = {
       modified = "",
-      readonly = "READ ONLY",
+      readonly = "",
       unnamed = "",
       newfile = "",
     },
   },
   filetype = {
+    "filetype",
+    colored = true,
+    icon_only = true,
+  },
+  filetype_no_color = {
     "filetype",
     colored = false,
     icon_only = true,
@@ -58,37 +83,45 @@ M.sections = {
       hint = ui.icons.diagnostics.hint,
     },
   },
+  searchcount = {
+    "searchcount",
+    maxcount = 999,
+    timeout = 500,
+  },
 }
 
 M.opts = {
   options = {
-    theme = function()
-      return require("ignite.lualine_theme")
-    end,
+    theme = require("ignite.lualine_theme"),
     component_separators = { right = "", left = "" },
     section_separators = { right = "", left = "" },
   },
   sections = {
-    lualine_a = { M.sections.mode },
-    lualine_b = { M.sections.branch, M.sections.diff },
-    lualine_c = { M.sections.diagnostics },
-    lualine_x = { M.sections.lsp_progress },
-    lualine_y = { M.sections.filetype },
-    lualine_z = {
-      M.sections.progress,
+    lualine_a = { M.sections.mode, M.sections.searchcount },
+    lualine_b = { M.sections.branch },
+    lualine_c = { M.sections.diff },
+    lualine_x = { M.sections.diagnostics, M.sections.lsp_progress },
+    lualine_y = {
+      M.sections.filetype,
+      M.sections.filename,
+    },
+    lualine_z = { M.sections.location },
+  },
+  inactive_sections = {
+    lualine_c = { M.sections.diff },
+    lualine_x = { M.sections.diagnostics },
+    lualine_y = {
+      M.sections.filetype_no_color,
+      M.sections.filename,
       M.sections.location,
     },
   },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = { M.sections.diff },
-    lualine_c = { M.sections.diagnostics },
-    lualine_x = {},
-    lualine_y = { M.sections.filename, M.sections.location },
-    lualine_z = {},
-  },
   extensions = {
+    "lazy",
+    "mason",
     "nvim-dap-ui",
+    "nvim-tree",
+    "quickfix",
     "toggleterm",
   },
 }

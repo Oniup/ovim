@@ -9,15 +9,30 @@ return {
     missing = true,
   },
   checker = {
-    enabled = true,
+    enabled = false, -- Makes a massive difference on startup time
     notify = false,
+  },
+  change_detection = {
+    enabled = false,
+    notify = false,
+  },
+  diff = {
+    cmd = "git",
   },
   ui = {
     border = u.ui.border.type,
     size = { width = 0.6, height = 0.6 },
     icons = u.ui.icons.lazy,
+    pills = true,
+  },
+  profiling = {
+    loader = true,
+    require = true,
   },
   performance = {
+    cache = {
+      enabled = false,
+    },
     rtp = {
       disabled_plugins = {
         "2html_plugin",
@@ -31,6 +46,7 @@ return {
         "netrwSettings",
         "netrwFileHandlers",
         "matchit",
+        "matchparen",
         "tar",
         "tarPlugin",
         "rrhelper",

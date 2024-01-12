@@ -3,13 +3,30 @@ local M = {}
 M.mason = {
   package_installed = "",
   package_pending = "",
-  package_uninstalled = "",
+  package_uninstalled = "",
 }
 
 M.progress = {
   spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" },
   done = "",
   tasks = "➜",
+}
+
+M.barbar = {
+  separator = { left = "▎", right = "" },
+  close = "",
+  modified = "",
+  present = "default", -- default', 'powerline', or 'slanted'
+}
+
+M.breakpoints = {
+  default = "",
+  unsupported = "",
+  data = "",
+  conditional = "",
+  unsupported_conditional = "",
+  enable_conditional = "",
+  functional = "",
 }
 
 M.dapui = {
@@ -25,28 +42,28 @@ M.dapui = {
     terminate = "",
   },
   expanding_controls = {
-    collapsed = "",
-    current_frame = "",
-    expanded = "",
+    collapsed = "",
+    current_frame = "",
+    expanded = "",
   },
 }
 
 M.lazy = {
-  cmd = " ",
+  cmd = "",
   config = "",
   event = "",
-  ft = "󰈙 ",
-  init = " ",
-  import = " ",
-  keys = "󰌌 ",
-  lazy = "󰂠 ",
+  ft = "󰈙",
+  init = "",
+  import = "",
+  keys = "󰌌",
+  lazy = "󰂠",
   loaded = "",
-  not_loaded = "",
-  plugin = " ",
-  runtime = " ",
-  require = "󰢱 ",
-  source = "󰅱 ",
-  start = "",
+  not_loaded = "",
+  plugin = "",
+  runtime = "",
+  require = "󰢱",
+  source = "󰅱",
+  start = "",
   task = "",
   list = { "●", "➜", "★", "‒" },
 }
@@ -60,9 +77,9 @@ M.diagnostics = {
     todo = " ",
     warn = "󰀪 ",
     hack = " ",
-    note = "󱪘 ",
-    perf = " ",
-    test = " ",
+    note = "󱞂 ",
+    perf = "󱫍 ",
+    test = " ",
   },
 }
 
@@ -76,26 +93,26 @@ M.gitsigns = {
 }
 
 M.nvim_tree_glyphs = {
-  default = "󰈚",
-  symlink = "",
+  default = "󰈙",
+  symlink = "",
   bookmark = "",
-  folder = {
-    arrow_closed = "",
-    arrow_open = "",
+  folder = { -- nf-md-folder
+    arrow_closed = "",
+    arrow_open = "",
     default = "󰉋",
-    open = "",
-    empty = "",
-    empty_open = "",
-    symlink = "",
-    symlink_open = "",
+    open = "󰝰",
+    empty = "󰉖",
+    empty_open = "󰷏",
+    symlink = "󰉕",
+    symlink_open = "󰉕",
   },
   git = {
-    unstaged = "✗",
-    staged = "✓",
-    unmerged = "",
-    renamed = "➜",
+    unstaged = "",
+    staged = "",
+    unmerged = "󰘭",
+    renamed = "",
     untracked = "",
-    deleted = "󱂥",
+    deleted = "󰧧",
     ignored = "",
   },
 }
@@ -107,38 +124,38 @@ M.whichkey = {
 }
 
 M.kind = {
-  Text = "󰉿",
-  Method = "󰆧",
-  Function = "󰆧",
-  Constructor = "",
+  Text = "󱌯",
+  Method = "",
+  Function = "", -- 󰆧
+  Constructor = "",
   Field = "",
   Variable = "",
-  Class = "󰠱",
-  Interface = "",
-  Module = "󰕳",
-  Property = "",
-  Unit = "󰑭",
+  Class = "",
+  Interface = "",
+  Module = "",
+  Property = "󰯠",
+  Unit = "",
   Value = "",
-  Enum = "",
-  EnumMember = "",
-  Keyword = "󰌆",
+  Enum = "",
+  EnumMember = "",
+  Keyword = "",
   Snippet = "",
-  Color = "󰏘",
-  File = "󰈙",
+  Color = "♥",
+  File = "󰧮",
   Reference = "",
-  Folder = "",
+  Folder = "󰉖",
   Constant = "󰏿",
-  Struct = "",
-  Event = "",
+  Struct = "",
+  Event = "",
   Operator = "󰆕",
-  TypeParameter = "",
+  TypeParameter = "",
   Parameter = "󰘦",
   Unknown = "?",
-  Number = "",
+  Number = "",
   Boolean = "󰨚",
   Character = "󱌯",
   String = "",
-  Codeium = "󰚩",
+  Codeium = "󱙺",
   Copilot = "",
 }
 

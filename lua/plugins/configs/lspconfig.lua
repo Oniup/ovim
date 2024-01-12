@@ -37,7 +37,7 @@ function M.ui_set_diagnostics()
     })
   end
 
-  vim.diagnostic.config(ui.lsp.diagnostics)
+  vim.diagnostic.config(ui.lsp)
 end
 
 function M.load_ui()

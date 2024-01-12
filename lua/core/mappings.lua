@@ -8,10 +8,6 @@ M.general = {
     ["jk"] = { "<esc>", "Esc into normal mode" },
   },
   n = {
-    ["q"] = { "<cmd> bdelete <cr>", "Delete current buffer" },
-    -- Change buffer
-    ["<S-l>"] = { "<cmd> bnext <cr>", "Next buf" },
-    ["<S-h>"] = { "<cmd> bprevious <cr>", "Previous buf" },
     -- Cursor jump between windows
     ["<C-h>"] = { "<C-w>h", "Cursor -> left side window" },
     ["<C-j>"] = { "<C-w>j", "Cursor -> lower window" },
@@ -33,13 +29,22 @@ M.lsp = {
     ["<C-h>"] = { vim.lsp.buf.signature_help, "Signature Help" },
   },
   n = {
-    ["gd"] = { "<cmd> Telescope lsp_definitions <cr>", "Definitions" },
-    ["gi"] = { "<cmd> Telescope lsp_implementations <cr>", "Implementations" },
-    ["gt"] = { "<cmd> Telescope lsp_type_definitions <cr>", "Type definitions" },
-    ["gr"] = { "<cmd> Telescope lsp_references <cr>", "References" },
-    ["gl"] = { vim.diagnostic.open_float, "Open diagnostic float window" },
-    ["K"] = { vim.lsp.buf.hover, "Hover info" },
-    ["<leader>di"] = { "<cmd> Telescope diagnostics <cr>", "See diagnostics" },
+    ["gd"] = { "<cmd> Telescope lsp_definitions <cr>", "Goto definitions" },
+    ["gi"] = {
+      "<cmd> Telescope lsp_implementations <cr>",
+      "Goto implementations",
+    },
+    ["gt"] = {
+      "<cmd> Telescope lsp_type_definitions <cr>",
+      "Goto type definitions",
+    },
+    ["gr"] = { "<cmd> Telescope lsp_references <cr>", "List references" },
+    ["gl"] = { vim.diagnostic.open_float, "Open diagnostics hover info" },
+    ["K"] = { vim.lsp.buf.hover, "Open hover info" },
+    ["<leader>di"] = {
+      "<cmd> Telescope diagnostics <cr>",
+      "See all diagnostics in buffer",
+    },
     ["<leader>fo"] = { vim.lsp.buf.format, "Format file" },
     ["<leader>ca"] = { vim.lsp.buf.code_action, "Code actions" },
     ["<leader>re"] = { vim.lsp.buf.rename, "Rename" },
@@ -54,6 +59,16 @@ M.nvimtree = {
       "<cmd> NvimTreeToggle <cr>",
       "Toggle dir explorer",
     },
+  },
+}
+
+M.barbar = {
+  n = {
+    ["q"] = { "<cmd> BufferClose <cr>", "Close buffer" },
+    ["<S-l>"] = { "<cmd> BufferNext <cr>", "Goto next buffer" },
+    ["<S-h>"] = { "<cmd> BufferPrevious <cr>", "Goto previous buffer" },
+    ["<A-l>"] = { "<cmd> BufferMoveNext <cr>", "Move buffer next" },
+    ["<A-h>"] = { "<cmd> BufferMovePrevious <cr>", "Move buffer previous" },
   },
 }
 
