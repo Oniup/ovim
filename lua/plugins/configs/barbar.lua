@@ -19,7 +19,7 @@ M.opts = {
     filename = true,
     diagnostics = {
       [vim.diagnostic.severity.ERROR] = {
-        enabled = true,
+        enabled = false,
         icon = ui.icons.diagnostics.error,
       },
       [vim.diagnostic.severity.WARN] = {
