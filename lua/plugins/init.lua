@@ -25,6 +25,7 @@ return {
   },
   {
     "romgrk/barbar.nvim",
+    name = "barbar",
     dependencies = {
       "devicons",
       "gitsigns",
@@ -77,6 +78,7 @@ return {
   },
   {
     "jedrzejboczar/possession.nvim",
+    name = "possession",
     cmd = "Telescope possession list",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -107,10 +109,15 @@ return {
   },
   {
     "windwp/nvim-autopairs",
+    name = "autopairs",
     event = { "InsertEnter" },
+    opts = {
+      setup_module_name = "nvim-autopairs",
+    },
   },
   {
     "numToStr/Comment.nvim",
+    name = "comment",
     keys = {
       { "gcc", mode = "n", desc = "Comment toggle current line" },
       { "gc", mode = { "n", "o" }, desc = "Comment toggle linewise" },
@@ -118,6 +125,9 @@ return {
       { "gbc", mode = "n", desc = "Comment toggle current block" },
       { "gb", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
       { "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
+    },
+    opts = {
+      setup_module_name = "Comment",
     },
   },
 
