@@ -9,7 +9,7 @@ M.sections = {
   mode = {
     "mode",
     fmt = function(output)
-      return string.sub(output, 1, 1)
+      return "󰈸 " .. string.sub(output, 1, 1)
     end,
   },
   diff = {
