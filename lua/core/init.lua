@@ -1,10 +1,9 @@
-local keymaps = require("core.keymaps")
-local opts = require("core.options")
-local utils = require("core.utils")
+local u = require("core.utils")
 
-opts.load_opts()
-utils.load_icons()
-keymaps.load_keymaps()
+vim.loader.enable()
 
-local plugins = require("core.plugins")
-plugins.load_plugins()
+u.load_options()
+u.load_mappings()
+u.load_ui()
+u.load_plugins()
+u.load_colorscheme()

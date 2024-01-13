@@ -1,5 +1,26 @@
 local M = {}
 
+M.mason_install_path = vim.fn.stdpath("data") .. "/mason/packages"
+
+--- Combines two option tables giving right side options priority
+--- @param lhs table Default options
+--- @param rhs table|nil Override/add options
+---@return table opts Combined options
+function M.map_tbl(lhs, rhs)
+  if rhs then
+    if vim.tbl_islist(rhs) then
+      for _, v in pairs(rhs) do
+        if v ~= nil then
+          lhs = vim.tbl_deep_extend("force", lhs, v)
+        end
+      end
+    else
+      lhs = vim.tbl_deep_extend("force", lhs, rhs)
+    end
+  end
+  return lhs
+end
+
 --- calls pcall for require to checks if the module exists
 --- @param module_name string
 --- @return table|nil module If exists with no errors, return the result, otherwise will print error if found with errors, otherwise nil
@@ -7,7 +28,12 @@ function M.prequire(module_name)
   local ok, result = pcall(require, module_name)
   if not ok and result then
     if
-      not string.match(result, "module '" .. module_name .. "' not found:\n")
+      not string.find(
+        result,
+        "module '" .. module_name .. "' not found:",
+        1,
+        true
+      )
     then
       vim.notify("Failed to prequire:\n" .. result, vim.log.levels.ERROR)
     end
@@ -22,79 +48,110 @@ end
 --- @param module_names table
 --- @return table|nil extended_module Result of all listed and then tbl_deep_extend in order
 function M.prequire_extend(module_names)
-  local modules = nil
+  local modules = {}
   for _, module in ipairs(module_names) do
     local tbl = M.prequire(module)
-    if tbl then
-      if not modules then
-        modules = tbl
-      else
-        modules = vim.tbl_deep_extend("force", modules, tbl)
-      end
+
+    if type(tbl) == "table" then
+      modules = M.map_tbl(modules, tbl)
+    else
+      vim.notify(
+        "Cannot combine module " .. module .. ", it doesn't return a table",
+        vim.log.levels.ERROR
+      )
     end
   end
+
   return modules
 end
 
---- Combines users defined icons and the Ovim's default icons together
---- and stores it. To access the final icons table `require("core.utils").icons`.
---- All plugins that requires an icon should refer to this table.
-function M.load_icons()
-  local usr_icons_ok, usr_icons = pcall(require, "config.icons")
-  if usr_icons_ok then
-    M.icons = vim.tbl_deep_extend("force", M.icons, usr_icons)
-  end
-end
-
---- @brief Inserts term shell options for target shell. If no shell is given,
---- then will use defaults. However for windows, will prioritize using pwsh
---- over powershell unless specified
----
---- @param opts table Current options table
---- @param other_shell string|table|nil Target another shell
---- @return table opts Extended options table with terminal shell options
-function M.set_term_shell(opts, other_shell)
-  local shell_opts = {}
-  local other_shell_success = false
-
-  if other_shell then
-    --- TODO: ...
-  end
-
-  if not other_shell_success then
-    if vim.fn.has("win32") then
-      shell_opts = {
-        shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
-        shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
-          .. "[Console]::InputEncoding=[Console]::OutputEncoding="
-          .. "[System.Text.Encoding]::UTF8;",
-        shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-        shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-        shellquote = "",
-        shellxquote = "",
-      }
-    end
-  end
-
-  return vim.tbl_deep_extend("force", opts, shell_opts)
-end
-
---- @param path string
---- @return string Path If executable, sets the correct file type at end
-function M.correct_exec(path)
+function M.os_correct_exec(path)
   if vim.fn.has("win32") then
     return path .. ".exe"
   end
+
   return path
 end
 
---- @param path string
---- @return string Path If on windows, converts all / to \
-function M.correct_path(path)
-  if vim.fn.has("win32") then
-    return string.gsub(path, "/", "\\")
+function M.load_options()
+  local opts = M.map_tbl(require("core.options"), M.prequire("custom.options"))
+
+  for k, v in pairs(opts) do
+    vim.opt[k] = v
   end
-  return path
+end
+
+function M.load_mappings()
+  M.mappings =
+    M.map_tbl(require("core.mappings"), M.prequire("custom.mappings"))
+
+  vim.g.mapleader = M.mappings.leader
+  vim.g.maplocalleader = M.mappings.leader
+
+  M.set_mappings("general")
+end
+
+function M.load_ui()
+  M.ui = M.map_tbl(require("core.ui"), M.prequire("custom.ui"))
+end
+
+function M.load_colorscheme()
+  vim.cmd.colorscheme(M.ui.colorscheme.theme)
+  if not vim.tbl_isempty(M.ui.colorscheme.hl_overrides) then
+    for k, v in pairs(M.ui.colorscheme.hl_overrides) do
+      vim.api.nvim_set_hl(0, k, v)
+    end
+  end
+end
+
+--- Sets loads all mappings within the given table using vim.keymap.set(...)
+--- @param tbl_key string Mapping group name
+--- @param override_opts table|nil A third option overrides for specific cases
+function M.set_mappings(tbl_key, override_opts)
+  local registered = M.mappings[tbl_key]
+
+  if registered then
+    for mode, mappings in pairs(registered) do
+      for key, map in pairs(mappings) do
+        local cmd = map[1]
+        local desc = map[2]
+        local opts = M.mappings.default_opts
+
+        if map["opts"] then
+          opts = M.map_tbl(opts, map["opts"])
+        end
+        if desc and type(desc) == "string" then
+          opts["desc"] = desc
+        end
+
+        vim.keymap.set(mode, key, cmd, M.map_tbl(opts, override_opts))
+      end
+    end
+
+    return true
+  end
+
+  return false
+end
+
+function M.get_mapped_plugin_config(name)
+  return M.map_tbl({}, {
+    M.prequire("plugins.configs." .. name),
+    M.prequire("custom.plugins.configs." .. name),
+  })
+end
+
+function M.stripped_plugin_name(name)
+  local common_ignore = { "lua", "nvim", "vim" }
+  for _, str in ipairs(common_ignore) do
+    name = string.gsub(name, "%." .. str, "")
+  end
+  return name
+end
+
+function M.load_plugins()
+  local opts = M.get_mapped_plugin_config("lazy_nvim")
+  require("core.plugins").load_lazy_plugins(opts)
 end
 
 --- Chooses the correct path based on your platform
@@ -108,22 +165,7 @@ function M.os_correct_path(unix, win32)
   return unix
 end
 
---- Chooses the correct path based on your platform
---- @param stdpath string Uses vim.fn.stdpath(...) to get first half of path
---- @param unix string Unix specific second half of path
---- @param win32 string Windows specific second half of path
---- @return string Path Combined stdpath with the platform specific path
-function M.nvim_correct_path(stdpath, unix, win32)
-  local first = vim.fn.stdpath(stdpath) .. "/"
-  if vim.fn.has("win32") then
-    local full = first .. win32
-    return full:gsub("/", "\\")
-  else
-    return first .. unix
-  end
-end
-
-function M.dapconfig_lang_template(adapter, language, overrides)
+function M.dap_config_template(adapter, language, overrides)
   local result = {
     name = "Launch => " .. adapter .. " " .. vim.inspect(language),
     type = adapter,
@@ -140,34 +182,19 @@ function M.dapconfig_lang_template(adapter, language, overrides)
     stopAtEntry = false,
   }
 
-  if overrides then
-    result = vim.tbl_deep_extend("force", result, overrides)
-  end
-
-  return result
+  result = M.map_tbl(result, overrides)
 end
 
---- Gets the full path of relative path of mason package
----@param path string Relative path from where mason is installed (stdpath("data")/mason/packages/)
----@param is_exec boolean|nil Determines whether it is an executable. nil == false in this function
-function M.get_mason_package(path, is_exec)
-  local result =
-    M.correct_path(vim.fn.stdpath("data") .. "/mason/packages/" .. path)
-  if is_exec then
-    result = M.correct_exec(result)
-  end
-  return result
-end
-
-function M.get_all_modules_within(modules_paths)
+function M.get_all_modules_at(modules_paths)
   if not type(modules_paths) == "table" then
     return {}
   end
 
   local cmds = {}
-  local entries_tbl = {}
+  local entries = {}
 
-  -- Deconstruct provided paths and create platform specific commands
+  -- Deconstruct provided paths and create platform specific command to list
+  -- lua contents
   for _, path in ipairs(modules_paths) do
     local cmd = vim.fn.stdpath("config")
       .. "/lua/"
@@ -181,47 +208,24 @@ function M.get_all_modules_within(modules_paths)
     table.insert(cmds, cmd)
   end
 
-  -- Insert module entries
+  -- Store module entries to be loaded later
   for i, cmd in ipairs(cmds) do
     for filename in io.popen(cmd):lines() do
       filename = string.match(filename, "^(.*)%.lua$")
+
       if filename then
-        if not entries_tbl[filename] then
-          entries_tbl[filename] = { modules_paths[i] .. "." .. filename }
+        -- Support multiple modules with the same name, but located at
+        -- different path to be interpreted later
+        if not entries[filename] then
+          entries[filename] = { modules_paths[i] .. "." .. filename }
         else
-          table.insert(
-            entries_tbl[filename],
-            modules_paths[i] .. "." .. filename
-          )
+          table.insert(entries[filename], modules_paths[i] .. "." .. filename)
         end
       end
     end
   end
 
-  return entries_tbl
+  return entries
 end
-
-function M.get_installed_lsp_client_names()
-  local cmd = 'ls -pUqAL "' .. M.mason_install_path .. '"'
-  if vim.fn.has("win32") then
-      cmd = 'dir /b "' .. string.gsub(M.mason_install_path, "/", "\\") .. '"'
-  end
-
-  local servers = {}
-  for client in io.popen(cmd):lines() do
-    table.insert(servers, client)
-  end
-  return servers
-end
-
-M.autocmd_id_name = "OvimAutoCmdGroup"
-
-M.autocmd_id = vim.api.nvim_create_augroup(M.autocmd_id_name, {
-  clear = true,
-})
-
-M.icons = require("defaults.icons")
-
-M.mason_install_path = M.correct_path(vim.fn.stdpath("data") .. "/mason/packages")
 
 return M

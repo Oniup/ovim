@@ -1,40 +1,56 @@
 local M = {}
-local utils = require("core.utils")
-local keymaps = require("core.keymaps")
 
-M.get_plugin_configs = function()
-  local modules_paths =
-    utils.get_all_modules_within({ "core_plugins", "config.plugins" })
+local u = require("core.utils")
 
-  -- Load modules
-  local configs = {}
-  for name, modules in pairs(modules_paths) do
-    local config = utils.prequire_extend(modules)
-
-    if config and config.plugin then
-      config.plugin.keys = keymaps.set_plugin_keymap(name)
-
-      if not config.plugin.init then
-      end
-
-      if config.before_loading then
-        config.before_loading()
-      end
-
-      table.insert(configs, config.plugin)
-    else
-      vim.notify(
-        "plugin config for "
-          .. vim.inspect(name)
-          .. " requires a M.plugin table for lazy.nvim to interpret."
-      )
+function M.plugin_setup_config()
+  local plugins = require("plugins")
+  local usr_plugins = u.prequire("custom.plugins")
+  if usr_plugins then
+    for _, plug in ipairs(usr_plugins) do
+      table.insert(plugins, plug)
     end
   end
-
-  return configs
+  -- Construct lazy init and config functions
+  for i, plug in ipairs(plugins) do
+    local plug_opts = u.map_tbl({
+      enabled = true,
+      enable_config = true,
+      enable_setup = true,
+      lazy_on_file_open = false,
+    }, plug.opts)
+    plug.opts = nil
+    if not plug_opts.enabled then
+      table.remove(plugins, i)
+    end
+    -- Create init function for loading mappings and custom lazy loading logic
+    plug.init = function(lazy_plugin)
+      if plug_opts.lazy_on_file_open then
+        M.lazy_load_plugin_on_file_open(lazy_plugin.name)
+      end
+      u.set_mappings(u.stripped_plugin_name(lazy_plugin.name))
+    end
+    -- Create config function
+    if plug_opts.enable_config then
+      plug.config = function(lazy_plugin, _)
+        local plug_name = u.stripped_plugin_name(lazy_plugin.name)
+        local plug_settings = u.get_mapped_plugin_config(plug_name)
+        local call_setup_name = plug_name
+        if plug_opts.setup_module_name then
+          call_setup_name = plug_opts.setup_module_name
+        end
+        if plug_opts.enable_setup then
+          require(call_setup_name).setup(plug_settings.opts)
+        end
+        if plug_settings and plug_settings.loaded_callback then
+          plug_settings.loaded_callback(plug_settings)
+        end
+      end
+    end
+  end
+  return plugins
 end
 
-M.load_plugins = function()
+function M.load_lazy_plugins(opts)
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -47,57 +63,24 @@ M.load_plugins = function()
     })
   end
   vim.opt.rtp:prepend(lazypath)
+  require("lazy").setup(M.plugin_setup_config(), opts)
+end
 
-  require("lazy").setup(M.get_plugin_configs(), {
-    defaults = {
-      lazy = true,
-      version = "*",
-    },
-    install = {
-      missing = true,
-    },
-    checker = {
-      enabled = true,
-      notify = false,
-    },
-    ui = {
-      border = utils.icons.border,
-      size = { width = 0.6, height = 0.6 },
-      icons = utils.icons.lazy,
-    },
-    performance = {
-      rtp = {
-        disabled_plugins = {
-          "2html_plugin",
-          "tohtml",
-          "getscript",
-          "getscriptPlugin",
-          "gzip",
-          "logipat",
-          "netrw",
-          "netrwPlugin",
-          "netrwSettings",
-          "netrwFileHandlers",
-          "matchit",
-          "tar",
-          "tarPlugin",
-          "rrhelper",
-          "spellfile_plugin",
-          "vimball",
-          "vimballPlugin",
-          "zip",
-          "zipPlugin",
-          "tutor",
-          "rplugin",
-          "syntax",
-          "synmenu",
-          "optwin",
-          "compiler",
-          "bugreport",
-          "ftplugin",
-        },
-      },
-    },
+--- Modified variant of https://github.com/NvChad/NvChad/blob/v2.0/lua/core/utils.lua
+function M.lazy_load_plugin_on_file_open(plugin)
+  vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
+    group = vim.api.nvim_create_augroup("LazyLoadOnFileOpen_" .. plugin, {}),
+    callback = function()
+      local this = vim.fn.expand("%")
+      local not_allowed = { "NvimTree_1", "[lazy]", "[mason]", "" }
+      for _, ft in ipairs(not_allowed) do
+        if this == ft then
+          return
+        end
+      end
+      vim.api.nvim_del_augroup_by_name("LazyLoadOnFileOpen_" .. plugin)
+      require("lazy").load({ plugins = plugin })
+    end,
   })
 end
 
