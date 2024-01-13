@@ -19,7 +19,6 @@ function M.ui_set_handlers()
     vim.lsp.with(vim.lsp.handlers.signature_help, {
       border = ui.border.type,
       focusable = false,
-      -- relative = "cursor",
     })
 end
 
@@ -71,7 +70,7 @@ function M.on_attach(client, bufnr)
   client.server_capabilities.documentRangeFormattingProvider = false
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   u.set_mappings("lsp", opts)
-  u.set_mappings("lsp_" .. client, opts)
+  u.set_mappings("lsp_" .. client.name, opts)
 end
 
 M.opts = {
