@@ -1,13 +1,18 @@
+<!-- TODO: Write a better README -->
+
 # Ovim
 
-[showcase_image](./images/showcase.png)
+![showcase_image](./images/showcase.png)
 
 Is a small Neovim configuration setup to make it easy to customize and extend
 with your own configurations
 
-Example of custom configuration and the ones I personally use, can be found
-[here](https://github.com/Oniup/ovim-config.git). The configuration targets
-C/C++ development
+[Here's](https://github.com/Oniup/ovim-config.git) my custom configuration
+which can be used as an example.
+
+## Features
+
+*Will spell out eventually*
 
 ## Installation
 

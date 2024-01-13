@@ -34,16 +34,6 @@ return {
       lazy_on_file_open = true,
     },
   },
-  -- {
-  --   "akinsho/bufferline.nvim",
-  --   name = "bufferline",
-  --   dependencies = {
-  --     "devicons",
-  --   },
-  --   opts = {
-  --     lazy_on_file_open = true,
-  --   },
-  -- },
   {
     "lewis6991/gitsigns.nvim",
     name = "gitsigns",

@@ -47,7 +47,7 @@ M.opts = {
   sidebar_filetypes = {
     NvimTree = true,
   },
-  no_name_title = "[Empty Buffer]",
+  no_name_title = "[Empty]",
 }
 
 return M
