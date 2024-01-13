@@ -1,11 +1,11 @@
 local M = {}
 
+M.icons = require("core.icons")
+
 M.colorscheme = {
   theme = "ignite",
   hl_overrides = {},
 }
-
-M.icons = require("core.icons")
 
 M.border = {
   type = "rounded",
@@ -49,9 +49,6 @@ M.cmp = {
   field_arrangement = { "abbr", "kind", "menu" },
   selected_background_color = "PmenuSel",
   fixed_width = 0.4,
-  background = {
-    color = "darker",
-  },
 }
 
 M.lsp = {

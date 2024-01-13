@@ -95,6 +95,15 @@ function M.load_ui()
   M.ui = M.map_tbl(require("core.ui"), M.prequire("custom.ui"))
 end
 
+function M.load_colorscheme()
+  vim.cmd.colorscheme(M.ui.colorscheme.theme)
+  if not vim.tbl_isempty(M.ui.colorscheme.hl_overrides) then
+    for k, v in pairs(M.ui.colorscheme.hl_overrides) do
+      vim.api.nvim_set_hl(0, k, v)
+    end
+  end
+end
+
 --- Sets loads all mappings within the given table using vim.keymap.set(...)
 --- @param tbl_key string Mapping group name
 --- @param override_opts table|nil A third option overrides for specific cases

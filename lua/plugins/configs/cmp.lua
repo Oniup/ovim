@@ -4,6 +4,13 @@ local cmp = require("cmp")
 local u = require("core.utils")
 local ui = u.ui
 
+local bg_col = "Normal:"
+if ui.colorscheme.hl_overrides.CmpNormal then
+  bg_col = bg_col .. ui.colorscheme.hl_overrides.CmpNormal.link
+else
+  bg_col = bg_col .. "NormalFloat"
+end
+
 local function has_words_before()
   local unpack = table.unpack or nil
   if unpack then
@@ -120,12 +127,13 @@ M.opts = {
   }),
   window = {
     completion = {
-      winhighlight = "Normal:NormalFloat,CursorLine:"
+      winhighlight = bg_col
+        .. ",CursorLine:"
         .. ui.cmp.selected_background_color,
       border = ui.border.type,
     },
     documentation = {
-      winhighlight = "Normal:NormalFloat",
+      winhighlight = bg_col,
       border = ui.border.type,
     },
   },
