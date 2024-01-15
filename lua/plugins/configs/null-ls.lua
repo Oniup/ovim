@@ -7,8 +7,7 @@ M.opts = {
 
 function M.loaded_callback(config)
   local builtins = require("null-ls.builtins")
-  local installed_packages =
-    require("mason-registry").get_installed_package_names()
+  local installed_packages = require("mason-registry").get_installed_package_names()
 
   local function add_source(type, server)
     server = string.gsub(server, "-", "_")

@@ -10,16 +10,14 @@ function M.ui_set_popup_window()
 end
 
 function M.ui_set_handlers()
-  vim.lsp.handlers["textDocument/hover"] =
-      vim.lsp.with(vim.lsp.handlers.hover, {
-        border = ui.border.type,
-      })
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = ui.border.type,
+  })
 
-  vim.lsp.handlers["textDocument/signatureHelp"] =
-      vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = ui.border.type,
-        focusable = false,
-      })
+  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = ui.border.type,
+    focusable = false,
+  })
 end
 
 function M.ui_set_diagnostics()

@@ -27,9 +27,7 @@ M.sections = {
     fmt = function(output)
       if output then
         local cutoff = string.find(output, ":") - 1
-        output = string.sub(output, 1, cutoff)
-          .. "/"
-          .. vim.api.nvim_buf_line_count(vim.api.nvim_get_current_buf())
+        output = string.sub(output, 1, cutoff) .. "/" .. vim.api.nvim_buf_line_count(vim.api.nvim_get_current_buf())
       end
       return output
     end,

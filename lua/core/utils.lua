@@ -27,20 +27,12 @@ end
 function M.prequire(module_name)
   local ok, result = pcall(require, module_name)
   if not ok and result then
-    if
-      not string.find(
-        result,
-        "module '" .. module_name .. "' not found:",
-        1,
-        true
-      )
-    then
+    if not string.find(result, "module '" .. module_name .. "' not found:", 1, true) then
       vim.notify("Failed to prequire:\n" .. result, vim.log.levels.ERROR)
     end
   else
     return result
   end
-
   return nil
 end
 
@@ -51,17 +43,12 @@ function M.prequire_extend(module_names)
   local modules = {}
   for _, module in ipairs(module_names) do
     local tbl = M.prequire(module)
-
     if type(tbl) == "table" then
       modules = M.map_tbl(modules, tbl)
     else
-      vim.notify(
-        "Cannot combine module " .. module .. ", it doesn't return a table",
-        vim.log.levels.ERROR
-      )
+      vim.notify("Cannot combine module " .. module .. ", it doesn't return a table", vim.log.levels.ERROR)
     end
   end
-
   return modules
 end
 
@@ -69,25 +56,20 @@ function M.os_correct_exec(path)
   if vim.fn.has("win32") then
     return path .. ".exe"
   end
-
   return path
 end
 
 function M.load_options()
   local opts = M.map_tbl(require("core.options"), M.prequire("custom.options"))
-
   for k, v in pairs(opts) do
     vim.opt[k] = v
   end
 end
 
 function M.load_mappings()
-  M.mappings =
-    M.map_tbl(require("core.mappings"), M.prequire("custom.mappings"))
-
+  M.mappings = M.map_tbl(require("core.mappings"), M.prequire("custom.mappings"))
   vim.g.mapleader = M.mappings.leader
   vim.g.maplocalleader = M.mappings.leader
-
   M.set_mappings("general")
 end
 
@@ -109,7 +91,6 @@ end
 --- @param override_opts table|nil A third option overrides for specific cases
 function M.set_mappings(tbl_key, override_opts)
   local registered = M.mappings[tbl_key]
-
   if registered then
     for mode, mappings in pairs(registered) do
       for key, map in pairs(mappings) do
@@ -127,10 +108,8 @@ function M.set_mappings(tbl_key, override_opts)
         vim.keymap.set(mode, key, cmd, M.map_tbl(opts, override_opts))
       end
     end
-
     return true
   end
-
   return false
 end
 
@@ -183,49 +162,6 @@ function M.dap_config_template(adapter, language, overrides)
   }
 
   result = M.map_tbl(result, overrides)
-end
-
-function M.get_all_modules_at(modules_paths)
-  if not type(modules_paths) == "table" then
-    return {}
-  end
-
-  local cmds = {}
-  local entries = {}
-
-  -- Deconstruct provided paths and create platform specific command to list
-  -- lua contents
-  for _, path in ipairs(modules_paths) do
-    local cmd = vim.fn.stdpath("config")
-      .. "/lua/"
-      .. string.gsub(path, "%.", "/")
-    if vim.fn.has("win32") then
-      cmd = 'dir /b/a-d "' .. string.gsub(cmd, "/", "\\") .. '"'
-    else
-      cmd = 'ls -pUqAL "' .. cmd .. '"'
-    end
-
-    table.insert(cmds, cmd)
-  end
-
-  -- Store module entries to be loaded later
-  for i, cmd in ipairs(cmds) do
-    for filename in io.popen(cmd):lines() do
-      filename = string.match(filename, "^(.*)%.lua$")
-
-      if filename then
-        -- Support multiple modules with the same name, but located at
-        -- different path to be interpreted later
-        if not entries[filename] then
-          entries[filename] = { modules_paths[i] .. "." .. filename }
-        else
-          table.insert(entries[filename], modules_paths[i] .. "." .. filename)
-        end
-      end
-    end
-  end
-
-  return entries
 end
 
 return M

@@ -45,12 +45,7 @@ M.opts = {
     local msgs = {}
     for _, cli_msg in ipairs(client_messages) do
       if #cli_msg.body > 0 then
-        msgs[cli_msg.name] = string.format(
-          "%s %s %s",
-          cli_msg.name,
-          ui.icons.progress.tasks,
-          cli_msg.body
-        )
+        msgs[cli_msg.name] = string.format("%s %s %s", cli_msg.name, ui.icons.progress.tasks, cli_msg.body)
       end
     end
     for _, cli in ipairs(vim.lsp.get_active_clients()) do

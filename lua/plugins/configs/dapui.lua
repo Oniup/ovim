@@ -36,14 +36,11 @@ M.opts = {
 function M.load_cmp_extension()
   local telescope = require("telescope")
   telescope.load_extension("dap")
-  require("cmp").setup.filetype(
-    { "dap-repl", "dapui_watches", "dapui_hover" },
-    {
-      sources = {
-        { name = "dap" },
-      },
-    }
-  )
+  require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+    sources = {
+      { name = "dap" },
+    },
+  })
 end
 
 function M.loaded_callback(config)
@@ -51,8 +48,7 @@ function M.loaded_callback(config)
   dap.listeners.before.attach.dapui_config = listeners.before.attach
   dap.listeners.before.launch.dapui_config = listeners.before.launch
   dap.listeners.before.event_exited.dapui_config = listeners.before.event_exited
-  dap.listeners.before.event_terminated.dapui_config =
-    listeners.before.event_terminated
+  dap.listeners.before.event_terminated.dapui_config = listeners.before.event_terminated
 
   if config.load_cmp_extension then
     config.load_cmp_extension()

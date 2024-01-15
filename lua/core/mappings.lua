@@ -30,21 +30,12 @@ M.lsp = {
   },
   n = {
     ["gd"] = { "<cmd> Telescope lsp_definitions <cr>", "Goto definitions" },
-    ["gi"] = {
-      "<cmd> Telescope lsp_implementations <cr>",
-      "Goto implementations",
-    },
-    ["gt"] = {
-      "<cmd> Telescope lsp_type_definitions <cr>",
-      "Goto type definitions",
-    },
+    ["gi"] = { "<cmd> Telescope lsp_implementations <cr>", "Goto implementations" },
+    ["gt"] = { "<cmd> Telescope lsp_type_definitions <cr>", "Goto type definitions" },
     ["gr"] = { "<cmd> Telescope lsp_references <cr>", "List references" },
     ["gl"] = { vim.diagnostic.open_float, "Open diagnostics hover info" },
     ["K"] = { vim.lsp.buf.hover, "Open hover info" },
-    ["<leader>di"] = {
-      "<cmd> Telescope diagnostics <cr>",
-      "See all diagnostics in buffer",
-    },
+    ["<leader>di"] = { "<cmd> Telescope diagnostics <cr>", "See all diagnostics in buffer" },
     ["<leader>fo"] = { vim.lsp.buf.format, "Format file" },
     ["<leader>ca"] = { vim.lsp.buf.code_action, "Code actions" },
     ["<leader>re"] = { vim.lsp.buf.rename, "Rename" },
@@ -55,10 +46,7 @@ M.lsp = {
 
 M.nvimtree = {
   n = {
-    ["<leader>e"] = {
-      "<cmd> NvimTreeToggle <cr>",
-      "Toggle dir explorer",
-    },
+    ["<leader>e"] = { "<cmd> NvimTreeToggle <cr>", "Toggle dir explorer" },
   },
 }
 
@@ -92,35 +80,17 @@ M.toggleterm = {
 
 M.telescope = {
   n = {
-    ["<leader>fi"] = {
-      "<cmd> Telescope find_files <cr>",
-      "Find file",
-    },
-    ["<leader>fs"] = {
-      "<cmd> Telescope current_buffer_fuzzy_find <cr>",
-      "Find in current buf",
-    },
-    ["<leader>fg"] = {
-      "<cmd> Telescope live_grep <cr>",
-      "Live grep",
-    },
-    ["<leader>fh"] = {
-      "<cmd> Telescope help_tags <cr>",
-      "Find vim help tag",
-    },
-    ["<leader>fa"] = {
-      "<cmd> Telescope builtin <cr>",
-      "All builtin funcs",
-    },
+    ["<leader>fi"] = { "<cmd> Telescope find_files <cr>", "Find file" },
+    ["<leader>fs"] = { "<cmd> Telescope current_buffer_fuzzy_find <cr>", "Find in current buf" },
+    ["<leader>fg"] = { "<cmd> Telescope live_grep <cr>", "Live grep" },
+    ["<leader>fh"] = { "<cmd> Telescope help_tags <cr>", "Find vim help tag" },
+    ["<leader>fa"] = { "<cmd> Telescope builtin <cr>", "All builtin funcs" },
   },
 }
 
 M.possession = {
   n = {
-    ["<leader>se"] = {
-      "<cmd> Telescope possession list <cr>",
-      "Open Sessions",
-    },
+    ["<leader>se"] = { "<cmd> Telescope possession list <cr>", "Open Sessions" },
   },
 }
 
@@ -145,37 +115,19 @@ M.dap = {
       "Terminate dap session",
     },
     -- Breakpoints
-    ["<leader>br"] = {
-      "<cmd> DapToggleBreakpoint <cr>",
-      "Toggle breakpoint",
-    },
+    ["<leader>br"] = { "<cmd> DapToggleBreakpoint <cr>", "Toggle breakpoint" },
     ["<leader>bc"] = {
       function()
         require("dap").clear_breakpoints()
       end,
       "Clear breakpoints",
     },
-    ["<leader>bl"] = {
-      "<cmd> Telescope dap list_breakpoints <cr>",
-      "List breakpoints",
-    },
+    ["<leader>bl"] = { "<cmd> Telescope dap list_breakpoints <cr>", "List breakpoints" },
     -- Telescope dap menus
-    ["<leader>dm"] = {
-      "<cmd> Telescope dap commands <cr>",
-      "Show jap commands",
-    },
-    ["<leader>dc"] = {
-      "<cmd> Telescope dap configurations <cr>",
-      "Show dap configurations",
-    },
-    ["<leader>jl"] = {
-      "<cmd> Telescope dap variables <cr>",
-      "Show dap variables",
-    },
-    ["<leader>df"] = {
-      "<cmd> Telescope dap frames <cr>",
-      "Show dap frames",
-    },
+    ["<leader>dm"] = { "<cmd> Telescope dap commands <cr>", "Show jap commands" },
+    ["<leader>dc"] = { "<cmd> Telescope dap configurations <cr>", "Show dap configurations" },
+    ["<leader>jl"] = { "<cmd> Telescope dap variables <cr>", "Show dap variables" },
+    ["<leader>df"] = { "<cmd> Telescope dap frames <cr>", "Show dap frames" },
   },
 }
 
