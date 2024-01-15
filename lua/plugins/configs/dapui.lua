@@ -1,7 +1,8 @@
 local M = {}
 
 local dap, dapui = require("dap"), require("dapui")
-local ui = require("core.utils").ui
+local u = require("core.utils")
+local ui = u.ui
 
 local function open_dapui()
   dapui.open()

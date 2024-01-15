@@ -52,6 +52,7 @@ local M = {
     foldsep = " ",
     diff = "╱",
     eob = " ",
+    vert = "▎",
   },
 
   listchars = {

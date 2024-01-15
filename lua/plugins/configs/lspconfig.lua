@@ -11,23 +11,23 @@ end
 
 function M.ui_set_handlers()
   vim.lsp.handlers["textDocument/hover"] =
-    vim.lsp.with(vim.lsp.handlers.hover, {
-      border = ui.border.type,
-    })
+      vim.lsp.with(vim.lsp.handlers.hover, {
+        border = ui.border.type,
+      })
 
   vim.lsp.handlers["textDocument/signatureHelp"] =
-    vim.lsp.with(vim.lsp.handlers.signature_help, {
-      border = ui.border.type,
-      focusable = false,
-    })
+      vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = ui.border.type,
+        focusable = false,
+      })
 end
 
 function M.ui_set_diagnostics()
   for _, sign in ipairs({
     { name = "DiagnosticSignError", text = ui.icons.diagnostics.error },
-    { name = "DiagnosticSignWarn", text = ui.icons.diagnostics.warn },
-    { name = "DiagnosticSignHint", text = ui.icons.diagnostics.hint },
-    { name = "DiagnosticSignInfo", text = ui.icons.diagnostics.info },
+    { name = "DiagnosticSignWarn",  text = ui.icons.diagnostics.warn },
+    { name = "DiagnosticSignHint",  text = ui.icons.diagnostics.hint },
+    { name = "DiagnosticSignInfo",  text = ui.icons.diagnostics.info },
   }) do
     vim.fn.sign_define(sign.name, {
       texthl = sign.name,
@@ -66,8 +66,6 @@ M.capabilities.textDocument.completion.completionItem = {
 
 function M.on_attach(client, bufnr)
   local opts = { buffer = bufnr }
-  client.server_capabilities.documentFormattingProvider = false
-  client.server_capabilities.documentRangeFormattingProvider = false
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
   u.set_mappings("lsp", opts)
   u.set_mappings("lsp_" .. client.name, opts)

@@ -16,10 +16,10 @@ local function has_words_before()
   if unpack then
     local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0
-      and vim.api
-          .nvim_buf_get_lines(0, line - 1, line, true)[1]
-          :sub(col, col)
-          :match("%s")
+        and vim.api
+        .nvim_buf_get_lines(0, line - 1, line, true)[1]
+        :sub(col, col)
+        :match("%s")
         == nil
   end
   return false
@@ -85,7 +85,7 @@ M.menu_names = {
 }
 
 M.opts = {
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ["<TAB>"] = function(fallback)
       if not cmp.select_next_item() then
         if vim.bo.buftype ~= "prompt" and has_words_before() then
@@ -109,7 +109,9 @@ M.opts = {
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
-  },
+  }),
+  preselect = cmp.PreselectMode.None,
+  completion = { completeopt = "menu,menuone,noselect" },
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "nvim_lua" },
@@ -128,8 +130,8 @@ M.opts = {
   window = {
     completion = {
       winhighlight = bg_col
-        .. ",CursorLine:"
-        .. ui.cmp.selected_background_color,
+          .. ",CursorLine:"
+          .. ui.cmp.selected_background_color,
       border = ui.border.type,
     },
     documentation = {

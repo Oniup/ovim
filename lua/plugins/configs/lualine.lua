@@ -3,7 +3,7 @@ local M = {}
 local ui = require("core.utils").ui
 
 M.statusline_mode = 2
-M.cmdline_height = 0
+M.cmdline_height = 1
 
 M.sections = {
   mode = {

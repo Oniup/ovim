@@ -19,14 +19,12 @@ M.barbar = {
   present = "default", -- default', 'powerline', or 'slanted'
 }
 
-M.breakpoints = {
-  default = "",
-  unsupported = "",
-  data = "",
-  conditional = "",
-  unsupported_conditional = "",
-  enable_conditional = "",
-  functional = "",
+M.dap = {
+  DapBreakpoint = { text = "", texthl = "DiagnosticSignError" },
+  DapBreakpointCondition = { text = "", texthl = "DiagnosticSignError" },
+  DapLogPoint = { text = "󰹕", texthl = "DiagnosticSignInfo" },
+  DapStopped = { text = "➜" },
+  DapBreakpointRejected = { text = "", texthl = "Comment" },
 }
 
 M.dapui = {

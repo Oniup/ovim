@@ -8,7 +8,7 @@ M.colorscheme = {
 }
 
 M.border = {
-  type = "rounded",
+  type = "solid",
   telescope = {
     single = {
       prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
