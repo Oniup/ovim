@@ -76,6 +76,14 @@ return {
         },
     },
     {
+        "goolord/alpha-nvim",
+        name = "alpha",
+        event = "BufEnter",
+        dependencies = {
+            "devicons",
+        },
+    },
+    {
         "akinsho/toggleterm.nvim",
         name = "toggleterm",
         cmd = "ToggleTerm",

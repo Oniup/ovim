@@ -21,6 +21,8 @@ M.general = {
         ["<C-Down>"] = { "<cmd> resize +2 <cr>", "Resize win +y" },
         ["<C-Left>"] = { "<cmd> vertical resize -2 <cr>", "Resize win -x" },
         ["<C-Right>"] = { "<cmd> vertical resize +2 <cr>", "Resize win +x" },
+
+        ["<C-q>"] = { "<cmd> quitall <cr>", "Quit neovim" },
     },
 }
 

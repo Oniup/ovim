@@ -6,6 +6,12 @@ M.mason = {
     package_uninstalled = "",
 }
 
+M.alpha = {
+    file = "󰧮",
+    sessions = "󰏗",
+    quit = "",
+}
+
 M.progress = {
     spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" },
     done = "",
