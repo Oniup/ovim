@@ -12,7 +12,7 @@ which can be used as an example.
 
 ## Features
 
-*Will spell out eventually*
+*Eventually I'll do this...*
 
 ## Installation
 
