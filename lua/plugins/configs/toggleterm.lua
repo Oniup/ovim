@@ -21,4 +21,13 @@ M.opts = {
     },
 }
 
+if vim.g.colors_name == "ignite" then
+    M.opts.shade_terminals = true
+    M.opts.highlights = {
+        Normal = {
+            link = "ColGroupBackground0",
+        },
+    }
+end
+
 return M
