@@ -83,7 +83,14 @@ M.toggleterm = {
 M.telescope = {
     n = {
         ["<leader>fi"] = { "<cmd> Telescope find_files <cr>", "Find file" },
-        ["<leader>fs"] = { "<cmd> Telescope current_buffer_fuzzy_find <cr>", "Find in current buf" },
+        ["<leader>fl"] = {
+            "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <cr>",
+            "Find all",
+        },
+        ["<leader>fs"] = {
+            "<cmd> Telescope current_buffer_fuzzy_find <cr>",
+            "Find in current buf",
+        },
         ["<leader>fg"] = { "<cmd> Telescope live_grep <cr>", "Live grep" },
         ["<leader>fh"] = { "<cmd> Telescope help_tags <cr>", "Find vim help tag" },
         ["<leader>fa"] = { "<cmd> Telescope builtin <cr>", "All builtin funcs" },

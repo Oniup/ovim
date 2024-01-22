@@ -21,7 +21,6 @@ M.opts = {
     defaults = {
         vimgrep_arguments = {
             "rg",
-            "-L",
             "--color=never",
             "--no-heading",
             "--with-filename",
@@ -52,6 +51,17 @@ M.opts = {
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
         path_display = { "truncate" },
+        file_ignore_patterns = {
+            "node_modules",
+            "zig-cache",
+            "zig-out",
+            "spell",
+
+            "%.png",
+            "%.jpg",
+            "%.bitmap",
+            "%.zip",
+        },
         mappings = {
             n = {
                 ["q"] = actions.close,
