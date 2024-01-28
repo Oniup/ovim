@@ -69,7 +69,15 @@ return {
     {
         "jedrzejboczar/possession.nvim",
         name = "possession",
-        cmd = "Telescope possession list",
+        cmd = {
+            "Telescope possession list",
+            "SeSave",
+            "SeLoad",
+            "SeClose",
+            "SeDelete",
+            "SeShow",
+            "SeList",
+        },
         dependencies = {
             "nvim-lua/plenary.nvim",
             "telescope",

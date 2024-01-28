@@ -15,17 +15,10 @@ M.opts = {
     },
     plugins = {
         dap = true,
-        dapui = true,
+        dapui = false,
         nvim_tree = false,
-        symbols_outline = false,
-        delete_buffers = false,
-        delete_hidden_buffers = {
-            hooks = {
-                "before_load",
-                vim.o.sessionoptions:match("buffer") and "before_save",
-            },
-            force = true,
-        },
+        symbols_outline = true,
+        delete_buffers = true,
     },
     autosave = {
         current = true,

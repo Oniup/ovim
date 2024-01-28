@@ -100,5 +100,6 @@ if vim.fn.has("win32") then
 end
 
 vim.g.autoformat = false
+vim.cmd[[syntax=1]]
 
 return M
