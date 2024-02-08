@@ -9,17 +9,6 @@ function M.ui_set_popup_window()
     }
 end
 
-function M.ui_set_handlers()
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = ui.border.type,
-    })
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = ui.border.type,
-        focusable = false,
-    })
-end
-
 function M.ui_set_diagnostics()
     for _, sign in ipairs({
         { name = "DiagnosticSignError", text = ui.icons.diagnostics.error },
@@ -39,28 +28,27 @@ end
 
 function M.load_ui()
     M.ui_set_popup_window()
-    M.ui_set_handlers()
     M.ui_set_diagnostics()
 end
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
--- M.capabilities.textDocument.completion.completionItem = {
---   documentationFormat = { "markdown", "plaintext" },
---   snippetSupport = true,
---   preselectSupport = true,
---   insertReplaceSupport = true,
---   labelDetailsSupport = true,
---   deprecatedSupport = true,
---   commitCharactersSupport = true,
---   tagSupport = { valueSet = { 1 } },
---   resolveSupport = {
---     properties = {
---       "documentation",
---       "detail",
---       "additionalTextEdits",
---     },
---   },
--- }
+M.capabilities.textDocument.completion.completionItem = {
+    documentationFormat = { "markdown", "plaintext" },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+        properties = {
+            "documentation",
+            "detail",
+            "additionalTextEdits",
+        },
+    },
+}
 
 function M.on_attach(client, bufnr)
     local opts = { buffer = bufnr }

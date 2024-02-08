@@ -9,7 +9,7 @@ M.sections = {
     mode = {
         "mode",
         fmt = function(output)
-            return "󰈸 " .. string.sub(output, 1, 1)
+            return ui.icons.lualine_icon .. " " .. string.sub(output, 1, 1)
         end,
     },
     diff = {
@@ -26,10 +26,9 @@ M.sections = {
         "location",
         fmt = function(output)
             if output then
-                local cutoff = string.find(output, ":") - 1
-                output = string.sub(output, 1, cutoff)
-                    .. "/"
-                    .. vim.api.nvim_buf_line_count(vim.api.nvim_get_current_buf())
+                local pos = vim.api.nvim_win_get_cursor(0)
+                local line_count = vim.api.nvim_buf_line_count(vim.api.nvim_get_current_buf())
+                output = pos[2] .. ":" .. pos[1] .. "/" .. line_count
             end
             return output
         end,
@@ -97,14 +96,11 @@ M.opts = {
         section_separators = { right = "", left = "" },
     },
     sections = {
-        lualine_a = { M.sections.mode, M.sections.searchcount },
+        lualine_a = { M.sections.mode },
         lualine_b = { M.sections.branch },
         lualine_c = { M.sections.diff },
         lualine_x = { M.sections.diagnostics, M.sections.lsp_progress },
-        lualine_y = {
-            M.sections.filetype,
-            M.sections.filename,
-        },
+        lualine_y = { M.sections.filetype, M.sections.filename },
         lualine_z = { M.sections.location },
     },
     inactive_sections = {
@@ -129,9 +125,9 @@ M.opts = {
 function M.loaded_callback(config)
     vim.opt.laststatus = config.statusline_mode
     vim.opt.cmdheight = config.cmdline_height
-    vim.api.nvim_create_augroup("lualine_group", { clear = true })
+    vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
     vim.api.nvim_create_autocmd("User", {
-        group = "lualine_group",
+        group = "lualine_augroup",
         pattern = "LspProgressStatusUpdated",
         callback = require("lualine").refresh,
     })

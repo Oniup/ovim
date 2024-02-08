@@ -30,7 +30,7 @@ M.opts = {
         },
         initial_mode = "insert",
         selection_strategy = "reset",
-        prompt_prefix = "   ",
+        prompt_prefix = " " .. ui.icons.noice.cmdline.search .. "  ",
         selection_caret = "  ",
         entry_prefix = "  ",
         border = ui.border.type ~= "none",

@@ -1,21 +1,16 @@
 local M = {}
 
+M.lualine_icon = "󰈸"
+
 M.mason = {
     package_installed = "",
     package_pending = "",
     package_uninstalled = "",
 }
 
-M.alpha = {
-    file = "󰧮",
-    sessions = "󰏗",
-    quit = "",
-}
-
 M.progress = {
     spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" },
     done = "",
-    tasks = "➜",
 }
 
 M.barbar = {
@@ -29,7 +24,7 @@ M.dap = {
     DapBreakpoint = { text = "", texthl = "DiagnosticSignError" },
     DapBreakpointCondition = { text = "", texthl = "DiagnosticSignError" },
     DapLogPoint = { text = "󰹕", texthl = "DiagnosticSignInfo" },
-    DapStopped = { text = "➜" },
+    DapStopped = { text = "➜", texthl = "Operator" },
     DapBreakpointRejected = { text = "", texthl = "Comment" },
 }
 
@@ -87,6 +82,23 @@ M.diagnostics = {
     },
 }
 
+M.noice = {
+    cmdline = {
+        cmdline = "",
+        search = "",
+        filter = "$",
+        lua = "",
+        help = "?",
+    },
+    popup = {
+        DEBUG = "",
+        ERROR = "",
+        INFO = "",
+        TRACE = "✎",
+        WARN = "",
+    },
+}
+
 M.gitsigns = {
     add = { text = "│" },
     change = { text = "│" },
@@ -130,7 +142,7 @@ M.whichkey = {
 M.kind = {
     Text = "󱌯",
     Method = "",
-    Function = "", -- 󰆧
+    Function = "",
     Constructor = "",
     Field = "",
     Variable = "",

@@ -134,14 +134,6 @@ dashboard.config.opts.noautocmd = true
 dashboard.button = button
 
 dashboard.section.buttons.val = {
-    dashboard.button(
-        "s",
-        u.ui.icons.alpha.sessions,
-        "Sessions",
-        "<cmd> Telescope possession list <cr>"
-    ),
-    dashboard.button("e", u.ui.icons.alpha.file, "New File", "<cmd> ene <bar> startinsert <cr>"),
-    dashboard.button("q", u.ui.icons.alpha.quit, "Quit", "<cmd> quitall <cr>"),
 }
 
 vim.cmd([[autocmd User AlphaReady echo 'ready']])

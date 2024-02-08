@@ -1,5 +1,5 @@
 return {
-    -- Visual Quality -----------------------------------------------------------
+    -- Visual Quality ------------------------------------------------------------------------------
     {
         "Oniup/ignite.nvim",
         lazy = false,
@@ -42,8 +42,22 @@ return {
         "folke/which-key.nvim",
         keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
     },
+    {
+        "rcarriga/nvim-notify",
+        name = "notify",
+        event = "VeryLazy",
+    },
+    {
+        "folke/noice.nvim",
+        name = "noice",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "notify",
+        },
+    },
 
-    -- Navigation ---------------------------------------------------------------
+    -- Navigation ------------------------------------------------------------------------------
     {
         "nvim-tree/nvim-tree.lua",
         name = "nvimtree",
@@ -67,23 +81,6 @@ return {
         },
     },
     {
-        "jedrzejboczar/possession.nvim",
-        name = "possession",
-        cmd = {
-            "Telescope possession list",
-            "SeSave",
-            "SeLoad",
-            "SeClose",
-            "SeDelete",
-            "SeShow",
-            "SeList",
-        },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "telescope",
-        },
-    },
-    {
         "goolord/alpha-nvim",
         name = "alpha",
         event = "BufEnter",
@@ -97,7 +94,7 @@ return {
         cmd = "ToggleTerm",
     },
 
-    -- Auto Completion ----------------------------------------------------------
+    -- Auto Completion -----------------------------------------------------------------------------
     {
         "hrsh7th/nvim-cmp",
         name = "cmp",
@@ -137,7 +134,7 @@ return {
         },
     },
 
-    -- Language Server Protocol --------------------------------------------------
+    -- Language Server Protocol --------------------------------------------------------------------
     {
         "neovim/nvim-lspconfig",
         name = "lspconfig",
@@ -197,7 +194,7 @@ return {
         },
     },
 
-    -- Debug Adapter Protocol ---------------------------------------------------
+    -- Debug Adapter Protocol ----------------------------------------------------------------------
     {
         "mfussenegger/nvim-dap",
         name = "dap",
@@ -222,7 +219,7 @@ return {
         },
     },
 
-    -- Plugin Utility APIs ------------------------------------------------------
+    -- Plugin Utility APIs -------------------------------------------------------------------------
     {
         "nvim-tree/nvim-web-devicons",
         name = "devicons",

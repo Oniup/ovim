@@ -97,12 +97,6 @@ M.telescope = {
     },
 }
 
-M.possession = {
-    n = {
-        ["<leader>se"] = { "<cmd> Telescope possession list <cr>", "Open Sessions" },
-    },
-}
-
 M.dap = {
     n = {
         -- Control
