@@ -85,9 +85,10 @@ M.diagnostics = {
 M.noice = {
     cmdline = {
         cmdline = "",
+        filter = "󰈲",
         search = "",
-        filter = "$",
         lua = "",
+        python = "󰌠",
         help = "?",
     },
     popup = {
@@ -123,8 +124,8 @@ M.nvim_tree_glyphs = {
         symlink_open = "󰉕",
     },
     git = {
-        unstaged = "",
-        staged = "",
+        unstaged = "",
+        staged = "»",
         unmerged = "󰘭",
         renamed = "",
         untracked = "",

@@ -11,26 +11,28 @@ M.opts = {
         format = {
             cmdline = { pattern = "^:", icon = icons.cmdline.cmdline, lang = "vim" },
             search_down = {
-                kind = "search",
+                title = "Search",
+                kind = nil,
                 pattern = "^/",
                 icon = icons.cmdline.search,
                 lang = "regex",
             },
-            search_up = {
-                kind = "search",
-                pattern = "^%?",
-                icon = icons.cmdline.search,
-                lang = "regex",
-            },
-            filter = {
+            search_replace = {
+                title = "Find and Replace",
                 pattern = { "^:%%s/", "^:%%s%!", "^:%%s%*" },
-                icon = icons.cmdline.search,
+                icon = icons.cmdline.filter,
+                confirm = true,
                 lang = "regex",
             },
             lua = {
                 pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" },
                 icon = icons.cmdline.lua,
                 lang = "lua",
+            },
+            python = {
+                pattern = { "^:%s*python%s+", "^:%s*python%s*=%s*", "^:%s*=%s*" },
+                icon = icons.cmdline.python,
+                lang = "python",
             },
             help = { pattern = "^:%s*he?l?p?%s+", icon = icons.cmdline.help },
         },
