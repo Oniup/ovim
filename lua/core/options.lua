@@ -84,7 +84,7 @@ local M = {
         + "n", -- Smart auto indenting inside numbered lists
 }
 
-if vim.fn.has("win32") then
+if vim.fn.has("win32") == 1 then
     if vim.fn.executable("pwsh") then
         M.shell = "pwsh"
     else
@@ -100,6 +100,6 @@ if vim.fn.has("win32") then
 end
 
 vim.g.autoformat = false
-vim.cmd[[syntax=1]]
+vim.cmd([[syntax=1]])
 
 return M

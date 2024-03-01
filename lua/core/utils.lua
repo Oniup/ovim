@@ -56,7 +56,7 @@ function M.prequire_extend(module_names)
 end
 
 function M.os_correct_exec(path)
-    if vim.fn.has("win32") then
+    if vim.fn.has("win32") == 1 then
         return path .. ".exe"
     end
     return path
@@ -139,7 +139,7 @@ end
 --- @param win32 string Windows specific path
 --- @return string Path Platform specific path
 function M.os_correct_path(unix, win32)
-    if vim.fn.has("win32") then
+    if vim.fn.has("win32") == 1 then
         return win32
     end
     return unix
@@ -153,7 +153,7 @@ function M.dap_config_template(adapter, language, overrides)
         program = function()
             local exec = vim.fn.getcwd() .. "/"
             exec = exec .. vim.fn.input("Path to exec: " .. exec)
-            if exec and vim.fn.has("win32") then
+            if exec and vim.fn.has("win32") == 1 then
                 exec = string.gsub(exec, "/", "\\") .. ".exe"
             end
             return exec
